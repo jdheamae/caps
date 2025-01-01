@@ -48,29 +48,7 @@
   .logo {
     width: 220px;
   }
-  
-  /* Sidebar List Styles */
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1; /* Allow the nav to grow */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center nav items vertically */
-    margin-bottom: 180px;
-  }
-  
-  .sidebar ul li {
-    margin: 15px 0; /* Space between items */
-  }
-  
-  .sidebar ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  
+
 
   /* Content Section Styles */
   .cont {
@@ -98,7 +76,7 @@
     padding: 15px 30px;
     font-size: 1vw; /* Use viewport width for responsive scaling */
     cursor: pointer;
-    margin-top: 20px;
+
 }
 .get-qr-button:hover {
   background-color: #ffff00;
@@ -132,7 +110,7 @@
   .statistics {
     display: flex;
     justify-content: space-around;
-    margin-top: 0px;
+    margin-top: -30px;
     width: 100%;
   }
   
@@ -149,37 +127,4 @@
     font-size: 18px;
   }
 
-  .nav-menu {
-    list-style-type: none;
-    width: 120%;
-    padding:0;
-    margin-top: 100px;
-  }
-  
-  .nav-menu a {
-    display: flex;
-    align-items: center;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 14px 20px;
-    border-bottom: 1px solid #fff; /* Divider line between items */
-    transition: background-color 0.3s, color 0.3s;
-  }
-  .nav-icon {
-    margin-right: 10px; /* Adds space between icon and text */
-    font-size: 18px; /* Adjust icon size as needed */
-  }
-  
-  .nav-menu a:hover {
-    background-color: #FA0000;
-    color: #000000;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
-  }
-  
-  .nav-menu a.active {
-    background-color: #FA0000; /* Active link style */
-  }
-  
+ 

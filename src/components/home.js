@@ -2,37 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaUser } from 'react-icons/fa'; // Import icons
 import '../style/home.css'; // Import custom CSS for styling
+import Sidebar from "./sidebar";
 
 function Home() {
   return (
     <div className="home-container">
-      <div className="sidebar">
-        <img src="log.png" alt="FIRI" className="logo" />
-        <nav className='nav-menu'> 
-          <Link to="/">
-            <FaHome className="nav-icon" /> Home
-          </Link>
-          <Link to="/mana">
-            <FaBullhorn className="nav-icon" /> Manage Bulletin
-          </Link>
-          <Link to="/">
-            <FaQrcode className="nav-icon" /> Scan Item
-          </Link>
-          <Link to="/">
-            <FaFileAlt className="nav-icon" /> Report Lost Item
-          </Link>
-          <Link to="/manaReq">
-            <FaUserCheck className="nav-icon" /> Manage Request
-          </Link>
-          <Link to="/">
-            <FaUser className="nav-icon" /> Profile
-          </Link>
-        </nav>
-      </div>
-      
+      <Sidebar />
       {/* Fixed Header */}
       <header className="header">
-        <h2>FIRI</h2>
+        <h2>FIRI LOGO</h2>
       </header>
       
       <div className="main-content">

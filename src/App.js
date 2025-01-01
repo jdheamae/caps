@@ -4,6 +4,10 @@ import Home from './components/home'; // Adjust the path if necessary
 import Manage from './components/mana';
 import ManageRequest from './components/manaReq'
 import ReportItem from './components/report';
+import Dashboard from './components/dash';
+import Auth from './components/log';
+
+
 
 function App() {
   return (
@@ -14,6 +18,8 @@ function App() {
           <Route path="/mana" element={<Manage />} />
           <Route path="manaReq" element={<ManageRequest />} />
           <Route path="report" element={<ReportItem />} />
+          <Route path="dash" element={<Dashboard />} />
+          <Route path="log" element={<Auth />} />
         </Routes>
       </div>
     </Router>

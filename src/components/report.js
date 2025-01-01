@@ -1,44 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaSearch, FaFilter, FaUser,FaSignOutAlt  } from 'react-icons/fa';
-import '../style/manaReq.css';
+import '../style/report.css';
+import Sidebar from "./sidebar";
 
 
 function ReportItem() {
   return (
     <div className="home-container">
-      <div className="sidebar">
-        <img src="log.png" alt="FIRI" className="logo" />
-        <nav className='nav-menu'> 
-            <Link to="/">
-                <FaHome className="nav-icon" /> Home
-            </Link>
-            <Link to="/mana">
-                <FaBullhorn className="nav-icon" /> Manage Bulletin
-            </Link>
-            <Link to="/">
-                <FaQrcode className="nav-icon" /> Scan Item
-            </Link>
-            <Link to="/report">
-                <FaFileAlt className="nav-icon" /> Report Lost Item
-            </Link>
-            <Link to="/manaReq">
-                <FaUserCheck className="nav-icon" /> Manage Request
-            </Link>
-            <Link to="/">
-                <FaUser className="nav-icon" /> Profile
-            </Link>
 
-            </nav>
-            <div className='logout'>
-            <Link to="/logout">
-              <FaSignOutAlt  className="nav-icon" /> Log Out
-            </Link>
-          </div>
-      </div>
-
+      <Sidebar />
       <header className="header">
-          <h2>FIRI</h2>
+      <h2>FIRI LOGO</h2>
         </header>
         
       
@@ -100,8 +73,8 @@ function ReportItem() {
 
         </div>
         <div className="pagination">
-          <button className="page-nav">&lt;</button>
-          <button className="page-nav">&gt;</button>
+          <button className="page-nav">&lt; Previous</button>
+          <button className="page-nav">Next&gt;</button>
         </div>
       </div>
     </div>
