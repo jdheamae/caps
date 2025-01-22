@@ -1,13 +1,16 @@
-import React from 'react'; // Include useRef if it's being used
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import { jwtDecode } from 'jwt-decode';
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
 import Home from './components/home'; // Adjust the path if necessary
 import Manage from './components/Complaints';
-import ManageRequest from './components/manageRequest'
+import ManageRequest from './components/manageRequest';
 import ReportItem from './components/report';
 import Dashboard from './components/dash';
 import Auth from './components/log';
 import Additem from './components/additem';
-import Header from './components/header';
 
 
 
@@ -22,9 +25,9 @@ function App() {
           <Route path="database" element={<ReportItem />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="additem" element={<Additem />} />
-          <Route path="/login" element={<Auth />} />
-          <Route path="header" element={< Header />} />
+          <Route path="login" element={<Auth />} />
         </Routes>
+        
       </div>
     </Router>
   );
