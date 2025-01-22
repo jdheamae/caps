@@ -15,13 +15,13 @@ const Sidebar = () => {
           <FaChartLine className="nav-icon" /> Dashboard
         </NavLink>
         <NavLink to="/mana" activeClassName="active">
-          <FaBox className="nav-icon" /> Items
+          <FaBox className="nav-icon" /> Lost Complaint
         </NavLink>
-        <NavLink to="/" activeClassName="active">
-          <FaQrcode className="nav-icon" /> Scan Item
+        <NavLink to="/additem" activeClassName="active">
+          <FaQrcode className="nav-icon" /> Lost and Found Items
         </NavLink>
         <NavLink to="/report" activeClassName="active">
-          <FaFileAlt className="nav-icon" /> Report Lost Item
+          <FaFileAlt className="nav-icon" /> Database
         </NavLink>
         <NavLink to="/manaReq" activeClassName="active">
           <FaUserCheck className="nav-icon" /> Manage Request

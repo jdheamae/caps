@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { NavLink } from "react-router-dom"; // Use NavLink for active class
 import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaUser } from 'react-icons/fa'; // Import icons
 import '../style/home.css'; // Import custom CSS for styling
 import Sidebar from "./sidebar";
@@ -20,7 +21,16 @@ function Home() {
           <p>
             Step into a world where the art of Interior Design is meticulously crafted to bring together timeless elegance and cutting-edge modern innovation. Allowing you to transform your living spaces into the epitome of luxury and sophistication.
           </p>
-          <button className="get-qr-button">Get QR Code Now</button>
+          <NavLink to="/mana" activeClassName="active">
+          <button className="get-qr-button">File Report Now</button> {/**For students */}
+     
+             
+                  </NavLink>
+          <div className='divider'></div>
+          <NavLink to="/mana" activeClassName="active">
+          <button className="get-qr-button">Add Item Now</button>{/**For admin */}
+          
+          </NavLink>
         </div>
         
         <div className="statistics">

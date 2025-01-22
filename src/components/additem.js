@@ -4,7 +4,7 @@ import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaSearch, FaFilte
 import '../style/mana.css';
 import Sidebar from "./sidebar";
 
-function Manage() {
+function Additem() {
   const [filterText, setFilterText] = useState(''); // State for filtering item names
   const [requests, setRequests] = useState([ // Sample data for requests
     { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: ' Hubert Blaine Wolfeschlege', status: 'Unclaimed' },
@@ -36,12 +36,12 @@ function Manage() {
 
       <div className="content">
         <div className="manage-bulletin">
-          <div className="breadcrumb">Manage Lost And Found {'>'} Manage Reports and Complaints </div>
+          <div className="breadcrumb">Manage Lost and Found {'>'} Manage Lost and Found Items</div>
 
           {/* Buttons at the top-right */}
           <div className="top-right-buttons">
-            <button className="add-item-btn">+ File Complaints</button>
-            <button className="register-qr-btn">Register QR Code</button>{/**foor admin */}
+            <button className="add-item-btn">+ Add Found Item</button>
+            <button className="register-qr-btn">Register QR Code</button>
           </div>
 
           <div className="search-bar">
@@ -68,7 +68,7 @@ function Manage() {
                   <th>Time</th>
                   <th>Owner Name</th>
                   <th>Status</th>
-                  <th>Action</th>{/**foor admin */}
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -82,7 +82,7 @@ function Manage() {
                     <td>{item.location}</td>
                     <td>{item.time}</td>
                     <td>{item.owner}</td>
-                    <td>{item.status  }</td>{/**foor admin */}
+                    <td>{item.status  }</td>
                     <td>
                       <button className="view-btn">View More</button>
                     </td>
@@ -104,4 +104,4 @@ function Manage() {
   );
 }
 
-export default Manage;
+export default Additem;

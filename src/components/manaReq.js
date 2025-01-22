@@ -31,7 +31,7 @@ function ManageRequest() {
 
       <div className="content">
         <div className="manage-bulletin">
-          <div className="breadcrumb">Bulletin {'>'} Request Items</div>
+          <div className="breadcrumb">Manage Lost and Found {'>'} Manage Request</div>
           {/* Filter input */}
           <div className="manareqsearch-bar">
             <input

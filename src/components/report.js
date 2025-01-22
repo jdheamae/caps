@@ -18,7 +18,7 @@ function ReportItem() {
       <div className="content">
 
         <div className="manage-bulletin">
-          <div className="breadcrumb">Bulletin {'>'} Report Lost Items</div>
+          <div className="breadcrumb">Manage Lost and Found {'>'} Manage Database</div>
                       {/* Buttons at the top-right */}
 
           <div className="reqsearch-bar">
