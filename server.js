@@ -14,10 +14,11 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb://localhost:27017/firi", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+mongoose
+.connect('mongodb+srv://quasi452:1412@cluster0.tv4qs.mongodb.net/firi?retryWrites=true&w=majority&appName=Cluster0')
+.then(() => {
+  console.log('Connected to MongoDB!');
+})
   .then(() => console.log("MongoDB connected"))
   .catch((error) => console.error("MongoDB connection error:", error));
 // Routes
