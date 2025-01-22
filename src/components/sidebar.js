@@ -11,19 +11,19 @@ const Sidebar = () => {
         <NavLink to="/" activeClassName="active">
           <FaHome className="nav-icon" /> Home
         </NavLink>
-        <NavLink to="/dash" activeClassName="active">
+        <NavLink to="/dashboard" activeClassName="active">
           <FaChartLine className="nav-icon" /> Dashboard
         </NavLink>
-        <NavLink to="/mana" activeClassName="active">
+        <NavLink to="/complaints" activeClassName="active">
           <FaBox className="nav-icon" /> Lost Complaint
         </NavLink>
         <NavLink to="/additem" activeClassName="active">
           <FaQrcode className="nav-icon" /> Lost and Found Items
         </NavLink>
-        <NavLink to="/report" activeClassName="active">
+        <NavLink to="/database" activeClassName="active">
           <FaFileAlt className="nav-icon" /> Database
         </NavLink>
-        <NavLink to="/manaReq" activeClassName="active">
+        <NavLink to="/manaRequests" activeClassName="active">
           <FaUserCheck className="nav-icon" /> Manage Request
         </NavLink>
         <NavLink to="/" activeClassName="active">
