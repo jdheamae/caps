@@ -73,7 +73,7 @@ app.post("/register", async (req, res) => {
   });
 // Route to file a complaint
 app.post("/complaints", async (req, res) => {
-  const { complainer, itemname, type, contact, date, location, time } = req.body;
+  const { complainer, itemname, type, contact, date, location, time,description } = req.body;
 
   try {
     const newComplaint = new Complaint({
@@ -86,6 +86,7 @@ app.post("/complaints", async (req, res) => {
       time,
       status: "Not Found",
       finder: "N/A",
+      description,
     });
 
     await newComplaint.save();
@@ -108,25 +109,39 @@ app.get("/complaints", async (req, res) => {
 // Route to update a complaint
 app.put("/complaints/:id", async (req, res) => {
   const { id } = req.params;
-  const { status, finder } = req.body;
+  const { complainer, itemname, type, contact, date, location, time, status, finder ,description} = req.body;
 
   try {
+    // Find the complaint by ID
     const complaint = await Complaint.findById(id);
 
     if (!complaint) {
       return res.status(404).json({ message: "Complaint not found" });
     }
 
-    // Update the complaint's status and finder information
+    // Update the complaint's fields with the new data if provided
+    complaint.complainer = complainer || complaint.complainer;
+    complaint.itemname = itemname || complaint.itemname;
+    complaint.type = type || complaint.type;
+    complaint.contact = contact || complaint.contact;
+    complaint.date = date || complaint.date;
+    complaint.location = location || complaint.location;
+    complaint.time = time || complaint.time;
     complaint.status = status || complaint.status;
     complaint.finder = finder || complaint.finder;
+    complaint.description=description||complaint.description;
 
+    // Save the updated complaint
     await complaint.save();
+
+    // Return a response with the updated complaint
     res.json({ message: "Complaint updated successfully", complaint });
   } catch (error) {
+    // Handle any errors during the update process
     res.status(500).json({ message: error.message });
   }
 });
+
 
 // Route to delete a complaint
 app.delete("/complaints/:id", async (req, res) => {

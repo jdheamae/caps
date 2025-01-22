@@ -3,7 +3,7 @@ import { FaSearch, FaFilter } from "react-icons/fa";
 import Sidebar from "./sidebar";
 import "../style/mana.css";
 
-function Manage() {
+function UserComplaint() {
   const [filterText, setFilterText] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showViewMoreModal, setShowViewMoreModal] = useState(false);
@@ -15,7 +15,7 @@ function Manage() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await fetch("http://localhost:5000/complaints");
+        const response = await fetch("http://localhost:5000/c omplaints");
         const data = await response.json();
         setRequests(data);
       } catch (error) {
@@ -344,4 +344,4 @@ function Manage() {
   );
 }
 
-export default Manage;
+export default UserComplaint;
