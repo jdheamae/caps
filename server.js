@@ -107,6 +107,7 @@ app.get("/complaints", async (req, res) => {
   }
 });
 
+
 // Route to update a complaint
 app.put("/complaints/:id", async (req, res) => {
   const { id } = req.params;
@@ -162,6 +163,82 @@ app.delete("/complaints/:id", async (req, res) => {
   }
 });
 
+app.post('/items', async (req, res) => {
+  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS } = req.body;
+
+  try {
+    
+    // Create a new Item object
+    const newItem = new Item({
+      ITEM,
+      DESCRIPTION,
+      DATE_FOUND,
+      TIME_RETURNED, // Store the complete Date object
+      FINDER,
+      CONTACT_OF_THE_FINDER,
+      FOUND_LOCATION,
+      OWNER,
+      DATE_CLAIMED,
+      STATUS,
+    });
+
+    // Save the new item to the database
+    await newItem.save();
+
+    // Respond with the created item
+    res.status(201).json({ message: 'Item added successfully', item: newItem });
+  } catch (error) {
+    console.error('Error adding item to MongoDB:', error);
+    res.status(500).json({ message: 'Error adding item', error });
+  }
+});
+
+// Route to get all items
+app.get('/items', async (req, res) => {
+  try {
+    const items = await Item.find();
+    res.json(items);
+  } catch (error) {
+    console.error('Error fetching items:', error);
+    res.status(500).json({ message: 'Error fetching items', error });
+  }
+});
+
+
+
+//user side add complain
+app.post("/usercomplaints", async (req, res) => {
+  const { complainer, itemname, type, contact, date, location, time,description } = req.body;
+
+  try {
+    const newComplaint = new Complaint({
+      complainer,
+      itemname,
+      type,
+      contact,
+      date,
+      location,
+      time,
+      status: "Not Found",
+      finder: "N/A",
+      description,
+    });
+
+    await newComplaint.save();
+    res.status(201).json({ message: "Complaint filed successfully" });
+  } catch (error) {
+    console.error("Error saving complaint to MongoDB:", error);
+    res.status(500).json({ error: "Error filing complaint" });
+  }
+});
+app.get("/usercomplaints:id", async (req, res) => {
+  try {
+    const complaints = await Complaint.find();
+    res.json(complaints);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

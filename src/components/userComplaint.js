@@ -15,7 +15,7 @@ function UserComplaint() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await fetch("http://localhost:5000/c omplaints");
+        const response = await fetch("http://10.10.83.224:5000/usercomplaints:id");
         const data = await response.json();
         setRequests(data);
       } catch (error) {
@@ -45,7 +45,7 @@ function UserComplaint() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/complaints", {
+      const response = await fetch("http://10.10.83.224:5000/usercomplaints", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newComplaint),
@@ -96,7 +96,7 @@ function UserComplaint() {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/complaints/${selectedRequest._id}`, {
+      const response = await fetch(`http://10.10.83.224:5000/usercomplaints/${selectedRequest._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedRequest),

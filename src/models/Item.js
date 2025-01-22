@@ -1,32 +1,19 @@
 const mongoose = require('mongoose');
 
-// Define the Item schema
 const itemSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  contact: {
-    type: String,
-    required: true,
-  },
-  college: {
-    type: String,
-    required: true,
-  },
-  id: {
-    type: String,
-    required: true,
-  },
-  // You can add more fields as necessary, for example:
- 
+  ITEM: String,
+  DESCRIPTION: String,
+  DATE_FOUND: String,
+  TIME_RETURNED: String,  // Change this to String to store it as a time in string format
+  FINDER: String,
+  CONTACT_OF_THE_FINDER: String,
+  FOUND_LOCATION: String,
+  OWNER: String,
+  DATE_CLAIMED: String,
+  STATUS: String,
 });
 
-// Create the Item model
 const Item = mongoose.model('Item', itemSchema);
+
 
 module.exports = Item;
