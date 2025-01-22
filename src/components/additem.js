@@ -9,16 +9,8 @@ function Additem() {
   const [requests, setRequests] = useState([ // Sample data for requests
     { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: ' Hubert Blaine Wolfeschlege', status: 'Unclaimed' },
     { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: 'Maria Dela Cruz ', status: 'Unclaimed' },
-    { itemname: 'Keys', type: 'Personal', date: '2024-12-03', location: 'Cafeteria', time: '2:30 PM' },
-    { itemname: 'Backpack', type: 'Personal', date: '2024-12-05', location: 'Gym', time: '5:00 PM' },
-    { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: ' Hubert Blaine Wolfeschlege', status: 'Unclaimed' },
-    { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: 'Maria Dela Cruz ', status: 'Unclaimed' },
-    { itemname: 'Keys', type: 'Personal', date: '2024-12-03', location: 'Cafeteria', time: '2:30 PM' },
-    { itemname: 'Backpack', type: 'Personal', date: '2024-12-05', location: 'Gym', time: '5:00 PM' },
-    { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: ' Hubert Blaine Wolfeschlege', status: 'Unclaimed' },
-    { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: 'Maria Dela Cruz ', status: 'Unclaimed' },
-    { itemname: 'Keys', type: 'Personal', date: '2024-12-03', location: 'Cafeteria', time: '2:30 PM' },
-    { itemname: 'Backpack', type: 'Personal', date: '2024-12-05', location: 'Gym', time: '5:00 PM' },
+
+   
   ]);
 
   // Filtered requests based on the filterText
@@ -36,7 +28,7 @@ function Additem() {
 
       <div className="content">
         <div className="manage-bulletin">
-          <div className="breadcrumb">Manage Lost and Found {'>'} Manage Lost and Found Items</div>
+          <div className="breadcrumb">Manage Lost and Found {'>'} Manage FaBoxound Items</div>
 
           {/* Buttons at the top-right */}
           <div className="top-right-buttons">

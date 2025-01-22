@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const User = require("./src/models/User");
 const Item = require('./src/models/Item'); // Import the Item model
 const jwt = require('jsonwebtoken');
+const Complaint = require('./src/models/Complaint'); // Import the Complaint model
 
 const app = express();
 const PORT = 5000;
@@ -70,6 +71,81 @@ app.post("/register", async (req, res) => {
       res.status(500).json({ message: "Error saving item" });
     }
   });
+// Route to file a complaint
+app.post("/complaints", async (req, res) => {
+  const { complainer, itemname, type, contact, date, location, time } = req.body;
+
+  try {
+    const newComplaint = new Complaint({
+      complainer,
+      itemname,
+      type,
+      contact,
+      date,
+      location,
+      time,
+      status: "Not Found",
+      finder: "N/A",
+    });
+
+    await newComplaint.save();
+    res.status(201).json({ message: "Complaint filed successfully" });
+  } catch (error) {
+    console.error("Error saving complaint to MongoDB:", error);
+    res.status(500).json({ error: "Error filing complaint" });
+  }
+});
+// Route to get all complaints
+app.get("/complaints", async (req, res) => {
+  try {
+    const complaints = await Complaint.find();
+    res.json(complaints);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Route to update a complaint
+app.put("/complaints/:id", async (req, res) => {
+  const { id } = req.params;
+  const { status, finder } = req.body;
+
+  try {
+    const complaint = await Complaint.findById(id);
+
+    if (!complaint) {
+      return res.status(404).json({ message: "Complaint not found" });
+    }
+
+    // Update the complaint's status and finder information
+    complaint.status = status || complaint.status;
+    complaint.finder = finder || complaint.finder;
+
+    await complaint.save();
+    res.json({ message: "Complaint updated successfully", complaint });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Route to delete a complaint
+app.delete("/complaints/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const complaint = await Complaint.findById(id);
+
+    if (!complaint) {
+      return res.status(404).json({ message: "Complaint not found" });
+    }
+
+    await complaint.remove();
+    res.json({ message: "Complaint deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

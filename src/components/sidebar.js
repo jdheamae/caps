@@ -18,7 +18,7 @@ const Sidebar = () => {
           <FaBox className="nav-icon" /> Lost Complaint
         </NavLink>
         <NavLink to="/additem" activeClassName="active">
-          <FaQrcode className="nav-icon" /> Lost and Found Items
+          <FaQrcode className="nav-icon" />  Found Items
         </NavLink>
         <NavLink to="/database" activeClassName="active">
           <FaFileAlt className="nav-icon" /> Database
