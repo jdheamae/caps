@@ -79,5 +79,20 @@
     color: #666;
     margin: 5px 0 0 0;
   }
-  
+    
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    /* Adjust Main Content */
+    .main-content {
+      margin-left: 0; /* Remove margin on mobile */
+      padding: 10px; /* Adjust padding */
+    }
+    /* Fixed Header */
+    header {
+      margin-left: 0; /* Remove margin for header on mobile */
+      padding: 10px 0;
+      z-index: 0;
+      height: 6%;
+    }
 
+  }

@@ -1,0 +1,51 @@
+/* Main Content */
+.main-content {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align to the top */
+    flex-grow: 1; /* Take up the remaining space */
+    padding: 20px;
+    margin-left: 200px; /* Space to avoid overlap with the sidebar */
+    background-image: url('msu.jpg'); /* Add your background image */
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the image */
+    color: #fff;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent scrolling */
+    box-sizing: border-box; /* Ensure padding doesn't affect height */
+  }
+  
+  /* Fixed Header Styles */
+  header {
+    display: flex;
+    justify-content: center;
+    padding: 0px;
+    background-color: #F3D558; /* Yellow background for the header */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Fix header to the top */
+    width: 100%;
+    top: 0;
+    z-index: 500; /* Ensure it stays above other elements */
+    margin-left: 220px;
+  }
+
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+
+  
+    /* Adjust Main Content */
+    .main-content {
+      margin-left: 0; /* Remove margin on mobile */
+      padding: 10px; /* Adjust padding */
+    }
+    /* Fixed Header */
+    header {
+      margin-left: 0; /* Remove margin for header on mobile */
+      padding: 10px 0;
+      z-index: 0;
+      height: 6%;
+    }
+
+  }

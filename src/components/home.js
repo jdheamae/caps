@@ -4,15 +4,14 @@ import { NavLink } from "react-router-dom"; // Use NavLink for active class
 import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaUser } from 'react-icons/fa'; // Import icons
 import '../style/home.css'; // Import custom CSS for styling
 import Sidebar from "./sidebar";
+import Header from './header';
 
 function Home() {
   return (
     <div className="home-container">
       <Sidebar />
-      {/* Fixed Header */}
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+
+      < Header />
       
       <div className="main-content">
         <div className="cont">
@@ -23,14 +22,7 @@ function Home() {
           </p>
           <NavLink to="/mana" activeClassName="active">
           <button className="get-qr-button">File Report Now</button> {/**For students */}
-     
-             
                   </NavLink>
-          <div className='divider'></div>
-          <NavLink to="/mana" activeClassName="active">
-          <button className="get-qr-button">Add Item Now</button>{/**For admin */}
-          
-          </NavLink>
         </div>
         
         <div className="statistics">

@@ -15,6 +15,7 @@
   /* Logo Styles */
   .logo {
     width: 220px;
+    z-index: 200;
   }
   
   /* Sidebar List Styles */
@@ -45,7 +46,7 @@
   list-style-type: none;
   width: 120%;
   padding: 0;
-  margin-top: 70px;
+  margin-top: 50px;
 }
 
 .nav-menu a {
@@ -57,6 +58,7 @@
   font-weight: 500;
   padding: 14px 20px;
   transition: background-color 0.3s, color 0.3s;
+
 }
 
 .nav-icon {
@@ -78,4 +80,68 @@
   border-right: 4px solid #ffd324;  /* Right side border to indicate active page */
 }
 
-  
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  /* Menu Toggle Button */
+  .menu-toggle {
+    display: block; /* Show menu button */
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    padding: 10px;
+    position: relative;
+    top: -10px;
+    left: 100px;
+    background-color: #850F13; /* Your requested color */
+    border: none;
+    border-radius: 5px;
+    z-index: 1100;
+    
+    
+  }
+  /* Hide the toggle button on larger screens (web version) */
+  @media (min-width: 769px) {
+    .menu-toggle {
+      display: none;
+    }
+  }
+  /* Sidebar Styles for Mobile */
+  .sidebar {
+    width: 210px;
+    left: -200px; /* Initially hidden on mobile */
+    position: fixed;
+    top: 0;
+    height: 120%;
+    transition: left 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  /* Sidebar Open on Mobile */
+  .sidebar.open {
+    left: 0;
+    overflow: hidden;
+  }
+
+  /* Sidebar Links Styling */
+  .nav-menu a {
+    font-size: 16px; /* Smaller font for mobile */
+    padding: 10px; /* Adjust padding for mobile */
+    margin-top: 8px;
+  }
+
+  /* Ensure the sidebar menu is shown on mobile */
+  .nav-menu {
+    margin-top: 0px;
+  }
+  .logo{
+    z-index: 200;
+    margin-left: 0px;
+    margin-top: -40px;
+  }
+
+  /* Prevent scrolling when sidebar is open */
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+}

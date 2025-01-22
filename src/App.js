@@ -7,6 +7,7 @@ import ReportItem from './components/report';
 import Dashboard from './components/dash';
 import Auth from './components/log';
 import Additem from './components/additem';
+import Header from './components/header';
 
 
 
@@ -21,7 +22,8 @@ function App() {
           <Route path="database" element={<ReportItem />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="additem" element={<Additem />} />
-          <Route path="login" element={<Auth />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="header" element={< Header />} />
         </Routes>
       </div>
     </Router>

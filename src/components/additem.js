@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaSearch, FaFilter, FaUser, FaSignOutAlt } from 'react-icons/fa';
 import '../style/mana.css';
 import Sidebar from "./sidebar";
+import Header from './header';
 
 function Additem() {
   const [filterText, setFilterText] = useState(''); // State for filtering item names
@@ -21,10 +22,8 @@ function Additem() {
   return (
     <div className="home-container">
       <Sidebar />
+      < Header />
 
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
 
       <div className="content">
         <div className="manage-bulletin">

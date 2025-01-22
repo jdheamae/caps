@@ -3,16 +3,14 @@ import { Link } from 'react-router-dom';
 import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck } from 'react-icons/fa'; // Import icons
 import './managebulletin.css'; // Import custom CSS for styling
 import Sidebar from "./sidebar";
+import Header from './header';
 
 function ManageBulletin() {
   return (
     <div className="home-container">
       <Sidebar />
-      
-      {/* Fixed Header */}
-      <header className="header">
-      <h2>FIRI LOGO</h2>
-      </header>
+      < Header />
+
       
       <div className="manage-bulletin">
         {/* Items Table */}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import Sidebar from "./sidebar";
+import Header from "./header";
 import "../style/mana.css";
 
 function Manage() {
@@ -83,6 +84,8 @@ function Manage() {
   return (
     <div className="home-container">
       <Sidebar />
+      < Header />
+
 
       <header className="header">
         <h2>FIRI LOGO</h2>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaSearch, FaFilter, FaUser,FaSignOutAlt  } from 'react-icons/fa';
 import '../style/report.css';
+import Header from './header';
 import Sidebar from "./sidebar";
 
 
@@ -10,9 +11,8 @@ function ReportItem() {
     <div className="home-container">
 
       <Sidebar />
-      <header className="header">
-      <h2>FIRI LOGO</h2>
-        </header>
+      < Header />
+
         
       
       <div className="content">
