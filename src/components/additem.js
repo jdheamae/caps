@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import Sidebar from "./sidebar";
-import '../style/additem.css';
+import '..//style/additem.css';
 import axios from 'axios';
 
 function Additem() {

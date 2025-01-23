@@ -93,19 +93,48 @@ function Auth() {
       <div className="toggle-container">
         <div className="toggle">
           <div className="toggle-panel toggle-left">
-            <h1>Welcome Back!</h1>
-            <p>Enter your personal details to use all site features</p>
+          <img 
+              src="firigif.gif" 
+              alt="Welcome GIF" 
+              className="welcome-gifleft"
+            />
+          <img 
+              src="firi2.png" 
+              alt="Welcome GIF" 
+              className="welcome-gif1left"
+            />
+            <div className="churva"> 
+            <p>Join FIRI – Find It, Retrieve It!
+              <br></br>
+              <br></br>
+              Sign up to report, track, and reclaim lost items with ease! 🔍✨ </p>
+            </div>
+
             <button className="hidden" id="login" onClick={handleFormSwitch}>
               Sign In
             </button>
           </div>
           <div className="toggle-panel toggle-right">
-            <h1>Hello, Friend!</h1>
-            <p>Register with your personal details to use all site features</p>
+            <img 
+              src="firigif.gif" 
+              alt="Welcome GIF" 
+              className="welcome-gif"
+            />
+          <img 
+              src="firi.png" 
+              alt="Welcome GIF" 
+              className="welcome-gif1"
+            />
+            <p>Welcome to FIRI – Find It, Retrieve It!
+              <br></br>
+              <br></br>
+              Easily report lost and found items. Let’s help reunite valuables with their owners! 🔍✨
+              </p>
             <button className="hidden" id="register" onClick={handleFormSwitch}>
               Sign Up
             </button>
           </div>
+
         </div>
       </div>
     </div>
