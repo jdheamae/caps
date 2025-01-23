@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: column;
     align-items: center; /* Center items horizontally */
+
   }
   
   /* Logo Styles */
@@ -62,6 +63,7 @@
 .nav-icon {
   margin-right: 10px; /* Adds space between icon and text */
   font-size: 18px; /* Adjust icon size as needed */
+  border: #850F13;
 }
 
 .nav-menu a:hover {

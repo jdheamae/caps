@@ -34,14 +34,14 @@ const Sidebar = () => {
             <NavLink to="/" activeClassName="active">
               <FaHome className="nav-icon" /> Home
             </NavLink>
-            <NavLink to="/" activeClassName="active">
-              <FaUser className="nav-icon" /> Profile
-            </NavLink>
             <NavLink to="/userComplaints" activeClassName="active">
               <FaBox className="nav-icon" /> File Report
             </NavLink>
             <NavLink to="/bulletinboard" activeClassName="active">
               <FaChartLine className="nav-icon" /> Bulletin
+            </NavLink>
+            <NavLink to="/prof" activeClassName="active">
+              <FaUser className="nav-icon" /> Profile
             </NavLink>
           </>
         )}
@@ -67,10 +67,8 @@ const Sidebar = () => {
            <div className="logout">
             
               <NavLink to="/login" activeClassName="active">
-              <button onClick={handleLogout}  >
-                <FaSignOutAlt className="nav-icon" /> Log Out
-                
-                </button>
+              <FaSignOutAlt className="nav-icon" /> Log Out 
+              <button onClick={handleLogout} ></button>
                 </NavLink>
             </div>
       </nav>
