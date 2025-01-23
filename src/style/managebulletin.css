@@ -5,8 +5,6 @@
     justify-content: center; /* Center horizontally */
     align-items: flex-start; /* Align to the top */
     flex-grow: 1; /* Take up the remaining space */
-    padding: 20px;
-    margin-left: 200px; /* Space to avoid overlap with the sidebar */
     background-size: cover; /* Cover the entire area */
     background-position: center; /* Center the image */
     

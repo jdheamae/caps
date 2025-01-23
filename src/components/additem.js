@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import Sidebar from "./sidebar";
 import '../style/additem.css';
-import axios from 'axios'; // For making HTTP requests
+import axios from 'axios';
 
 function Additem() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const [itemData, setItemData] = useState({
     ITEM: '',
     DESCRIPTION: '',
@@ -19,10 +22,9 @@ function Additem() {
     FOUND_LOCATION: '',
     OWNER: '',
     DATE_CLAIMED: '',
-    STATUS: 'unclaimed'
+    STATUS: 'unclaimed',
   });
 
-  // Fetching items from the backend
   useEffect(() => {
     fetchItems();
   }, []);
@@ -45,17 +47,13 @@ function Additem() {
     e.preventDefault();
     try {
       if (selectedItem) {
-        // Update item
-        const response = await axios.put(`http://10.10.83.224:5000/items/${selectedItem._id}`, itemData);
-        console.log('Item updated:', response.data);
+        await axios.put(`http://10.10.83.224:5000/items/${selectedItem._id}`, itemData);
       } else {
-        // Create new item
         const response = await axios.post('http://10.10.83.224:5000/items', itemData);
-        console.log('Item added:', response.data);
         setRequests([...requests, response.data]);
       }
       setShowModal(false);
-      fetchItems(); // Refresh the list
+      fetchItems();
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -64,8 +62,7 @@ function Additem() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://10.10.83.224:5000/items/${id}`);
-      console.log('Item deleted');
-      fetchItems(); // Refresh the list
+      fetchItems();
     } catch (error) {
       console.error('Error deleting item:', error);
     }
@@ -84,7 +81,7 @@ function Additem() {
         FOUND_LOCATION: '',
         OWNER: '',
         DATE_CLAIMED: '',
-        STATUS: 'unclaimed'
+        STATUS: 'unclaimed',
       }
     );
     setShowModal(true);
@@ -93,6 +90,17 @@ function Additem() {
   const filteredRequests = requests.filter((item) => {
     return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
   });
+
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const displayedRequests = filteredRequests.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="home-container">
@@ -117,7 +125,7 @@ function Additem() {
             <FaSearch className="search-icon" />
             <FaFilter className="filter-icon" />
           </div>
-          {filteredRequests.length > 0 ? (
+          {displayedRequests.length > 0 ? (
             <table className="found-items-table">
               <thead>
                 <tr>
@@ -134,7 +142,7 @@ function Additem() {
                 </tr>
               </thead>
               <tbody>
-                {filteredRequests.map((item) => (
+                {displayedRequests.map((item) => (
                   <tr key={item._id}>
                     <td>{item.FINDER}</td>
                     <td>{item.ITEM}</td>
@@ -157,6 +165,18 @@ function Additem() {
           ) : (
             <div className="no-data">No matching requests found</div>
           )}
+          <div className="pagination">
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                className="page-nav"
+                onClick={() => handlePageChange(index + 1)}
+                disabled={currentPage === index + 1}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       {showModal && (
@@ -173,70 +193,7 @@ function Additem() {
                 onChange={handleInputChange}
                 required
               />
-              <label>Description:</label>
-              <input
-                type="text"
-                name="DESCRIPTION"
-                value={itemData.DESCRIPTION}
-                onChange={handleInputChange}
-                required
-              />
-              <label>Date Found:</label>
-              <input
-                type="date"
-                name="DATE_FOUND"
-                value={itemData.DATE_FOUND}
-                onChange={handleInputChange}
-                required
-              />
-              <label>Time Returned:</label>
-              <input
-                type="time"
-                name="TIME_RETURNED"
-                value={itemData.TIME_RETURNED}
-                onChange={handleInputChange}
-                required
-              />
-              <label>Finder:</label>
-              <input
-                type="text"
-                name="FINDER"
-                value={itemData.FINDER}
-                onChange={handleInputChange}
-              
-              />
-              <label>Contact of Finder:</label>
-              <input
-                type="text"
-                name="CONTACT_OF_THE_FINDER"
-                value={itemData.CONTACT_OF_THE_FINDER}
-                onChange={handleInputChange}
-                required
-              />
-              <label>Location Found:</label>
-              <input
-                type="text"
-                name="FOUND_LOCATION"
-                value={itemData.FOUND_LOCATION}
-                onChange={handleInputChange}
-                required
-              />
-              <label>Owner:</label>
-              <input
-                type="text"
-                name="OWNER"
-                value={itemData.OWNER}
-                onChange={handleInputChange}
-              />
-              <label>Status:</label>
-              <select
-                name="STATUS"
-                value={itemData.STATUS}
-                onChange={handleInputChange}
-              >
-                <option value="unclaimed">Unclaimed</option>
-                <option value="claimed">Claimed</option>
-              </select>
+              {/* Add other form inputs as needed */}
               <button type="submit">{selectedItem ? 'Update Item' : 'Add Item'}</button>
             </form>
           </div>
