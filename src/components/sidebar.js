@@ -20,7 +20,11 @@ const Sidebar = () => {
   };
 
   const userType = getUserType();
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove the token from localStorage
 
+
+  };
   return (
     <div className="sidebar">
       <img src="log.png" alt="FIRI" className="logo" />
@@ -61,9 +65,13 @@ const Sidebar = () => {
           </>
         )}
            <div className="logout">
+            
               <NavLink to="/login" activeClassName="active">
+              <button onClick={handleLogout}  >
                 <FaSignOutAlt className="nav-icon" /> Log Out
-              </NavLink>
+                
+                </button>
+                </NavLink>
             </div>
       </nav>
     </div>
