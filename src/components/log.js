@@ -3,7 +3,6 @@ import "../style/log.css";
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
-  const [loading, setLoading] = useState(false); // State for loading animation
 
   const handleFormSwitch = () => {
     setIsLogin(!isLogin);
@@ -63,8 +62,6 @@ function Auth() {
     } catch (err) {
       console.error(err);
       alert("An error occurred during login.");
-    } finally {
-      setLoading(false); // Hide loading animation after response
     }
   };
 
@@ -87,9 +84,8 @@ function Auth() {
           <h1>Sign In</h1>
           <input type="email" name="email" placeholder="Email" required />
           <input type="password" name="password" placeholder="Password" required />
-          <button type="submit" disabled={loading}>
-            {loading ? <img src="loading.gif" alt="Loading..." className="loading-gif" /> : "Sign In"}
-          </button>
+          <a href="#">Forgot Your Password?</a>
+          <button type="submit">Sign In</button>
         </form>
       </div>
 
