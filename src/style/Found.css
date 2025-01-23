@@ -118,7 +118,7 @@
     
     padding: 10px;
     border: 1px solid #d5d2d2;
-    text-align: left;
+    text-align: center;
   
   }
   
@@ -287,6 +287,12 @@
     margin-bottom: 5px;
 }
 
+.modal1 select{
+  font-weight: 500;
+    color: #444444;
+    margin-bottom: 5px;
+}
+
 .modal1 input,
 .modal1 select {
     padding: 12px;
@@ -355,3 +361,21 @@
     width: 100%; /* Ensure it takes full width */
     margin-top: 20px; /* Add some space above the buttons */
 }
+
+/* Highlight required fields with a red border when empty */
+input:required:invalid, select:required:invalid {
+  border-color: red; /* Red border for invalid fields */
+}
+
+/* .required1 {
+  color: red; /* Change the color of the asterisk to red */
+ /* font-weight: bold; /* Make the asterisk bold */
+/*}
+
+input:required, select:required {
+  border: 2px solid red; /* Highlight required fields with a red border */
+/*}
+
+input:focus:required, select:focus:required {
+  border-color: darkred; /* Darker border when the field is focused */
+/*} */

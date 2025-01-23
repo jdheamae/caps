@@ -10,17 +10,24 @@ function Additem() {
   const [showViewMoreModal, setShowViewMoreModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [requests, setRequests] = useState([ // Sample data for requests
-    { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: ' Hubert Blaine Wolfeschlege', status: 'Unclaimed' },
-    { finder: 'Juan Dela Cruz', itemname: 'Wallet', type: 'Personal', confind:'Jean Dhea Mae Ampong', date: '2024-12-01', location: 'Library', time: '10:00 AM', owner: 'Maria Dela Cruz ', status: 'Unclaimed' },
-
-   
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed' },
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
+    {date: '2024-12-01',timeReturned: '11:00 AM',itemName: 'Wallet',itemType: 'Personal',description: 'Black leather wallet with cards and cash',picture: '',location: 'Library',timeFound: '10:00 AM',finder: 'Juan Dela Cruz',finderNum: '12345',owner: 'Maria Dela Cruz',status: 'Unclaimed'},
   ]);
 
   // Fetch all data from the database when the component mounts
     useEffect(() => {
       const fetchRequests = async () => {
         try {
-          const response = await fetch("http://localhost:5000/complaints");
+          const response = await fetch("http://localhost:5000/additem");
           const data = await response.json();
           setRequests(data);
         } catch (error) {
@@ -31,37 +38,43 @@ function Additem() {
       fetchRequests();
     }, []);
 
-    const handleComplaintSubmit = async (e) => {
+    const handleFoundSubmit = async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
-      const newComplaint = {
-        complainer: formData.get("complainer"),
-        itemname: formData.get("itemname"),
-        type: formData.get("type"),
-        contact: formData.get("contact"),
+      const newFound = {
         date: formData.get("date"),
+        timeReturned: formData.get("timeReturned"),
+        itemName: formData.get("itemName"),
+        itemType: formData.get("itemType"),
+        description: formData.get("description"),
+        picture: formData.get("picture"),
         location: formData.get("location"),
-        time: formData.get("time"),
+        timeFound: formData.get("timeFound"),
+        finder: formData.get("finder"),
+        finderNum: formData.get("finderNum"),
+        owner: formData.get("owner"),
+        status: formData.get("status"),
+        
       };
   
       try {
-        const response = await fetch("http://localhost:5000/complaints", {
+        const response = await fetch("http://localhost:5000/additem", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newComplaint),
+          body: JSON.stringify(newFound),
         });
   
         if (response.ok) {
           const result = await response.json();
           alert(result.message);
-          setRequests([...requests, { ...newComplaint, status: "Not Found", finder: "N/A" }]);
+          setRequests([...requests, { ...newFound, status: "Not Found", finder: "N/A" }]);
           setShowModal(false);
         } else {
-          alert("Error filing complaint. Please try again.");
+          alert("Error adding Found Item. Please try again.");
         }
       } catch (error) {
-        console.error("Error filing complaint:", error);
-        alert("Error filing complaint. Please try again.");
+        console.error("Error adding Found Item:", error);
+        alert("Error Adding Found item. Please try again.");
       }
     };
   
@@ -83,7 +96,7 @@ function Additem() {
 
   // Filtered requests based on the filterText
   const filteredRequests = requests.filter((item) =>
-    item.itemname.toLowerCase().includes(filterText.toLowerCase())
+    item.itemName.toLowerCase().includes(filterText.toLowerCase())
   );
 
   return (
@@ -122,14 +135,17 @@ function Additem() {
             <table className="ffound-items-table1">
               <thead>
                 <tr>
-                  <th>Finder</th>
+                  <th>Date</th>
+                  <th>Time Returned</th>
                   <th>Item Name</th>
                   <th>Item Type</th>
-                  <th>Contact of the Finder</th>
-                  <th>Date Found</th>
+                  <th>Description</th>
+                  <th>Picture</th>
                   <th>Location</th>
-                  <th>Time</th>
-                  <th>Owner Name</th>
+                  <th>Time Found</th>
+                  <th>Finder</th>
+                  <th>Finder #</th>
+                  <th>Owner</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -137,15 +153,19 @@ function Additem() {
               <tbody>
                 {filteredRequests.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.finder}</td>
-                    <td>{item.itemname}</td>
-                    <td>{item.type}</td>
-                    <td>{item.confind}</td>
                     <td>{item.date}</td>
+                    <td>{item.timeReturned}</td>
+                    <td>{item.itemName}</td>
+                    <td>{item.itemType}</td>
+                    <td>{item.description}</td>
+                    <td>{item.picture}</td>
                     <td>{item.location}</td>
-                    <td>{item.time}</td>
+                    <td>{item.timeFound}</td>
+                    <td>{item.finder}</td>
+                    <td>{item.finderNum}</td>
                     <td>{item.owner}</td>
-                    <td>{item.status  }</td>
+                    <td>{item.status}</td>
+                    
                     <td>
                       <button className="view-btn1" onClick={() => handleViewMore(item)}>View More </button>
                     </td>
@@ -168,7 +188,7 @@ function Additem() {
         <div className="modal-overlay1">
           <div className="modal1">
             <h2>File a Found Item</h2>
-            <form onSubmit={handleComplaintSubmit}>
+            <form onSubmit={handleFoundSubmit}>
               <div className="form-group">
                 <label htmlFor="dateFound">Date Found</label>
                 <input type="date" id="dateFound" name="dateFound"  required />
@@ -181,7 +201,15 @@ function Additem() {
 
               <div className="form-group">
                 <label htmlFor="itemType">Item Type</label>
-                <input type="text" id="itemType" name="itemType" placeholder="Item Type"  required />
+                <select id="itemType" name="itemType" required>
+                  <option value="">Select Item Type</option>
+                  <option value="personal">Personal</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="bags">Bags</option>
+                  <option value="stationery">Stationery</option>
+                  <option value="miscellanous">Miscellanous</option>
+                </select>
               </div>
 
               <div className="form-group">
@@ -216,7 +244,11 @@ function Additem() {
 
               <div className="form-group">
                 <label htmlFor="stat">Status</label>
-                <input type="text" id="stat" name="stat" placeholder="Status"  required />
+                <select>
+                  <option value="">Select Status</option>
+                  <option value="claimed">Claimed</option>
+                  <option value="unclaimed">Unclaimed</option>
+                </select>
               </div>
 
               <div className="form-group">
@@ -250,15 +282,17 @@ function Additem() {
         <div className="modal-overlay1">
           <div className="modal1">
             <h2>Details</h2>
-            <p><strong>Complainer:</strong> {selectedRequest.complainer}</p>
-            <p><strong>Item Name:</strong> {selectedRequest.itemname}</p>
-            <p><strong>Type:</strong> {selectedRequest.type}</p>
-            <p><strong>Contact:</strong> {selectedRequest.contact}</p>
-            <p><strong>Date:</strong> {selectedRequest.date}</p>
+            <p><strong>date:</strong> {selectedRequest.date}</p>
+            <p><strong>Item Name:</strong> {selectedRequest.itemName}</p>
+            <p><strong>item Type:</strong> {selectedRequest.itemType}</p>
+            <p><strong>Description:</strong> {selectedRequest.description}</p>
+            <p><strong>Picture:</strong> {selectedRequest.picture}</p>
             <p><strong>Location:</strong> {selectedRequest.location}</p>
-            <p><strong>Time:</strong> {selectedRequest.time}</p>
-            <p><strong>Status:</strong> {selectedRequest.status}</p>
-            <p><strong>Finder:</strong> {selectedRequest.finder}</p>
+            <p><strong>Time Found:</strong> {selectedRequest.timeFound}</p>
+            <p><strong>finder:</strong> {selectedRequest.finder}</p>
+            <p><strong>finder #:</strong> {selectedRequest.finderNum}</p>
+            <p><strong>owner:</strong> {selectedRequest.owner}</p>
+            <p><strong>status:</strong> {selectedRequest.status}</p>
             <button className="update-btn1" onClick={handleUpdate}>Update</button>
             <button className="delete-btn1" onClick={handleDelete}>Delete</button>
             <button className="cancel-btn1" onClick={() => setShowViewMoreModal(false)}>Close</button>
