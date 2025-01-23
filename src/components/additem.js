@@ -193,7 +193,70 @@ function Additem() {
                 onChange={handleInputChange}
                 required
               />
-              {/* Add other form inputs as needed */}
+             <label>Description:</label>
+              <input
+                type="text"
+                name="DESCRIPTION"
+                value={itemData.DESCRIPTION}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Date Found:</label>
+              <input
+                type="date"
+                name="DATE_FOUND"
+                value={itemData.DATE_FOUND}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Time Returned:</label>
+              <input
+                type="time"
+                name="TIME_RETURNED"
+                value={itemData.TIME_RETURNED}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Finder:</label>
+              <input
+                type="text"
+                name="FINDER"
+                value={itemData.FINDER}
+                onChange={handleInputChange}
+              
+              />
+              <label>Contact of Finder:</label>
+              <input
+                type="text"
+                name="CONTACT_OF_THE_FINDER"
+                value={itemData.CONTACT_OF_THE_FINDER}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Location Found:</label>
+              <input
+                type="text"
+                name="FOUND_LOCATION"
+                value={itemData.FOUND_LOCATION}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Owner:</label>
+              <input
+                type="text"
+                name="OWNER"
+                value={itemData.OWNER}
+                onChange={handleInputChange}
+              />
+              <label>Status:</label>
+              <select
+                name="STATUS"
+                value={itemData.STATUS}
+                onChange={handleInputChange}
+              >
+                <option value="unclaimed">Unclaimed</option>
+                <option value="claimed">Claimed</option>
+              </select>
               <button type="submit">{selectedItem ? 'Update Item' : 'Add Item'}</button>
             </form>
           </div>
