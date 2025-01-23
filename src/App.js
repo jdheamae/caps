@@ -27,10 +27,25 @@ const isAdmin = () => {
   }
   return false;
 };
-
-// PrivateRoute component for protected routes
-const PrivateRoute = ({ children }) => {
+const isStudent=()=>{
+  const token = localStorage.getItem('token'); // Assuming the JWT token is stored in localStorage
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.email !== 'admin@gmail.com'; // Check if the usertype is 'admin'
+    } catch (err) {
+      console.error('Invalid token:', err);
+      return false;
+    }
+  }
+  return false;
+}
+// AdminRoute component for protected routes
+const AdminRoute = ({ children }) => {
   return isAdmin() ? children : <Navigate to="/login" />;
+};
+const StudentRoute = ({ children }) => {
+  return isStudent() ? children : <Navigate to="/login" />;
 };
 
 function App() {
@@ -42,18 +57,18 @@ function App() {
           <Route
             path="/complaints"
             element={
-              <PrivateRoute>
+              <AdminRoute>
                 <Manage />
-              </PrivateRoute>
+              </AdminRoute>
             }
           />
     
           <Route
             path="/manaRequests"
             element={
-              <PrivateRoute>
+              <AdminRoute>
                 <ManageRequest />
-              </PrivateRoute>
+              </AdminRoute>
             }
           />
    
@@ -61,31 +76,46 @@ function App() {
           <Route
             path="/database"
             element={
-              <PrivateRoute>
+              <AdminRoute>
                 <ReportItem />
-              </PrivateRoute>
+              </AdminRoute>
             }
           />
 
 <Route
             path="/dashboard"
             element={
-              <PrivateRoute>
+              <AdminRoute>
                 <Dashboard />
-              </PrivateRoute>
+              </AdminRoute>
             }
           />
     <Route
             path="/additem"
             element={
-              <PrivateRoute>
+              <AdminRoute>
                 <Additem />
-              </PrivateRoute>
+              </AdminRoute>
             }
           />
-      <Route path="/bulletinboard"  element={<Bulletin/>  }/>
-      <Route path="/userComplaints"  element={<UserComplaint/>  }/>
-          
+           <Route
+            path="/bulletinboard" 
+            element={
+              <StudentRoute>
+                <Bulletin />
+              </StudentRoute>
+            }
+          />
+    
+    
+      <Route
+           path="/userComplaints"
+            element={
+              <StudentRoute>
+                <UserComplaint />
+              </StudentRoute>
+            }
+          />
           <Route path="/login" element={<Auth />} />
         </Routes>
         

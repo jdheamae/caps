@@ -21,10 +21,10 @@ const Sidebar = () => {
 
   const userType = getUserType();
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove the token from localStorage
-
-
+    console.log("Logging out...");
+    localStorage.clear(); // Remove the token from localStorage
   };
+  
   return (
     <div className="sidebar">
       <img src="log.png" alt="FIRI" className="logo" placeholder="blur"/>

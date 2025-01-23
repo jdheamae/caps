@@ -39,7 +39,7 @@ function Auth() {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-
+    
     try {
       const response = await fetch("http://10.10.83.224:5000/login", {
         method: "POST",
