@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
+import { IoMdArrowDropdown } from "react-icons/io";
+import { FaPlus } from "react-icons/fa6";
 import Sidebar from "./sidebar";
 import '../style/Found.css';
 import axios from 'axios';
@@ -105,6 +107,22 @@ function Additem() {
     currentPage * itemsPerPage
   );
 
+
+  // New function to handle status change
+  const handleStatusChange = async (item) => {
+    const newStatus = item.STATUS === 'unclaimed' ? 'claimed' : 'unclaimed'; // Toggle status
+    try {
+      await axios.put(`http://10.10.83.224:5000/items/${item._id}`, { ...item, STATUS: newStatus });
+      setRequests((prevRequests) =>
+        prevRequests.map((req) =>
+          req._id === item._id ? { ...req, STATUS: newStatus } : req
+        )
+      );
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  };
+
   return (
     <div className="home-container">
       <Sidebar />
@@ -165,9 +183,10 @@ function Additem() {
                     <td>{item.FOUND_LOCATION}</td>
                     <td>{item.TIME_RETURNED}</td>
                     <td>{item.OWNER}</td>
-                    <td>{item.STATUS}</td>
+                    <td><button  className={`status-btn1 ${item.STATUS && typeof item.STATUS === 'string' && item.STATUS.toLowerCase() === 'unclaimed' ? 'unclaimed' : 'claimed'}`} 
+    onClick={() => handleStatusChange(item)}>{item.STATUS || 'Unclaimed'}<IoMdArrowDropdown className='arrow1'/></button></td>
                     <td>
-                      <button className="view-btn1" onClick={() => openModal(item)}>View More</button>
+                      <button className="view-btn1" onClick={() => openModal(item)}><FaPlus /> View More</button>
                     </td>
                   </tr>
                 ))}
@@ -220,7 +239,7 @@ function Additem() {
 
         <div className="form-group">
           <label htmlFor="description">Description</label>
-          <input
+          <textarea
             type="text"
             id="description"
             name="DESCRIPTION"
@@ -228,7 +247,7 @@ function Additem() {
             value={itemData.DESCRIPTION}
             onChange={handleInputChange}
             required
-          />
+          ></textarea>
         </div>
 
         <div className="form-group">

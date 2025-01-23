@@ -146,14 +146,16 @@
     background-color: #4CAF50;
     color: white;
     padding: 5px 12px;
-    font-size: 12px;
+    font-size: 15px;
     margin: 0 2px; /* Adds horizontal spacing between buttons */
     border: none;
+    width:115px;
     cursor: pointer;
     border-radius: 3px;
     margin-left: 20px;
-    border-radius: 20px;
+    border-radius: 6px;
   }
+
 
   .view-btn1:hover{
     background-color: #55cf59;
@@ -313,8 +315,16 @@
     margin-bottom: 5px;
 }
 
+.modal1 textarea{
+  font-weight: 500;
+    color: #444444;
+    margin-bottom: 5px;
+    height: 50px;
+}
+
 .modal1 input,
-.modal1 select {
+.modal1 select,
+.modal1 textarea {
     padding: 12px;
     font-size: 1rem;
     border: 1px solid #cccccc;
@@ -323,7 +333,8 @@
 }
 
 .modal1 input:focus,
-.modal1 select:focus {
+.modal1 select:focus,
+.modal1 textarea:focus {
     border-color: #3c6abe;
     outline: none;
     box-shadow: 0 0 5px rgb(60, 106, 190);
@@ -400,17 +411,42 @@
     gap: 10px; /* Space between buttons */
 }
 
+.status-btn1{
+  color: white;
+  padding: 5px 12px;
+  font-size: 12px;
+  margin: 0 2px; /* Adds horizontal spacing between buttons */
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  width: 115px;
+  border-radius: 20px;
+  margin-left: 20px;
+  
+}
 
+.status-btn1.unclaimed {
+  background-color: red; /* Red for unclaimed */
+}
 
-/* .required1 {
-  color: red; /* Change the color of the asterisk to red */
- /* font-weight: bold; /* Make the asterisk bold */
-/*}
+.status-btn1.claimed {
+  background-color: #4CAF50; /* Green for claimed */
+}
 
-input:required, select:required {
-  border: 2px solid red; /* Highlight required fields with a red border */
-/*}
+.status-btn1.Unclaimed {
+  background-color: red; /* Red for unclaimed */
+}
 
-input:focus:required, select:focus:required {
-  border-color: darkred; /* Darker border when the field is focused */
-/*} */
+.status-btn1.Claimed {
+  background-color: #4CAF50; /* Green for claimed */
+}
+
+.status-btn1:hover{
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
+}
+
+.arrow1 {
+  width: 14px; /* Adjust icon size for better proportion with the input */
+  height: 14px; /* Maintain square aspect ratio */
+}
