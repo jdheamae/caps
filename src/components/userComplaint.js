@@ -129,7 +129,7 @@ function UserComplaint() {
   };
   const fetchRequests = async () => {
     try {
-      const response = await fetch("http://localhost:5000/complaints");
+      const response = await fetch("http://10.10.83.224:5000/usercomplaints");
       const data = await response.json();
       setRequests(data);
     } catch (error) {

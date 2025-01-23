@@ -146,22 +146,24 @@ app.put("/complaints/:id", async (req, res) => {
 
 
 // Route to delete a complaint
+// Route to delete a complaint
 app.delete("/complaints/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const complaint = await Complaint.findById(id);
+    // Find and delete the complaint by its ID
+    const deletedComplaint = await Complaint.findByIdAndDelete(id);
 
-    if (!complaint) {
+    if (!deletedComplaint) {
       return res.status(404).json({ message: "Complaint not found" });
     }
 
-    await complaint.remove();
-    res.json({ message: "Complaint deleted successfully" });
+    res.status(200).json({ message: "Complaint deleted successfully", deletedComplaint });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: "Failed to delete complaint" });
   }
 });
+
 
 app.post('/items', async (req, res) => {
   const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS } = req.body;
@@ -250,6 +252,40 @@ app.post("/usercomplaints", async (req, res) => {
   } catch (error) {
     console.error("Error saving complaint to MongoDB:", error);
     res.status(500).json({ error: "Error filing complaint" });
+  }
+});
+app.put("/usercomplaints/:id", async (req, res) => {
+  const { id } = req.params;
+  const { complainer, itemname, type, contact, date, location, time, status, finder ,description} = req.body;
+
+  try {
+    // Find the complaint by ID
+    const complaint = await Complaint.findById(id);
+
+    if (!complaint) {
+      return res.status(404).json({ message: "Complaint not found" });
+    }
+
+    // Update the complaint's fields with the new data if provided
+    complaint.complainer = complainer || complaint.complainer;
+    complaint.itemname = itemname || complaint.itemname;
+    complaint.type = type || complaint.type;
+    complaint.contact = contact || complaint.contact;
+    complaint.date = date || complaint.date;
+    complaint.location = location || complaint.location;
+    complaint.time = time || complaint.time;
+    complaint.status = status || complaint.status;
+    complaint.finder = finder || complaint.finder;
+    complaint.description=description||complaint.description;
+
+    // Save the updated complaint
+    await complaint.save();
+
+    // Return a response with the updated complaint
+    res.json({ message: "Complaint updated successfully", complaint });
+  } catch (error) {
+    // Handle any errors during the update process
+    res.status(500).json({ message: error.message });
   }
 });
 app.get("/usercomplaints:id", async (req, res) => {

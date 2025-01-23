@@ -69,13 +69,37 @@ function Manage() {
     setSelectedRequest(request);
     setShowViewMoreModal(true);
   };
-
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this request?")) {
-      setRequests(requests.filter((req) => req !== selectedRequest));
-      setShowViewMoreModal(false);
+      // Optimistically remove the complaint from the state
+      const updatedRequests = requests.filter((req) => req._id !== selectedRequest._id);
+      setRequests(updatedRequests);
+  
+      try {
+        const response = await fetch(
+          `http://10.10.83.224:5000/complaints/${selectedRequest._id}`,
+          { method: "DELETE" }
+        );
+  
+        if (response.ok) {
+          const result = await response.json();
+          alert(result.message || "Complaint successfully deleted.");
+          setShowViewMoreModal(false); // Close modal after successful deletion
+        } else {
+          // Roll back the change in case of failure
+          setRequests([...updatedRequests, selectedRequest]);
+          alert("Failed to delete the complaint. Please try again.");
+        }
+      } catch (error) {
+        // Roll back the change in case of failure
+        setRequests([...updatedRequests, selectedRequest]);
+        console.error("Error deleting complaint:", error);
+        alert("An error occurred while deleting the complaint. Please try again.");
+      }
     }
   };
+  
+  
 
   const handleUpdate = () => {
     setShowUpdateModal(true);  // Show the update modal when the "Update" button is clicked

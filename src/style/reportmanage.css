@@ -64,7 +64,7 @@
 
   
   .found-items-table {
-    width: 100%; /* Adjust the width as needed, e.g., 80%, 70%, or any fixed width like 800px */
+    width: 50%; /* Adjust the width as needed, e.g., 80%, 70%, or any fixed width like 800px */
     margin: 8px;
     border-collapse: collapse;
     font-size: 14px;
