@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaSearch, FaFilter, FaUser, FaSignOutAlt } from 'react-icons/fa';
-import '../style/managebulletin.css';
+import { FaSearch, FaFilter } from 'react-icons/fa';
+import '../style/bulletinboard.css';
 import '../style/reportmanage.css';
 import Sidebar from "./sidebar";
 import axios from 'axios';
 
+import { jwtDecode } from 'jwt-decode';
 function Bulletin() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
@@ -13,6 +13,13 @@ function Bulletin() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const [modalData, setModalData] = useState({
+    name: '',
+    description: '',
+    contactNumber: '',
+    id: '',
+  });
 
   const [itemData, setItemData] = useState({
     ITEM: '',
@@ -40,6 +47,45 @@ function Bulletin() {
     }
   };
 
+  // Handle modal data changes
+  const handleModalChange = (e) => {
+    const { name, value } = e.target;
+    setModalData((prev) => ({ ...prev, [name]: value }));
+  };
+// Handle modal submission
+const handleModalSubmit = async () => {
+  console.log('Modal data submitted:', modalData);
+  const token = localStorage.getItem('token'); // Replace 'token' with your actual token key
+  
+  if (!token) {
+    console.error('No token found');
+    return;
+  }
+  // Assuming the user ID is stored in localStorage after user login
+  const decodedToken = jwtDecode(token);
+  const userId = decodedToken.id;
+  try {
+    // Send a POST request to save the request
+    
+    const response = await axios.post('http://10.10.83.224:5000/retrieval-request', {
+      name: modalData.name,
+      description: modalData.description,
+      contactNumber: modalData.contactNumber,
+      id: modalData.id,
+      itemId: selectedItem._id, // Assuming you're passing the selected item ID
+      userId: userId, // Include userId in the request
+    });
+
+    console.log('Response:', response.data);
+    // Close the modal after successful submission
+    setShowModal(false);
+  } catch (error) {
+    console.error('Error submitting the form:', error);
+  }
+};
+
+
+
   // Filtered requests based on the filterText
   const filteredRequests = requests.filter((item) => {
     return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
@@ -65,9 +111,7 @@ function Bulletin() {
       <div className="content">
         <div className="manage-bulletin">
           <div className="breadcrumb">Manage Lost and Found {'>'} Manage Found Items</div>
-          <div className="top-right-buttons">
-           
-          </div>
+          <div className="top-right-buttons"></div>
           <div className="search-bar">
             <input
               type="text"
@@ -82,24 +126,29 @@ function Bulletin() {
             <table className="found-items-table">
               <thead>
                 <tr>
-             
                   <th>Item Name</th>
-        
                   <th>Date Found</th>
                   <th>Location</th>
-             
-                 <th>Actions</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {displayedRequests.map((item) => (
                   <tr key={item._id}>
-            
                     <td>{item.ITEM}</td>
-                
                     <td>{item.DATE_FOUND}</td>
                     <td>{item.FOUND_LOCATION}</td>
-                    <button className="view-btn" >View More</button>
+                    <td>
+                      <button
+                        className="bulletinview-btn"
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setShowModal(true);
+                        }}
+                      >
+                        Request Retrieval
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -121,7 +170,65 @@ function Bulletin() {
           </div>
         </div>
       </div>
-      </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="bulletinmodal-overlay">
+          <div className="bulletinmodal">
+            <h3>Request Retrieval</h3>
+            <form>
+              <label>
+                Name:
+                <input
+                  type="text"
+                  name="name"
+                  value={modalData.name}
+                  onChange={handleModalChange}
+                  required
+                />
+              </label>
+              <label>
+                Description:
+                <textarea
+                  name="description"
+                  value={modalData.description}
+                  onChange={handleModalChange}
+                  required
+                ></textarea>
+              </label>
+              <label>
+                Contact Number:
+                <input
+                  type="text"
+                  name="contactNumber"
+                  value={modalData.contactNumber}
+                  onChange={handleModalChange}
+                  required
+                />
+              </label>
+              <label>
+                ID:
+                <input
+                  type="text"
+                  name="id"
+                  value={modalData.id}
+                  onChange={handleModalChange}
+                  required
+                />
+              </label>
+              <div className="bulletinmodal-buttons">
+                <button type="button" onClick={handleModalSubmit}>
+                  Submit
+                </button>
+                <button type="button" onClick={() => setShowModal(false)}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

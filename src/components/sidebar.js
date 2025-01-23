@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom"; // Use NavLink for active class
 import { jwtDecode } from 'jwt-decode';
 import { FaHome, FaBox, FaQrcode, FaFileAlt, FaUserCheck, FaUser, FaSignOutAlt, FaChartLine } from "react-icons/fa";
 import "../style/sidebar.css"; // Optional: for styling the sidebar
-
+//import Image from 'next/image'
 const Sidebar = () => {
   const getUserType = () => {
     const token = localStorage.getItem("token"); // Replace with your token storage method
@@ -27,7 +27,7 @@ const Sidebar = () => {
   };
   return (
     <div className="sidebar">
-      <img src="log.png" alt="FIRI" className="logo" />
+      <img src="log.png" alt="FIRI" className="logo" placeholder="blur"/>
       <nav className="nav-menu">
         {userType !== "admin@gmail.com" && (
           <>
@@ -51,10 +51,10 @@ const Sidebar = () => {
               <FaChartLine className="nav-icon" /> Dashboard
             </NavLink>
             <NavLink to="/complaints" activeClassName="active">
-              <FaBox className="nav-icon" /> Lost Complaint
+              <FaBox className="nav-icon" /> Lost Complaint done
             </NavLink>
             <NavLink to="/additem" activeClassName="active">
-              <FaQrcode className="nav-icon" /> Found Items
+              <FaQrcode className="nav-icon" /> Found Items done
             </NavLink>
             <NavLink to="/database" activeClassName="active">
               <FaFileAlt className="nav-icon" /> Database

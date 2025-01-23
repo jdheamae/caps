@@ -6,6 +6,7 @@ const User = require("./src/models/User");
 const Item = require('./src/models/Item'); // Import the Item model
 const jwt = require('jsonwebtoken');
 const Complaint = require('./src/models/Complaint'); // Import the Complaint model
+const RetrievalRequestSchema =require('./src/models/RetrievalRequest');
 
 const app = express();
 const PORT = 5000;
@@ -296,6 +297,34 @@ app.get("/usercomplaints:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+app.post('/retrieval-request', async (req, res) => {
+  const { name, description, contactNumber, id, itemId, userId } = req.body;
+
+  try {
+    // Create a new retrieval request with the userId included
+    const newRequest = new RetrievalRequestSchema({
+      name,
+      description,
+      contactNumber,
+      id,
+      itemId,
+      userId, // Store the userId here
+    });
+
+    await newRequest.save();
+
+    // Respond back with the saved request
+    res.status(201).json({
+      message: 'Retrieval request successfully saved.',
+      request: newRequest,
+    });
+  } catch (error) {
+    console.error('Error saving retrieval request:', error);
+    res.status(500).json({ message: 'Failed to save request.' });
+  }
+});
+
+
 // Start server
 app.listen(PORT, () => {
   console.log(`deyamemyidol}`);
