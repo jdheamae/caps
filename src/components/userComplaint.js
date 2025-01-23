@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import Sidebar from "./sidebar";
-import "../style/mana.css";
+import "../style/managebulletin.css";
 
 function UserComplaint() {
   const [filterText, setFilterText] = useState("");

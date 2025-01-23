@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaBullhorn, FaQrcode, FaFileAlt, FaUserCheck, FaSearch, FaFilter, FaUser, FaSignOutAlt } from 'react-icons/fa';
-import '../style/mana.css';
+import '../style/managebulletin.css';
 import Sidebar from "./sidebar";
 
 function Bulletin() {

@@ -7,7 +7,8 @@ import axios from 'axios'; // For making HTTP requests
 function Additem() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
-  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [itemData, setItemData] = useState({
     ITEM: '',
     DESCRIPTION: '',
@@ -21,18 +22,19 @@ function Additem() {
     STATUS: 'unclaimed'
   });
 
-  // Fetching items from the backend when the component loads
+  // Fetching items from the backend
   useEffect(() => {
-    async function fetchItems() {
-      try {
-        const response = await axios.get('http://10.10.83.224:5000/items'); // Adjusted to localhost
-        setRequests(response.data);
-      } catch (error) {
-        console.error('Error fetching items:', error);
-      }
-    }
     fetchItems();
   }, []);
+
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get('http://10.10.83.224:5000/items');
+      setRequests(response.data);
+    } catch (error) {
+      console.error('Error fetching items:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,71 +44,98 @@ function Additem() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Make POST request to add the found item
-      const response = await axios.post('http://10.10.83.224:5000/items', itemData); // Adjusted to localhost
-      console.log('Item added:', response.data);
-      setShowModal(false); // Close the modal
-      // Optionally, update the list of items if needed
-      setRequests([...requests, response.data]); // Add the newly added item to the list
+      if (selectedItem) {
+        // Update item
+        const response = await axios.put(`http://10.10.83.224:5000/items/${selectedItem._id}`, itemData);
+        console.log('Item updated:', response.data);
+      } else {
+        // Create new item
+        const response = await axios.post('http://10.10.83.224:5000/items', itemData);
+        console.log('Item added:', response.data);
+        setRequests([...requests, response.data]);
+      }
+      setShowModal(false);
+      fetchItems(); // Refresh the list
     } catch (error) {
-      console.error('Error adding item:', error);
+      console.error('Error submitting form:', error);
     }
   };
 
-  // Filter requests based on the filter text
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://10.10.83.224:5000/items/${id}`);
+      console.log('Item deleted');
+      fetchItems(); // Refresh the list
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
+  const openModal = (item = null) => {
+    setSelectedItem(item);
+    setItemData(
+      item || {
+        ITEM: '',
+        DESCRIPTION: '',
+        DATE_FOUND: '',
+        TIME_RETURNED: '',
+        FINDER: '',
+        CONTACT_OF_THE_FINDER: '',
+        FOUND_LOCATION: '',
+        OWNER: '',
+        DATE_CLAIMED: '',
+        STATUS: 'unclaimed'
+      }
+    );
+    setShowModal(true);
+  };
+
   const filteredRequests = requests.filter((item) => {
-    // Ensure the ITEM field exists and is a string before using toLowerCase()
     return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
   });
 
   return (
     <div className="home-container">
       <Sidebar />
-
       <header className="header">
         <h2>FIRI LOGO</h2>
       </header>
-
       <div className="content">
         <div className="manage-bulletin">
           <div className="breadcrumb">Manage Lost and Found {'>'} Manage Found Items</div>
-
-          {/* Buttons at the top-right */}
           <div className="top-right-buttons">
-            <button className="add-item-btn" onClick={() => setShowModal(true)}>+ Add Found Item</button>
+            <button className="add-item-btn" onClick={() => openModal()}>+ Add Found Item</button>
             <button className="register-qr-btn">Register QR Code</button>
           </div>
-
           <div className="search-bar">
             <input
               type="text"
               placeholder="Search"
               value={filterText}
-              onChange={(e) => setFilterText(e.target.value)} // Update filterText state
+              onChange={(e) => setFilterText(e.target.value)}
             />
             <FaSearch className="search-icon" />
             <FaFilter className="filter-icon" />
           </div>
-
           {filteredRequests.length > 0 ? (
             <table className="found-items-table">
               <thead>
                 <tr>
                   <th>Finder</th>
                   <th>Item Name</th>
-                  <th>Item Type</th>
-                  <th>Contact of the Finder</th>
+                  <th>Description</th>
+                  <th>Contact</th>
                   <th>Date Found</th>
                   <th>Location</th>
                   <th>Time</th>
-                  <th>Owner Name</th>
+                  <th>Owner</th>
                   <th>Status</th>
-                  <th>Action</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredRequests.map((item, index) => (
-                  <tr key={index}>
+                {filteredRequests.map((item) => (
+                  <tr key={item._id}>
                     <td>{item.FINDER}</td>
                     <td>{item.ITEM}</td>
                     <td>{item.DESCRIPTION}</td>
@@ -117,7 +146,9 @@ function Additem() {
                     <td>{item.OWNER}</td>
                     <td>{item.STATUS}</td>
                     <td>
-                      <button className="view-btn">View More</button>
+                      <button className="view-btn" onClick={() => openModal(item)}>View More</button>
+                      <button className="edit-btn" onClick={() => openModal(item)}>Edit</button>
+                      <button className="delete-btn" onClick={() => handleDelete(item._id)}>Delete</button>
                     </td>
                   </tr>
                 ))}
@@ -127,19 +158,12 @@ function Additem() {
             <div className="no-data">No matching requests found</div>
           )}
         </div>
-
-        <div className="pagination">
-          <button className="page-nav">&lt; Previous</button>
-          <button className="page-nav">Next &gt;</button>
-        </div>
       </div>
-
-      {/* Modal for Adding Found Item */}
       {showModal && (
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => setShowModal(false)}>&times;</span>
-            <h3>Add Found Item</h3>
+            <h3>{selectedItem ? 'Edit Item' : 'Add Found Item'}</h3>
             <form onSubmit={handleFormSubmit}>
               <label>Item Name:</label>
               <input
@@ -179,7 +203,7 @@ function Additem() {
                 name="FINDER"
                 value={itemData.FINDER}
                 onChange={handleInputChange}
-                required
+              
               />
               <label>Contact of Finder:</label>
               <input
@@ -203,7 +227,6 @@ function Additem() {
                 name="OWNER"
                 value={itemData.OWNER}
                 onChange={handleInputChange}
-                required
               />
               <label>Status:</label>
               <select
@@ -214,7 +237,7 @@ function Additem() {
                 <option value="unclaimed">Unclaimed</option>
                 <option value="claimed">Claimed</option>
               </select>
-              <button type="submit">Add Item</button>
+              <button type="submit">{selectedItem ? 'Update Item' : 'Add Item'}</button>
             </form>
           </div>
         </div>
