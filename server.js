@@ -284,7 +284,7 @@ app.delete('/items/:id', async (req, res) => {
 
 //--------------------adding complaints for student users-----------------------------------
 app.post("/usercomplaints", async (req, res) => {
-  const { complainer, itemname, type, contact, date, location, time,description } = req.body;
+  const { complainer, itemname, type, contact, date, location, time, description, userId } = req.body;
 
   try {
     const newComplaint = new Complaint({
@@ -298,6 +298,7 @@ app.post("/usercomplaints", async (req, res) => {
       status: "Not Found",
       finder: "N/A",
       description,
+      userId, // Add userId here
     });
 
     await newComplaint.save();
@@ -307,51 +308,74 @@ app.post("/usercomplaints", async (req, res) => {
     res.status(500).json({ error: "Error filing complaint" });
   }
 });
-//------------------------------updating complaints for student users-----------------------------------
-app.put("/usercomplaints/:id", async (req, res) => {
-  const { id } = req.params;
-  const { complainer, itemname, type, contact, date, location, time, status, finder ,description} = req.body;
+
+//------------------------------delete complaints for student userss------------------------------
+app.delete("/usercomplaints/:id", async (req, res) => {
+  const complaintId = req.params.id;
 
   try {
-    // Find the complaint by ID
-    const complaint = await Complaint.findById(id);
+    // Attempt to find and delete the complaint by its ID
+    const deletedComplaint = await Complaint.findByIdAndDelete(complaintId);
 
-    if (!complaint) {
+    if (!deletedComplaint) {
       return res.status(404).json({ message: "Complaint not found" });
     }
 
-    // Update the complaint's fields with the new data if provided
-    complaint.complainer = complainer || complaint.complainer;
-    complaint.itemname = itemname || complaint.itemname;
-    complaint.type = type || complaint.type;
-    complaint.contact = contact || complaint.contact;
-    complaint.date = date || complaint.date;
-    complaint.location = location || complaint.location;
-    complaint.time = time || complaint.time;
-    complaint.status = status || complaint.status;
-    complaint.finder = finder || complaint.finder;
-    complaint.description=description||complaint.description;
-
-    // Save the updated complaint
-    await complaint.save();
-
-    // Return a response with the updated complaint
-    res.json({ message: "Complaint updated successfully", complaint });
+    res.status(200).json({ message: "Complaint deleted successfully" });
   } catch (error) {
-    // Handle any errors during the update process
-    res.status(500).json({ message: error.message });
+    console.error("Error deleting complaint:", error);
+    res.status(500).json({ error: "Error deleting complaint" });
   }
 });
 
-//-----------------------printing complaints for student users------------------------------------------------------------------------
-app.get("/usercomplaints:id", async (req, res) => {
+//------------------------------updating complaints for student users-----------------------------------
+app.put("/usercomplaints/:id", async (req, res) => {
+  const complaintId = req.params.id;
+  const { complainer, itemname, type, contact, date, location, time, description, userId } = req.body;
+
   try {
-    const complaints = await Complaint.find();
+    const updatedComplaint = await Complaint.findByIdAndUpdate(
+      complaintId, 
+      {
+        complainer,
+        itemname,
+        type,
+        contact,
+        date,
+        location,
+        time,
+        description,
+        userId, // userId is updated as well
+        status: "Not Found",  // Default status can be kept or updated based on your logic
+        finder: "N/A", // Default finder value, this can also be updated
+      },
+      { new: true } // This option ensures the updated document is returned
+    );
+
+    if (!updatedComplaint) {
+      return res.status(404).json({ message: "Complaint not found" });
+    }
+
+    res.status(200).json({ message: "Complaint updated successfully", complaint: updatedComplaint });
+  } catch (error) {
+    console.error("Error updating complaint:", error);
+    res.status(500).json({ error: "Error updating complaint" });
+  }
+});
+//-----------------------printing complaints for student users------------------------------------------------------------------------
+app.get("/usercomplaints/:id", async (req, res) => {
+  try {
+    // Use the userId from the URL parameter to find the specific complaints
+    const complaints = await Complaint.find({ userId: req.params.id });
+
+    // Return the complaints in the response
     res.json(complaints);
   } catch (error) {
+    // If an error occurs, send a 500 status with the error message
     res.status(500).json({ message: error.message });
   }
 });
+
 //----------------------------------------------user requesting for retrieval------------------------------------------------------------------------------
 app.post('/retrieval-request', async (req, res) => {
   const { name, description, contactNumber, id, itemId, userId } = req.body;
@@ -363,7 +387,8 @@ app.post('/retrieval-request', async (req, res) => {
       description,
       contactNumber,
       id,
-
+      itemId,
+      userId
     });
 
     await newRequest.save();

@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import Sidebar from "./sidebar";
 import "../style/managebulletin.css";
+import { jwtDecode } from 'jwt-decode';
 
 function UserComplaint() {
   const [filterText, setFilterText] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showViewMoreModal, setShowViewMoreModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);  // State to manage update modal visibility
+  const [showUpdateModal, setShowUpdateModal] = useState(false);  
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [requests, setRequests] = useState([]); // No initial data here
+  const [requests, setRequests] = useState([]);
 
   // Fetch all data from the database when the component mounts
   useEffect(() => {
@@ -33,6 +34,12 @@ function UserComplaint() {
   const handleComplaintSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+
+    // Decode the JWT token to extract the userId
+    const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
+  const decodedToken = jwtDecode(token);
+  const userId = decodedToken.id;
+
     const newComplaint = {
       complainer: formData.get("complainer"),
       itemname: formData.get("itemname"),
@@ -40,8 +47,10 @@ function UserComplaint() {
       contact: formData.get("contact"),
       date: formData.get("date"),
       location: formData.get("location"),
+      
       time: formData.get("time"),
-      description:formData.get("description"),
+      description: formData.get("description"),
+      userId: userId, // Include the userId here
     };
 
     try {
@@ -70,16 +79,41 @@ function UserComplaint() {
     setShowViewMoreModal(true);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this request?")) {
-      setRequests(requests.filter((req) => req !== selectedRequest));
-      setShowViewMoreModal(false);
+      // Optimistically remove the complaint from the state
+      const updatedRequests = requests.filter((req) => req._id !== selectedRequest._id);
+      setRequests(updatedRequests);
+  
+      try {
+        const response = await fetch(
+          `http://10.10.83.224:5000/usercomplaints/${selectedRequest._id}`,
+          { method: "DELETE" }
+        );
+  
+        if (response.ok) {
+          const result = await response.json();
+          alert(result.message || "Complaint successfully deleted.");
+          setShowViewMoreModal(false); // Close modal after successful deletion
+        } else {
+          // Roll back the change in case of failure
+          setRequests([...updatedRequests, selectedRequest]);
+          alert("Failed to delete the complaint. Please try again.");
+        }
+      } catch (error) {
+        // Roll back the change in case of failure
+        setRequests([...updatedRequests, selectedRequest]);
+        console.error("Error deleting complaint:", error);
+        alert("An error occurred while deleting the complaint. Please try again.");
+      }
     }
   };
+  
 
   const handleUpdate = () => {
-    setShowUpdateModal(true);  // Show the update modal when the "Update" button is clicked
+    setShowUpdateModal(true);
   };
+
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -106,18 +140,15 @@ function UserComplaint() {
         const result = await response.json();
         alert(result.message);
 
-        // Update the requests state with the updated request
         setRequests(
           requests.map((req) =>
             req._id === selectedRequest._id ? updatedRequest : req
           )
         );
 
-        // Close the update modal and view more modal
         setShowUpdateModal(false);
         setShowViewMoreModal(false);
 
-        // Optionally, re-fetch the latest data
         fetchRequests(); // Refresh the data
       } else {
         alert("Error updating complaint. Please try again.");
@@ -127,15 +158,28 @@ function UserComplaint() {
       alert("Error updating complaint. Please try again.");
     }
   };
+
   const fetchRequests = async () => {
     try {
-      const response = await fetch("http://10.10.83.224:5000/usercomplaints");
+      // Get token and decode it to get userId
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token); // Decode the token
+      const userId = decodedToken.id; // Extract userId
+  
+      // Fetch user-specific complaints using userId
+      const response = await fetch(`http://10.10.83.224:5000/usercomplaints/${userId}`);
       const data = await response.json();
-      setRequests(data);
+      setRequests(data); // Set the fetched data to the state
     } catch (error) {
       console.error("Error fetching requests:", error);
     }
   };
+  
+  // Fetch requests on component mount
+  useEffect(() => {
+    fetchRequests(); // Call fetchRequests on component mount
+  }, []);
+  
 
 
   return (

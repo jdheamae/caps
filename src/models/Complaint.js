@@ -12,7 +12,7 @@ const complaintSchema = new mongoose.Schema({
 description: { type: String, required: true },
   status: { type: String, default: "Not Found" },
   finder: { type: String, default: "N/A" },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Store the userId
+ userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Store the userId
 });
 
 module.exports = mongoose.model("Complaint", complaintSchema);
