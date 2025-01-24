@@ -1,13 +1,18 @@
 /* Container and Layout */
-.manage-bulletinadminbulletin {
-  margin: 30px;
-  display: flex
-;
-  align-items: flex-start;
-  flex-grow: 1;
-  padding: 50px;
-  margin-left: 240px;
+.manage-bulletin {
+
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: flex-start; /* Align to the top */
+  flex-grow: 1; /* Take up the remaining space */
+  padding: 20px;
+  margin-left: 200px; /* Space to avoid overlap with the sidebar */
+  background-size: cover; /* Cover the entire area */
+  background-position: center; /* Center the image */
+  
   flex-direction: column;
+
+  box-sizing: border-box; 
 }
 
 /* Items Table */
@@ -29,7 +34,17 @@
 .items-table th {
   background-color: #868080;
 }
-
+.modaladminbulletin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* Spacing between rows */
 .items-table tr {
   margin-bottom: 8px; /* Add margin between rows */
@@ -71,29 +86,4 @@
 .page-nav:hover {
   background-color: #8B0000;
   color: #fff;
-}
-.breadcrumbadminbulletin {
-  margin: 10px 8px 0 10px;
-  font-size: 20px;
-  color: #000000;
-  font-weight: bold;
-}
-.top-right-buttonsadminbulletin {
-  display: flex
-;
-  justify-content: flex-end;
-  margin-left: 76%;
-}
-.search-baradminbulletin {
-  display: flex
-;
-  align-items: center;
-  max-width: 60%;
-  margin: -40px 0px 10px 8px;
-}
-.ffound-items-tableadminbulletin {
-  width: 100%;
-  margin: 8px;
-  border-collapse: collapse;
-  font-size: 14px;
 }
