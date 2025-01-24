@@ -27,7 +27,7 @@ function Manage() {
   }, []);
 
   const filteredRequests = requests.filter((item) =>
-    item.itemname.toLowerCase().includes(filterText.toLowerCase())
+    item.complainer.toLowerCase().includes(filterText.toLowerCase())
   );
 
   const handleComplaintSubmit = async (e) => {
@@ -117,6 +117,8 @@ function Manage() {
       date: formData.get("date"),
       location: formData.get("location"),
       time: formData.get("time"),
+      status: formData.get("status"),
+      finder: formData.get("finder"),
     };
 
     try {
@@ -346,12 +348,28 @@ function Manage() {
                 defaultValue={selectedRequest.location}
                 required
               />
-              <input
+                  <input
                 type="time"
                 name="time"
                 defaultValue={selectedRequest.time}
                 required
               />
+              <select
+  name="status"
+  defaultValue={selectedRequest.status}
+  required
+>
+  <option value="found">Found</option>
+  <option value="not-found">Not Found</option>
+</select>
+
+                 <input
+                type="text"
+                name="finder"
+                defaultValue={selectedRequest.finder}
+                required
+              />
+             
               <button type="submit" className="submit-btn">Update</button>
               <button
                 type="button"

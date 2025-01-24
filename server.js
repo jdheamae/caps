@@ -25,7 +25,7 @@ mongoose
 // Routes
 
 const SECRET_KEY = "polgary";
-
+//--------------------signing upppp----------------------------------------
 app.post("/signup", async (req, res) => {
     const { name, email, password,usertype } = req.body;
   
@@ -45,6 +45,7 @@ app.post("/signup", async (req, res) => {
       res.status(500).json({ error: "Error registering user" });
     }
   });
+  //----------------------------------login ----------------------------------------------------
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -61,6 +62,9 @@ app.post("/login", async (req, res) => {
   
     res.json({ token });
   });
+
+
+  //idk what is this ahahahah-------------------------------------------
 app.post("/register", async (req, res) => {
     const { name, email, contact, college, id } = req.body;
   
@@ -73,7 +77,9 @@ app.post("/register", async (req, res) => {
       res.status(500).json({ message: "Error saving item" });
     }
   });
-// Route to file a complaint
+
+
+//-----------------------------------creating complaints------------------------------------------
 app.post("/complaints", async (req, res) => {
   const { complainer, itemname, type, contact, date, location, time,description } = req.body;
 
@@ -98,7 +104,7 @@ app.post("/complaints", async (req, res) => {
     res.status(500).json({ error: "Error filing complaint" });
   }
 });
-// Route to get all complaints
+// -----------------------------------------print complaints-----------------------------------------
 app.get("/complaints", async (req, res) => {
   try {
     const complaints = await Complaint.find();
@@ -109,7 +115,7 @@ app.get("/complaints", async (req, res) => {
 });
 
 
-// Route to update a complaint
+// ------------------------------------updating complaints------------------------------------------------------------
 app.put("/complaints/:id", async (req, res) => {
   const { id } = req.params;
   const { complainer, itemname, type, contact, date, location, time, status, finder ,description} = req.body;
@@ -146,8 +152,8 @@ app.put("/complaints/:id", async (req, res) => {
 });
 
 
-// Route to delete a complaint
-// Route to delete a complaint
+//-------------------deleting complaints----------------------------------------------
+
 app.delete("/complaints/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -165,7 +171,7 @@ app.delete("/complaints/:id", async (req, res) => {
   }
 });
 
-
+//------------------------------addding found items for admin database--------------------------------------------------
 app.post('/items', async (req, res) => {
   const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS } = req.body;
 
@@ -196,7 +202,38 @@ app.post('/items', async (req, res) => {
   }
 });
 
-// Route to get all items
+//---------------------------------------adding found items for user database to be able to display--------------------
+app.post('/useritems', async (req, res) => {
+  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS } = req.body;
+
+  try {
+    
+    // Create a new Item object
+    const newItem = new Item({
+      ITEM,
+      DESCRIPTION,
+      DATE_FOUND,
+      TIME_RETURNED, // Store the complete Date object
+      FINDER,
+      CONTACT_OF_THE_FINDER,
+      FOUND_LOCATION,
+      OWNER,
+      DATE_CLAIMED,
+      STATUS,
+    });
+
+    // Save the new item to the database
+    await newItem.save();
+
+    // Respond with the created item
+    res.status(201).json({ message: 'Item added successfully', item: newItem });
+  } catch (error) {
+    console.error('Error adding item to MongoDB:', error);
+    res.status(500).json({ message: 'Error adding item', error });
+  }
+});
+
+//-----------------------------------printing found items for admin user----------------------------------
 app.get('/items', async (req, res) => {
   try {
     const items = await Item.find();
@@ -206,8 +243,23 @@ app.get('/items', async (req, res) => {
     res.status(500).json({ message: 'Error fetching items', error });
   }
 });
+//-----------------printing found items for student users------------------------------
+app.get('/useritems', async (req, res) => {
+  try {
+    // Fetch items with status 'unclaimed'
+    const items = await Item.find({
+      STATUS: { $regex: 'unclaimed', $options: 'i' }  // Case-insensitive match for 'unclaimed'
+    });
+    console.log("Fetched Items:", items);  // Log the fetched items to the console
 
-// Update an item
+    res.json(items);
+  } catch (error) {
+    console.error('Error fetching items:', error);
+    res.status(500).json({ message: 'Error fetching items', error });
+  }
+});
+
+//-----------------------------updating found items for admin user------------------------------------
 app.put('/items/:id', async (req, res) => {
   try {
     const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -218,7 +270,7 @@ app.put('/items/:id', async (req, res) => {
   }
 });
 
-// Delete an item
+// -----------------------------------deleting found items for admin user------------------------------------
 app.delete('/items/:id', async (req, res) => {
   try {
     const deletedItem = await Item.findByIdAndDelete(req.params.id);
@@ -230,7 +282,7 @@ app.delete('/items/:id', async (req, res) => {
 });
 
 
-//user side add complain
+//--------------------adding complaints for student users-----------------------------------
 app.post("/usercomplaints", async (req, res) => {
   const { complainer, itemname, type, contact, date, location, time,description } = req.body;
 
@@ -255,6 +307,7 @@ app.post("/usercomplaints", async (req, res) => {
     res.status(500).json({ error: "Error filing complaint" });
   }
 });
+//------------------------------updating complaints for student users-----------------------------------
 app.put("/usercomplaints/:id", async (req, res) => {
   const { id } = req.params;
   const { complainer, itemname, type, contact, date, location, time, status, finder ,description} = req.body;
@@ -289,6 +342,8 @@ app.put("/usercomplaints/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+//-----------------------printing complaints for student users------------------------------------------------------------------------
 app.get("/usercomplaints:id", async (req, res) => {
   try {
     const complaints = await Complaint.find();
@@ -297,6 +352,7 @@ app.get("/usercomplaints:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+//----------------------------------------------user requesting for retrieval------------------------------------------------------------------------------
 app.post('/retrieval-request', async (req, res) => {
   const { name, description, contactNumber, id, itemId, userId } = req.body;
 
@@ -307,8 +363,7 @@ app.post('/retrieval-request', async (req, res) => {
       description,
       contactNumber,
       id,
-      itemId,
-      userId, // Store the userId here
+
     });
 
     await newRequest.save();
@@ -323,7 +378,16 @@ app.post('/retrieval-request', async (req, res) => {
     res.status(500).json({ message: 'Failed to save request.' });
   }
 });
-
+//-----------------------------admin fetching the retrievals---------------------------------------------------------------------
+app.get('/retrieval-requests', async (req, res) => {
+  try {
+    const requests = await RetrievalRequestSchema.find({}, 'name description contactNumber id'); // Only select these fields
+    res.json({ requests });
+  } catch (error) {
+    console.error('Error fetching retrieval requests:', error);
+    res.status(500).json({ message: 'Error fetching retrieval requests', error });
+  }
+});
 
 // Start server
 app.listen(PORT, () => {

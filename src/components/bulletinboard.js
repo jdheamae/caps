@@ -40,7 +40,7 @@ function Bulletin() {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get('http://10.10.83.224:5000/items');
+      const response = await axios.get('http://10.10.83.224:5000/useritems');
       setRequests(response.data);
     } catch (error) {
       console.error('Error fetching items:', error);

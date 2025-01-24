@@ -99,7 +99,7 @@
   background-position: center; /* Center the image */
   color: #fff;
   flex-direction: column;
-
+  height: 100px;
   height: 100vh; /* Full viewport height */
   overflow: hidden; /* Prevent scrolling */
   box-sizing: border-box; /* Ensure padding doesn't affect height */
