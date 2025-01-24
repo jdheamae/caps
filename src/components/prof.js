@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Sidebar from './sidebar'; // Assuming you have a Sidebar component
 import '../style/prof.css'; // Create a new CSS file for specific profile styles
 
