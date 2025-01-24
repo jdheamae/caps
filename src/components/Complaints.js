@@ -247,7 +247,7 @@ function Manage() {
       {/* Modal for filing complaints */}
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal">
+          <div className="modal69">
             <h2>File a Complaint</h2>
             <form onSubmit={handleComplaintSubmit}>
               <input type="text" name="complainer" placeholder="Your Name" required />
@@ -274,7 +274,7 @@ function Manage() {
       {/* View More Modal */}
       {showViewMoreModal && selectedRequest && (
         <div className="modal-overlay">
-          <div className="modal">
+          <div className="modal69">
             <h2>Details</h2>
             <p><strong>Complainer:</strong> {selectedRequest.complainer}</p>
             <p><strong>Item Name:</strong> {selectedRequest.itemname}</p>
@@ -297,7 +297,7 @@ function Manage() {
       {/* Update Modal */}
       {showUpdateModal && selectedRequest && (
         <div className="modal-overlay">
-          <div className="modal">
+          <div className="modal69">
             <h2>Update Complaint</h2>
             <form onSubmit={handleUpdateSubmit}>
               <input
