@@ -4,7 +4,7 @@ import '../style/prof.css'; // Create a new CSS file for specific profile styles
 
 function Profile() {
   return (
-    <div className="home-container">
+    <div className="home-container1">
       <Sidebar />
 
       {/* Fixed Header */}

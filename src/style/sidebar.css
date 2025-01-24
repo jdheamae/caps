@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: column;
     align-items: center; /* Center items horizontally */
-
+    transition: transform 0.3s ease-in-out;
   }
   
   /* Logo Styles */
@@ -80,4 +80,20 @@
   border-right: 4px solid #ffd324;  /* Right side border to indicate active page */
 }
 
-  
+/* Responsive Sidebar for Mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    background-color: #177d14;
+    color: #fff;
+    width: 200px; /* Fixed width for the sidebar */
+    padding: 20px;
+    position: fixed; /* Keep the sidebar fixed */
+    height: 100%; /* Full height */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1;
+  }
+
+}  
