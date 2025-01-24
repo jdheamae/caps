@@ -1,11 +1,10 @@
 /* General layout */
   
   .breadcrumb1 {
-    margin: 10px 8px 0 10px;
+    margin: 10px 8px 0 -20px;
     font-size: 20px;
     color: #000000;
     font-weight: bold;
-
   }
   .manage-bulletin1 {
     margin: 30px;
@@ -25,10 +24,11 @@
   .search-bar1 {
     display: flex; /* Enable flexbox for alignment */
     align-items: center; /* Vertically center items */
-    left: 325px;
+    left: -20px;
     top: 50px;
+    
      /*height: 300px; Full viewport height to center vertically */
-    gap: 10px; /* Add spacing between the input and icons */
+    /* gap: 10px; Add spacing between the input and icons */
     position: relative;
     
   }
@@ -39,12 +39,12 @@
   }
   
   .search-bar1 input {
-    width: 600px;
+    width: 435px;
     height: 35px; /* Increased height for better visual balance with icons */
     padding: 10px;
     border-radius: 5px;
     font-size: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #6d6c6c;
     border-radius: 35px;
   }
 
@@ -72,13 +72,22 @@
   .search-icon1:hover, .filter-icon1:hover{
     transform: translateY(-3px);
   }
+
+  .search-input {
+    padding: 10px 40px 10px 40px; /* Add padding to the input */
+    width: 100%; /* Full width */
+    border: 1px solid #ccc; /* Border style */
+    border-radius: 4px; /* Rounded corners */
+    background: url('search.1024x1024.png') no-repeat 400px center; /* Background image */
+    background-size: 30px; /* Size of the icon */
+  }
   
 
 /* Top-Right Buttons Container */
 .top-right-buttons1 {
   display: flex; /* Enable flexbox for alignment */
   align-items: center; /* Vertically center items */
-  left: -620px;
+  left: -480px;
   top: 100px;
   gap: 10px; /* Add spacing between the input and icons */
   position: relative;
@@ -107,37 +116,51 @@
 
   
   .ffound-items-table1 {
-    width: 100%;
-    margin: -10px 0 40px; /* Center the table horizontally */
+    
+    width: 100%; /* Full width of the parent */
+    max-width: 1200px; /* Set a max width for the table */
+    margin: 190px auto 0px; /* Center the table horizontally */
     padding: 0; /* Remove any default padding */
     border-collapse: collapse;
     font-size: 14px;
-    position: relative;
-    top: 200px; /* Move the table to the top */
-  }
-  
-  
-  .ffound-items-table1 th, .ffound-items-table1 td {
-    
+    table-layout: fixed; /* Use fixed table layout to respect column widths */
+}
+
+.ffound-items-table1 th, .ffound-items-table1 td {
     padding: 10px;
     border: 1px solid #d5d2d2;
     text-align: center;
-  
-  }
-  
-  .ffound-items-table1 th {
+    overflow: hidden; /* Prevent overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    white-space: normal; /* Allow text to wrap */
+    vertical-align: top; /* Align text to the top */
+    overflow-wrap: break-word; /* Allow long words to break */
+}
+
+.ffound-items-table1 th {
     background-color: #ddd;
-    
-  }
-  .ffound-items-table1 tr {
-    margin-bottom: 8px;
-    
-  }
-  .ffound-items-table1 th.action, .ffound-items-table1 td.action {
+}
+
+.ffound-items-table1 tr {
+    height: auto; /* Allow rows to stretch based on content */
+}
+
+.ffound-items-table1 th.action, .ffound-items-table1 td.action {
     width: 50px; /* Adjust width as needed */
     text-align: center; /* Center-align the buttons */
-  }
-  
+}
+
+/* Set specific widths for other columns */
+.ffound-items-table1 th:nth-child(1), .ffound-items-table1 td:nth-child(1) { width: 20%; }
+.ffound-items-table1 th:nth-child(2), .ffound-items-table1 td:nth-child(2) { width: 15%; }
+.ffound-items-table1 th:nth-child(3), .ffound-items-table1 td:nth-child(3) { width: 25%; }
+.ffound-items-table1 th:nth-child(4), .ffound-items-table1 td:nth-child(4) { width: 15%; }
+.ffound-items-table1 th:nth-child(5), .ffound-items-table1 td:nth-child(5) { width: 15%; }
+.ffound-items-table1 th:nth-child(6), .ffound-items-table1 td:nth-child(6) { width: 15%; }
+.ffound-items-table1 th:nth-child(7), .ffound-items-table1 td:nth-child(7) { width: 10%; }
+.ffound-items-table1 th:nth-child(8), .ffound-items-table1 td:nth-child(8) { width: 20%; }
+.ffound-items-table1 th:nth-child(9), .ffound-items-table1 td:nth-child(9) { width: 25%; }
+.ffound-items-table1 th:nth-child(10), .ffound-items-table1 td:nth-child(10) { width: 25%; }
   
   
 
@@ -167,7 +190,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 155px; /* Adjust margin to avoid covering the table */
+    margin-top: 0px; /* Adjust margin to avoid covering the table */
     margin-left: 200px;
     margin-bottom: 50px; /* Add some space below the pagination */
     
@@ -450,3 +473,86 @@ transform: translateY(-1px);
   width: 14px; /* Adjust icon size for better proportion with the input */
   height: 14px; /* Maintain square aspect ratio */
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+  margin-top: 190px;
+  row-gap: 35px; /* Space between grid items */
+  column-gap:85px;
+  padding: 16px; /* Padding around the grid */
+  width: 100%; /* Ensure the grid takes full width */
+  justify-items: left; /* Center items within their grid cells */
+}
+
+.grid-item {
+  background-color: #f0f0f0; /* Background color for items */
+  padding: 20px; /* Padding inside items */
+  border: 1px solid #ccc; /* Optional: Border for items */
+  border-radius: 4px; /* Rounded corners */
+  text-align: center; /* Center text */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
+  width: 105%; /* Ensure grid items take full width of their cell */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+  margin-top: 190px;
+  margin-left: -37px;
+  row-gap: 35px; /* Space between grid items */
+  column-gap:85px;
+  padding: 16px; /* Padding around the grid */
+  width: 100%; /* Ensure the grid takes full width */
+  justify-items: left; /* Center items within their grid cells */
+}
+
+.grid-item {
+  overflow-y: auto;  /* Enable vertical scrolling */
+  word-wrap: break-word;
+  background-color: #f0f0f0; /* Background color for items */
+  padding: 20px; /* Padding inside items */
+  border: 1px solid #ccc; /* Optional: Border for items */
+  border-radius: 4px; /* Rounded corners */
+  text-align: center; /* Center text */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
+  width: 105%; /* Ensure grid items take full width of their cell */
+}
+
+
+.grid-item h2 {
+  overflow: hidden; /* Hide overflowing content */
+  color: #8B0000;
+  text-align: center; /* Align text to the left */
+  font-weight: bold; /* Make the text bold */
+  margin-bottom:20px ; /* Remove default margin */
+}
+
+.grid-item p {
+  margin-top: 20px;
+  text-align: left; /* Align text to the left */
+  margin: 5px 0; /* Add some vertical spacing */
+  font-weight: normal; /* Normal weight for paragraph text */
+}
+.grid-item span {
+  font-weight: bold; /* Normal weight for paragraph text */
+}
+.view-mode-toggle {
+  background: none; /* No background */
+  border: none; /* No border */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 38px; /* Adjust size of the icon */
+  color: #8B0000; /* Change color as needed */
+  padding: 5px; /* Add some padding */
+  
+  margin-top: 5px;
+  
+}
+
+
+.view-mode-toggle:hover {
+  
+  transform: translateY(-2px);
+  color: #a50303; /* Change color on hover */
+}
+

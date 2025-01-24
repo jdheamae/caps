@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FaTable } from "react-icons/fa6";
+import { IoGridOutline } from "react-icons/io5";
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
@@ -100,15 +102,11 @@ function Additem() {
     setCurrentPage(pageNumber);
   };
 
-  
-
   const displayedRequests = filteredRequests.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-
-  // New function to handle status change
   const handleStatusChange = async (item) => {
     const newStatus = item.STATUS === 'unclaimed' ? 'claimed' : 'unclaimed'; // Toggle status
     try {
@@ -123,6 +121,11 @@ function Additem() {
     }
   };
 
+  const [viewMode, setViewMode] = useState('table'); // Default to 'table' mode
+  const toggleViewMode = () => {
+    setViewMode((prevMode) => (prevMode === 'table' ? 'grid' : 'table'));
+  };
+
   return (
     <div className="home-container">
       <Sidebar />
@@ -133,10 +136,8 @@ function Additem() {
         <div className="manage-bulletin1">
           <div className="breadcrumb1">Manage Lost and Found {'>'} Manage Found Items</div>
           
-          
-          
-          
-          
+
+
           
           <div className="search-bar1">
             <input
@@ -144,19 +145,20 @@ function Additem() {
               placeholder="Search"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
+              className="search-input"
             />
-            <FaSearch className="search-icon1" />
-            <FaFilter className="filter-icon1" />
+            <button onClick={toggleViewMode} className="view-mode-toggle">
+              {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
+            </button>
 
             <div className="top-right-buttons1">
-            <button className="add-item-btn1" onClick={() => openModal()}>+ Add Found Item</button>
-            <button className="register-qr-btn1">Register QR Code</button>
+              <button className="add-item-btn1" onClick={() => openModal()}>+ Add Found Item</button>
+              <button className="register-qr-btn1">Register QR Code</button>
+            </div>
           </div>
 
-            
-          
-          </div>
-          {displayedRequests.length > 0 ? (
+
+          {viewMode === 'table' ? (
             <table className="ffound-items-table1">
               <thead>
                 <tr>
@@ -183,188 +185,214 @@ function Additem() {
                     <td>{item.FOUND_LOCATION}</td>
                     <td>{item.TIME_RETURNED}</td>
                     <td>{item.OWNER}</td>
-                    <td><button  className={`status-btn1 ${item.STATUS && typeof item.STATUS === 'string' && item.STATUS.toLowerCase() === 'unclaimed' ? 'unclaimed' : 'claimed'}`} 
-    onClick={() => handleStatusChange(item)}>{item.STATUS || 'Unclaimed'}<IoMdArrowDropdown className='arrow1'/></button></td>
                     <td>
-                      <button className="view-btn1" onClick={() => openModal(item)}><FaPlus /> View More</button>
+                      <button
+                        className={`status-btn1 ${item.STATUS && typeof item.STATUS === 'string' && item.STATUS.toLowerCase() === 'unclaimed' ? 'unclaimed' : 'claimed'}`}
+                        onClick={() => handleStatusChange(item)}
+                      >
+                        {item.STATUS || 'Unclaimed'}
+                        <IoMdArrowDropdown className='arrow1' />
+                      </button>
+                    </td>
+                    <td>
+                      <button className="view-btn1" onClick={() => openModal(item)}>
+                        <FaPlus /> View More
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           ) : (
-            <div className="no-data1">No matching requests found</div>
+            <div className="grid-container">
+              {displayedRequests.map((item) => (
+                <div className="grid-item" key={item._id}>
+                  <h2>{item.ITEM}</h2>
+                  <p><span>Description: </span>{item.DESCRIPTION}</p>
+                  <p><span>Finder: </span> {item.FINDER}</p>
+                  <p><span>Contact: </span> {item.CONTACT_OF_THE_FINDER}</p>
+                  <p><span>Date Found: </span> {item.DATE_FOUND}</p>
+                  <p><span>Location: </span> {item.FOUND_LOCATION}</p>
+                  <p><span>Time: </span> {item.TIME_RETURNED}</p>
+                  <p><span>Owner: </span> {item.OWNER}</p>
+                  <button
+                    className={`status-btn1 ${item.STATUS && typeof item.STATUS === 'string' && item.STATUS.toLowerCase() === 'unclaimed' ? 'unclaimed' : 'claimed'}`}
+                    onClick={() => handleStatusChange(item)}
+                  >
+                    {item.STATUS || 'Unclaimed'}
+                    <IoMdArrowDropdown className='arrow1' />
+                  </button>
+                  <button className="view-btn1" onClick={() => openModal(item)}>
+                    <FaPlus /> View More
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
         </div>
 
-        {/* Pagination Component */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        handlePageChange={handlePageChange}
-      />
-    
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
       </div>
 
-     {showModal && (
-  <div className="modal-overlay1">
-    <div className="modal1">
-      <h2>{selectedItem ? 'Update Item' : 'File a Found Item'}</h2>
-      <form onSubmit={handleFormSubmit}>
-        <div className="form-group">
-          <label htmlFor="finderName">Finder Name</label>
-          <input
-            type="text"
-            id="finderName"
-            name="FINDER"
-            placeholder="Finder Name"
-            value={itemData.FINDER}
-            onChange={handleInputChange}
-            required
-          />
+      {showModal && (
+        <div className="modal-overlay1">
+          <div className="modal1">
+            <h2>{selectedItem ? 'Update Item' : 'File a Found Item'}</h2>
+            <form onSubmit={handleFormSubmit}>
+              <div className="form-group">
+                <label htmlFor="finderName">Finder Name</label>
+                <input
+                  type="text"
+                  id="finderName"
+                  name="FINDER"
+                  maxLength="100"
+                  placeholder="Finder Name"
+                  value={itemData.FINDER}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="itemName">Item Name</label>
+                <input
+                  type="text"
+                  id="itemName"
+                  name="ITEM"
+                  maxlength="100"
+                  placeholder="Item Name"
+                  value={itemData.ITEM}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  type="text"
+                  id="description"
+                  name="DESCRIPTION"
+                  maxlength="500"
+                  placeholder="Description"
+                  value={itemData.DESCRIPTION}
+                  onChange={handleInputChange}
+                  required
+                ></textarea>
+              </div>
+
+ 
+              <div className="form-group">
+                <label htmlFor="contact">Contact</label>
+                <input
+                  type="text"
+                  id="contact"
+                  name="CONTACT_OF_THE_FINDER"
+                  maxlength="50"
+                  placeholder="Contact Number"
+                  value={itemData.CONTACT_OF_THE_FINDER}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="dateFound">Date Found</label>
+                <input
+                  type="date"
+                  id="dateFound"
+                  name="DATE_FOUND"
+                  value={itemData.DATE_FOUND}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="location">Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="FOUND_LOCATION"
+                  maxlength="200"
+                  placeholder="Location"
+                  value={itemData.FOUND_LOCATION}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="timeReceived">Time Received</label>
+                <input
+                  type="time"
+                  id="timeReceived"
+                  name="TIME_RETURNED"
+                  value={itemData.TIME_RETURNED}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="owner">Owner Name</label>
+                <input
+                  type="text"
+                  id="owner"
+                  name="OWNER"
+                  maxlength="50"
+                  placeholder="May skip if owner is not yet identified"
+                  value={itemData.OWNER}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="status">Status</label>
+                <select
+                  id="status"
+                  name="STATUS"
+                  value={itemData.STATUS}
+                  onChange={handleInputChange}
+                >
+                  <option value="unclaimed">Unclaimed</option>
+                  <option value="claimed">Claimed</option>
+                </select>
+              </div>
+
+              <div className="button-container1">
+                <button type="submit" className="submit-btn1">
+                  {selectedItem ? 'Update' : 'Submit'}
+                </button>
+
+                {selectedItem && (
+                  <button
+                    type="button"
+                    className="delete-btn1"
+                    onClick={() => {
+                      handleDelete(selectedItem._id);
+                      setShowModal(false); // Close the modal after deletion
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="cancel-btn1"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-
-        <div className="form-group">
-          <label htmlFor="itemName">Item Name</label>
-          <input
-            type="text"
-            id="itemName"
-            name="ITEM"
-            placeholder="Item Name"
-            value={itemData.ITEM}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <textarea
-            type="text"
-            id="description"
-            name="DESCRIPTION"
-            placeholder="Description"
-            value={itemData.DESCRIPTION}
-            onChange={handleInputChange}
-            required
-          ></textarea>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="contact">Contact</label>
-          <input
-            type="text"
-            id="contact"
-            name="CONTACT_OF_THE_FINDER"
-            placeholder="Contact Number"
-            value={itemData.CONTACT_OF_THE_FINDER}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="dateFound">Date Found</label>
-          <input
-            type="date"
-            id="dateFound"
-            name="DATE_FOUND"
-            value={itemData.DATE_FOUND}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="location">Location</label>
-          <input
-            type="text"
-            id="location"
-            name="FOUND_LOCATION"
-            placeholder="Location"
-            value={itemData.FOUND_LOCATION}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="timeReceived">Time Received</label>
-          <input
-            type="time"
-            id="timeReceived"
-            name="TIME_RETURNED"
-            value={itemData.TIME_RETURNED}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="owner">Owner Name</label>
-          <input
-            type="text"
-            id="owner"
-            name="OWNER"
-            placeholder="May skip if owner is not yet identified"
-            value={itemData.OWNER}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="status">Status</label>
-          <select
-            id="status"
-            name="STATUS"
-            value={itemData.STATUS}
-            onChange={handleInputChange}
-          >
-            <option value="unclaimed">Unclaimed</option>
-            <option value="claimed">Claimed</option>
-          </select>
-        </div>
-
-        <div className="button-container1">
-
-          
-          
-          <button type="submit" className="submit-btn1">
-            {selectedItem ? 'Update' : 'Submit'}
-          </button>
-
-          {selectedItem && (
-            <button
-              type="button"
-              className="delete-btn1"
-              onClick={() => {
-                handleDelete(selectedItem._id);
-                setShowModal(false); // Close the modal after deletion
-              }}
-            >
-              Delete
-            </button>
-          )}
-          <button
-            type="button"
-            className="cancel-btn1"
-            onClick={() => setShowModal(false)}
-          >
-            Cancel
-          </button>
-          
-        </div>
-      </form>
-    </div>
-  </div>
-)}
-
-
-
-      
-
-      
-      
+      )}
     </div>
   );
 }
