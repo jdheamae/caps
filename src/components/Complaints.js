@@ -173,19 +173,19 @@ function Manage() {
       </header>
 
       <div className="content">
-        <div className="manage-bulletin">
-          <div className="breadcrumb">
+        <div className="manage-bulletinadminbulletin">
+          <div className="breadcrumbadminbulletin">
             Manage Lost And Found {'>'} Manage Reports and Complaints
           </div>
 
-          <div className="top-right-buttons">
+          <div className="top-right-buttonsadminbulletin">
             <button className="add-item-btn" onClick={() => setShowModal(true)}>
               + File Complaints
             </button>
             <button className="register-qr-btn">Register QR Code</button>
           </div>
 
-          <div className="search-bar">
+          <div className="search-baradminbulletin">
             <input
               type="text"
               placeholder="Search"
@@ -197,7 +197,7 @@ function Manage() {
           </div>
 
           {filteredRequests.length > 0 ? (
-            <table className="ffound-items-table">
+            <table className="ffound-items-tableadminbulletin">
               <thead>
                 <tr>
                   <th>Complainer</th>
@@ -247,7 +247,7 @@ function Manage() {
       {/* Modal for filing complaints */}
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal">
+          <div className="modal69">
             <h2>File a Complaint</h2>
             <form onSubmit={handleComplaintSubmit}>
               <input type="text" name="complainer" placeholder="Your Name" required />
@@ -274,7 +274,7 @@ function Manage() {
       {/* View More Modal */}
       {showViewMoreModal && selectedRequest && (
         <div className="modal-overlay">
-          <div className="modal">
+          <div className="modal69">
             <h2>Details</h2>
             <p><strong>Complainer:</strong> {selectedRequest.complainer}</p>
             <p><strong>Item Name:</strong> {selectedRequest.itemname}</p>
@@ -297,7 +297,7 @@ function Manage() {
       {/* Update Modal */}
       {showUpdateModal && selectedRequest && (
         <div className="modal-overlay">
-          <div className="modal">
+          <div className="modal69">
             <h2>Update Complaint</h2>
             <form onSubmit={handleUpdateSubmit}>
               <input

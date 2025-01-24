@@ -1,17 +1,14 @@
 /* Container and Layout */
-.manage-bulletin {
-
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: flex-start; /* Align to the top */
-    flex-grow: 1; /* Take up the remaining space */
-    background-size: cover; /* Cover the entire area */
-    background-position: center; /* Center the image */
-    
-    flex-direction: column;
- 
-    box-sizing: border-box; 
-  }
+.manage-bulletinfinal {
+  margin: 30px;
+  display: flex
+;
+  align-items: flex-start;
+  flex-grow: 1;
+  padding: 50px;
+  margin-left: 240px;
+  flex-direction: column;
+}
   
   /* Items Table */
   .items-table {
@@ -97,3 +94,28 @@
     border-radius: 3px;
     margin-left: 20px;
   }
+  .breadcrumbfinal {
+    margin: 10px 8px 0 10px;
+    font-size: 20px;
+    color: #000000;
+    font-weight: bold;
+}
+.top-right-buttonsfinal {
+  display: flex
+;
+  justify-content: flex-end;
+  margin-left: 76%;
+}
+.search-barfinal {
+  display: flex
+;
+  align-items: center;
+  max-width: 60%;
+  margin: -40px 0px 10px 8px;
+}
+.ffound-items-tablefinal {
+  width: 100%;
+  margin: 8px;
+  border-collapse: collapse;
+  font-size: 14px;
+}

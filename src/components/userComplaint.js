@@ -191,19 +191,19 @@ function UserComplaint() {
       </header>
 
       <div className="content">
-        <div className="manage-bulletin">
-          <div className="breadcrumb">
+        <div className="manage-bulletinfinal">
+          <div className="breadcrumbfinal">
             Manage Lost And Found {'>'} Manage Reports and Complaints
           </div>
 
-          <div className="top-right-buttons">
+          <div className="top-right-buttonsfinal">
             <button className="add-item-btn" onClick={() => setShowModal(true)}>
               + File Complaints
             </button>
             <button className="register-qr-btn">Register QR Code</button>
           </div>
 
-          <div className="search-bar">
+          <div className="search-barfinal">
             <input
               type="text"
               placeholder="Search"
@@ -215,7 +215,7 @@ function UserComplaint() {
           </div>
 
           {filteredRequests.length > 0 ? (
-            <table className="ffound-items-table">
+            <table className="ffound-items-tablefinal">
               <thead>
                 <tr>
                   <th>Complainer</th>
