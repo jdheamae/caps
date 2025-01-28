@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom"; // Use NavLink for active class
 import { jwtDecode } from 'jwt-decode';
-import { FaHome, FaBox, FaQrcode, FaFileAlt, FaUserCheck, FaUser, FaSignOutAlt, FaChartLine } from "react-icons/fa";
+import { FaHome, FaBox, FaQrcode, FaFileAlt, FaUserCheck, FaUser, FaSignOutAlt, FaChartLine, FaBars } from "react-icons/fa";
 import "../style/sidebar.css"; // Optional: for styling the sidebar
-//import Image from 'next/image'
+
 const Sidebar = () => {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+    document.body.classList.toggle("sidebar-open", !isOpen);
+  };
+
   const getUserType = () => {
     const token = localStorage.getItem("token"); // Replace with your token storage method
     if (token) {
@@ -21,61 +29,64 @@ const Sidebar = () => {
 
   const userType = getUserType();
   const handleLogout = () => {
-    console.log("Logging out...");
-    localStorage.clear(); // Remove the token from localStorage
+    localStorage.removeItem("token"); // Remove the token from localStorage
+
+
   };
-  
   return (
-    <div className="sidebar">
-      <img src="log.png" alt="FIRI" className="logo" placeholder="blur"/>
-      <nav className="nav-menu">
-        {userType !== "admin@gmail.com" && (
-          <>
-            <NavLink to="/" activeClassName="active">
-              <FaHome className="nav-icon" /> Home
+    <>
+      {/* Menu Toggle Button */}
+      <button className="menu-toggle" onClick={toggleSidebar}>
+        <FaBars />
+      </button>
+
+      <div className={`sidebar ${isOpen ? "open" : ""}`}>
+        <img src="log.png" alt="FIRI" className="logo" />
+        <nav className="nav-menu">
+          {userType !== "admin@gmail.com" && (
+            <>
+              <NavLink to="/" activeClassName="active">
+                <FaHome className="nav-icon" /> Home
+              </NavLink>
+              <NavLink to="/userComplaints" activeClassName="active">
+                <FaBox className="nav-icon" /> File Report
+              </NavLink>
+              <NavLink to="/bulletinboard" activeClassName="active">
+                <FaChartLine className="nav-icon" /> Bulletin
+              </NavLink>
+              <NavLink to="/prof" activeClassName="active">
+                <FaUser className="nav-icon" /> Profile
+              </NavLink>
+            </>
+          )}
+          {userType === "admin@gmail.com" && (
+            <>
+              <NavLink to="/dashboard" activeClassName="active">
+                <FaChartLine className="nav-icon" /> Dashboard
+              </NavLink>
+              <NavLink to="/complaints" activeClassName="active">
+                <FaBox className="nav-icon" /> Lost Complaint
+              </NavLink>
+              <NavLink to="/additem" activeClassName="active">
+                <FaQrcode className="nav-icon" /> Found Items
+              </NavLink>
+              <NavLink to="/database" activeClassName="active">
+                <FaFileAlt className="nav-icon" /> Database
+              </NavLink>
+              <NavLink to="/manaRequests" activeClassName="active">
+                <FaUserCheck className="nav-icon" /> Manage Request
+              </NavLink>
+            </>
+          )}
+          <div className="logout">
+            <NavLink to="/login" activeClassName="active">
+              <FaSignOutAlt className="nav-icon" /> Log Out
+              <button onClick={handleLogout}></button>
             </NavLink>
-            <NavLink to="/" activeClassName="active">
-              <FaUser className="nav-icon" /> Profile
-            </NavLink>
-            <NavLink to="/userComplaints" activeClassName="active">
-              <FaBox className="nav-icon" /> File Report
-            </NavLink>
-            <NavLink to="/bulletinboard" activeClassName="active">
-              <FaChartLine className="nav-icon" /> Bulletin
-            </NavLink>
-          </>
-        )}
-        {userType === "admin@gmail.com" && (
-          <>
-            <NavLink to="/dashboard" activeClassName="active">
-              <FaChartLine className="nav-icon" /> Dashboard
-            </NavLink>
-            <NavLink to="/complaints" activeClassName="active">
-              <FaBox className="nav-icon" /> Lost Complaint done
-            </NavLink>
-            <NavLink to="/additem" activeClassName="active">
-              <FaQrcode className="nav-icon" /> Found Items done
-            </NavLink>
-           
-            <NavLink to="/manaRequests" activeClassName="active">
-              <FaUserCheck className="nav-icon" /> Manage Request
-            </NavLink>
-            <NavLink to="/database" activeClassName="active">
-              <FaFileAlt className="nav-icon" /> Database
-            </NavLink>
-          </>
-        )}
-           <div className="logout">
-            
-              <NavLink to="/login" activeClassName="active">
-              <button onClick={handleLogout}  >
-                <FaSignOutAlt className="nav-icon" /> Log Out
-                
-                </button>
-                </NavLink>
-            </div>
-      </nav>
-    </div>
+          </div>
+        </nav>
+      </div>
+    </>
   );
 };
 
