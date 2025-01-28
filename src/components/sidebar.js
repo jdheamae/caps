@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom"; // Use NavLink for active class
 import { jwtDecode } from 'jwt-decode';
 import { FaHome, FaBox, FaQrcode, FaFileAlt, FaUserCheck, FaUser, FaSignOutAlt, FaChartLine, FaBars } from "react-icons/fa";
@@ -31,16 +31,33 @@ const Sidebar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token"); // Remove the token from localStorage
 
-
   };
+
+
+  useEffect(() => {
+    const handlePageShow = (event) => {
+      if (event.persisted) {
+        window.scrollTo(0, 0); // Ensure the page resets to the top
+        window.location.reload(); // Force refresh to fix layout issues
+      }
+    };
+  
+    window.addEventListener("pageshow", handlePageShow);
+  
+    return () => {
+      window.removeEventListener("pageshow", handlePageShow);
+    };
+  }, []);
+  
   return (
     <>
-      {/* Menu Toggle Button */}
-      <button className="menu-toggle" onClick={toggleSidebar}>
+                  {/* Menu Toggle Button */}
+                  <button className="menu-toggle" onClick={toggleSidebar}>
         <FaBars />
       </button>
 
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
+
         <img src="log.png" alt="FIRI" className="logo" />
         <nav className="nav-menu">
           {userType !== "admin@gmail.com" && (
