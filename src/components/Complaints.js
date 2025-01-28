@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import Sidebar from "./sidebar";
-import "../style/Lost.css";
+import "../style/manag.css";
 
 function Manage() {
   const [filterText, setFilterText] = useState("");
@@ -173,12 +173,12 @@ function Manage() {
       </header>
 
       <div className="content">
-        <div className="manage-bulletin2">
-          <div className="breadcrumb2">
+        <div className="manage-bulletinadminbulletin">
+          <div className="breadcrumbadminbulletin">
             Manage Lost And Found {'>'} Manage Reports and Complaints
           </div>
 
-          <div className="top-right-buttons2">
+          <div className="top-right-buttonsadminbulletin">
             <button className="add-item-btn" onClick={() => setShowModal(true)}>
               + File Complaints
             </button>
