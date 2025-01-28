@@ -80,20 +80,47 @@
   border-right: 4px solid #ffd324;  /* Right side border to indicate active page */
 }
 
-/* Responsive Sidebar for Mobile */
+/* Mobile Responsive */
 @media (max-width: 768px) {
-  .sidebar {
-    background-color: #177d14;
-    color: #fff;
-    width: 200px; /* Fixed width for the sidebar */
-    padding: 20px;
-    position: fixed; /* Keep the sidebar fixed */
-    height: 100%; /* Full height */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center items horizontally */
-    transition: transform 0.3s ease-in-out;
-    z-index: 1;
+  /* Menu Toggle Button */
+  .menu-toggle {
+      display: block;
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      background-color: transparent; /* Removes background */
+      color: white;
+      border: none;
+      font-size: 24px;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      z-index: 1100;
   }
 
-}  
+  .logo{
+    z-index: 200;
+    margin-left: 0px;
+    margin-top: 20px;
+  }
+  /* Sidebar for Mobile */
+  .sidebar {
+      width: 200px;
+      left: -240px; /* Initially hidden */
+      position: fixed;
+      top: 0;
+      height: 100%;
+      transition: left 0.3s ease-in-out;
+  
+  }
+
+  /* Sidebar Open on Mobile */
+  .sidebar.open {
+      left: 0;
+  }
+
+  /* Prevent scrolling when sidebar is open */
+  body.sidebar-open {
+      overflow: hidden;
+  }
+}

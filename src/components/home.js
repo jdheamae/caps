@@ -16,8 +16,9 @@ function Home() {
       
       <div className="main-content">
         <div className="cont">
-          <h1>Find It</h1>
-          <h1>Retrieve It</h1>
+          <h1>Find It, 
+            <br></br>
+            Retrieve It</h1>
           <p>
             Step into a world where the art of Interior Design is meticulously crafted to bring together timeless elegance and cutting-edge modern innovation. Allowing you to transform your living spaces into the epitome of luxury and sophistication.
           </p>
@@ -47,7 +48,30 @@ function Home() {
             <p>Missing Items</p>
           </div>
         </div>
+
       </div>
+
+      <div className="services-section">
+                <h2 className="services1">Our Services</h2>
+                <div className="services-grid">
+                <div className="service-card" >
+                    <img src="" alt="Building" className="icon" />
+                    <h3>Personal Loan</h3>
+                    <p>Personal loans provide borrowers with flexibility in how they use the funds...</p>
+
+                </div>
+                    <div className="service-card">
+                        <img src="" alt="Building" className="icon"/>       
+                        <h3>Educational Loan</h3>
+                        <p>Educational Loan Services provide financial assistance to students for various purposes...</p>
+                    </div>
+                    <div className="service-card">
+                        <img src="" alt="Building" className="icon"/>   
+                        <h3>Pensioner Loan</h3>
+                        <p>Pensioner Loan Services provide financing options for older adults...</p>
+                    </div>
+                </div>
+     </div>   
     </div>
   );
 }
