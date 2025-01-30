@@ -13,6 +13,7 @@ import Auth from './components/log';
 import Additem from './components/additem';
 import UserComplaint from './components/userComplaint';
 import Bulletin from './components/bulletinboard';
+import RetrievalRequests from './components/retrievalrequest';
 // Helper function to check if the user is an admin
 const isAdmin = () => {
   const token = localStorage.getItem('token'); // Assuming the JWT token is stored in localStorage
@@ -113,6 +114,14 @@ function App() {
             element={
               <StudentRoute>
                 <UserComplaint />
+              </StudentRoute>
+            }
+          />
+            <Route
+           path="/retrievalRequests"
+            element={
+              <StudentRoute>
+                <RetrievalRequests />
               </StudentRoute>
             }
           />

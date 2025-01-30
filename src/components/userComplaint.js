@@ -13,19 +13,7 @@ function UserComplaint() {
   const [requests, setRequests] = useState([]);
 
   // Fetch all data from the database when the component mounts
-  useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const response = await fetch("http://10.10.83.224:5000/usercomplaints:id");
-        const data = await response.json();
-        setRequests(data);
-      } catch (error) {
-        console.error("Error fetching requests:", error);
-      }
-    };
-    
-    fetchRequests();
-  }, []);
+
 
   const filteredRequests = requests.filter((item) =>
     item.itemname.toLowerCase().includes(filterText.toLowerCase())

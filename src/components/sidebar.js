@@ -1,4 +1,8 @@
 import React from "react";
+import { VscReport } from "react-icons/vsc";
+import { FaClipboardList } from "react-icons/fa6";
+import { IoMdAnalytics } from "react-icons/io";
+import { TbMessageReportFilled } from "react-icons/tb";
 import { NavLink } from "react-router-dom"; // Use NavLink for active class
 import { jwtDecode } from 'jwt-decode';
 import { FaHome, FaBox, FaQrcode, FaFileAlt, FaUserCheck, FaUser, FaSignOutAlt, FaChartLine } from "react-icons/fa";
@@ -38,10 +42,13 @@ const Sidebar = () => {
               <FaUser className="nav-icon" /> Profile
             </NavLink>
             <NavLink to="/userComplaints" activeClassName="active">
-              <FaBox className="nav-icon" /> File Report
+            <TbMessageReportFilled className="nav-icon" /> File Report
             </NavLink>
             <NavLink to="/bulletinboard" activeClassName="active">
-              <FaChartLine className="nav-icon" /> Bulletin
+            <FaClipboardList className="nav-icon" /> Bulletin
+            </NavLink>
+            <NavLink to="/retrievalRequests" activeClassName="active">
+            <IoMdAnalytics   className="nav-icon" /> Retrieval Status
             </NavLink>
           </>
         )}

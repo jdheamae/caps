@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import '../style/bulletinboard.css';
 import '../style/reportmanage.css';
-import Sidebar from "./sidebar";
+import Sidebar from './sidebar';
 import axios from 'axios';
-
 import { jwtDecode } from 'jwt-decode';
+
 function Bulletin() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
@@ -47,46 +47,40 @@ function Bulletin() {
     }
   };
 
-  // Handle modal data changes
   const handleModalChange = (e) => {
     const { name, value } = e.target;
     setModalData((prev) => ({ ...prev, [name]: value }));
   };
-// Handle modal submission
-const handleModalSubmit = async () => {
-  console.log('Modal data submitted:', modalData);
-  const token = localStorage.getItem('token'); // Replace 'token' with your actual token key
-  
-  if (!token) {
-    console.error('No token found');
-    return;
-  }
-  // Assuming the user ID is stored in localStorage after user login
-  const decodedToken = jwtDecode(token);
-  const userId = decodedToken.id;
-  try {
-    // Send a POST request to save the request
+
+  const handleModalSubmit = async () => {
+   
+
+    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+
+    const decodedToken = jwtDecode(token); // Decode the token
+    const userId = decodedToken.id; // Extract userId from the decoded token
+
+    try {
+      const response = await axios.post('http://10.10.83.224:5000/retrieval-request', {
+        name: modalData.name,
+        description: modalData.description,
+        contactNumber: modalData.contactNumber,
+        id: modalData.id,
+        itemId: selectedItem._id, // Include the selected item ID
+        userId: userId, // Include the user ID
+      });
+
     
-    const response = await axios.post('http://10.10.83.224:5000/retrieval-request', {
-      name: modalData.name,
-      description: modalData.description,
-      contactNumber: modalData.contactNumber,
-      id: modalData.id,
-      itemId: selectedItem._id, // Assuming you're passing the selected item ID
-      userId: userId, // Include userId in the request
-    });
+      setShowModal(false); // Close the modal after submission
+    } catch (error) {
+      console.error('Error submitting the form:', error);
+    }
+  };
 
-    console.log('Response:', response.data);
-    // Close the modal after successful submission
-    setShowModal(false);
-  } catch (error) {
-    console.error('Error submitting the form:', error);
-  }
-};
-
-
-
-  // Filtered requests based on the filterText
   const filteredRequests = requests.filter((item) => {
     return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
   });

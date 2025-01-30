@@ -8,6 +8,7 @@ const RetrievalRequestSchema = new mongoose.Schema({
   itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Store the userId
   createdAt: { type: Date, default: Date.now },
+  status: { type: String, default: "Pending" },
 });
 
 const RetrievalRequest = mongoose.model('RetrievalRequest', RetrievalRequestSchema);
