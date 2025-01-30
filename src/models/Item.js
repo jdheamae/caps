@@ -11,6 +11,7 @@ const itemSchema = new mongoose.Schema({
   OWNER: String,
   DATE_CLAIMED: String,
   STATUS: String,
+  IMAGE_URL:String,
 });
 
 const Item = mongoose.model('Item', itemSchema);

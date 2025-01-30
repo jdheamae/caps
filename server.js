@@ -173,7 +173,7 @@ app.delete("/complaints/:id", async (req, res) => {
 
 //------------------------------addding found items for admin database--------------------------------------------------
 app.post('/items', async (req, res) => {
-  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS } = req.body;
+  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS ,  IMAGE_URL} = req.body;
 
   try {
     
@@ -189,6 +189,7 @@ app.post('/items', async (req, res) => {
       OWNER,
       DATE_CLAIMED,
       STATUS,
+      IMAGE_URL,
     });
 
     // Save the new item to the database
@@ -204,7 +205,7 @@ app.post('/items', async (req, res) => {
 
 //---------------------------------------adding found items for user database to be able to display--------------------
 app.post('/useritems', async (req, res) => {
-  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS } = req.body;
+  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS ,IMAGE_URL} = req.body;
 
   try {
     
@@ -220,6 +221,7 @@ app.post('/useritems', async (req, res) => {
       OWNER,
       DATE_CLAIMED,
       STATUS,
+      IMAGE_URL,
     });
 
     // Save the new item to the database
