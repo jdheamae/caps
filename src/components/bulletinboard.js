@@ -32,6 +32,7 @@ function Bulletin() {
     OWNER: '',
     DATE_CLAIMED: '',
     STATUS: 'unclaimed',
+    IMAGE_URL:'',
   });
 
   useEffect(() => {
@@ -123,6 +124,7 @@ function Bulletin() {
                   <th>Item Name</th>
                   <th>Date Found</th>
                   <th>Location</th>
+                  <th>Image</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -132,6 +134,19 @@ function Bulletin() {
                     <td>{item.ITEM}</td>
                     <td>{item.DATE_FOUND}</td>
                     <td>{item.FOUND_LOCATION}</td>
+                    <td>
+  <img
+    src={item.IMAGE_URL || "default-image-url"}
+    alt="Product"
+    style={{
+      width: "100px",
+      height: "100px",
+      objectFit: "cover",
+      borderRadius: "5px",//this is just optional image in here ,can be removed , should be added to be in a card format and bulletin pero blur siya dapat
+      filter: "blur(2px)", // Adds a blur effect
+    }}
+  />
+</td>
                     <td>
                       <button
                         className="bulletinview-btn"

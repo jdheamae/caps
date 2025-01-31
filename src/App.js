@@ -13,6 +13,7 @@ import Auth from './components/log';
 import Additem from './components/additem';
 import UserComplaint from './components/userComplaint';
 import Bulletin from './components/bulletinboard';
+import Profile from './components/prof';
 import RetrievalRequests from './components/retrievalrequest';
 // Helper function to check if the user is an admin
 const isAdmin = () => {
@@ -54,6 +55,7 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+        <Route path="/prof" element={<Profile />} />
           <Route path="/" element={<Home />} />
           <Route
             path="/complaints"
@@ -125,6 +127,8 @@ function App() {
               </StudentRoute>
             }
           />
+        
+       
           <Route path="/login" element={<Auth />} />
         </Routes>
         

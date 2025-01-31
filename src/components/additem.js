@@ -212,7 +212,7 @@ function Additem() {
       height: "100px",
       objectFit: "cover",
       borderRadius: "5px",//this is just optional image in here ,can be removed , should be added to be in a card format and bulletin pero blur siya dapat
-      filter: "blur(2px)", // Adds a blur effect
+      //filter: "blur(0px)", // Adds a blur effect
     }}
   />
 </td>
