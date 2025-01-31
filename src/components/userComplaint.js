@@ -28,7 +28,7 @@ function UserComplaint() {
     location: '',
     time: '',
     description: '',
-    status: 'Not Found',
+    status: 'not-found',
   });
 
   // Fetch all data from the database when the component mounts
@@ -82,7 +82,7 @@ function UserComplaint() {
       if (response.ok) {
         const result = await response.json();
         alert(result.message);
-        setRequests([...requests, { ...newComplaint, status: "Not Found", finder: "N/A" }]);
+        setRequests([...requests, { ...newComplaint, status: "not-found ", finder: "N/A" }]);
         setShowModal(false);
       } else {
         alert("Error filing complaint. Please try again.");
@@ -133,7 +133,7 @@ function UserComplaint() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const updatedRequest ={
+    const updatedRequest = {
       ...selectedRequest,
       ...itemData,
     };
@@ -157,7 +157,7 @@ function UserComplaint() {
 
         setShowModal(false); // Close the modal after successful update
         setSelectedRequest(null);// Clear selected request
-        setItemData ({ // Reset itemData after update
+        setItemData({ // Reset itemData after update
           itemname: '',
           type: '',
           contact: '',
@@ -165,7 +165,7 @@ function UserComplaint() {
           location: '',
           description: '',
           time: '',
-          status: 'Not Found'
+          status: 'not-found'
         });
 
       } else {
@@ -212,19 +212,19 @@ function UserComplaint() {
     currentPage * itemsPerPage
   );
 
-  const handleStatusChange = async (item) => {
-    const newStatus = item.STATUS === 'unclaimed' ? 'claimed' : 'unclaimed'; // Toggle status
-    try {
-      await axios.put(`http://10.10.83.224:5000/items/${item._id}`, { ...item, STATUS: newStatus });
-      setRequests((prevRequests) =>
-        prevRequests.map((req) =>
-          req._id === item._id ? { ...req, STATUS: newStatus } : req
-        )
-      );
-    } catch (error) {
-      console.error('Error updating status:', error);
-    }
-  };
+  // const handleStatusChange = async (item) => {
+  //   const newStatus = item.STATUS === 'unclaimed' ? 'claimed' : 'unclaimed'; // Toggle status
+  //   try {
+  //     await axios.put(`http://10.10.83.224:5000/items/${item._id}`, { ...item, STATUS: newStatus });
+  //     setRequests((prevRequests) =>
+  //       prevRequests.map((req) =>
+  //         req._id === item._id ? { ...req, STATUS: newStatus } : req
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error('Error updating status:', error);
+  //   }
+  // };
 
   const [viewMode, setViewMode] = useState('table'); // Default to 'table' mode
   const toggleViewMode = () => {
@@ -241,7 +241,7 @@ function UserComplaint() {
       location: '',
       description: '',
       time: '',
-      status: 'Not Found',
+      status: 'not-found',
     });
     setShowModal(true); // Open modal for adding a complaint
   };
@@ -263,13 +263,13 @@ function UserComplaint() {
 
 
 
-          <div className="search-bar2">
+          <div className="search-bar3">
             <input
               type="text"
               placeholder="Search"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
-              className="search-input"
+              className="search-input3"
             />
             <button onClick={toggleViewMode} className="view-mode-toggle2">
               {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
@@ -311,7 +311,13 @@ function UserComplaint() {
                     <td>{item.date}</td>
                     <td>{item.location}</td>
                     <td>{item.time}</td>
-                    <td>{item.status}</td>
+                    <td><button
+                      className={`status-btn2 ${item.status && typeof item.status === 'string' && item.status.toLowerCase() === 'not-found' ? 'not-found' : 'found'}`}
+                      
+                    >
+                      {item.status || 'not-found'}
+                     
+                    </button></td>
                     <td>{item.finder}</td>
                     <td>
 
@@ -504,6 +510,6 @@ function UserComplaint() {
       )}
     </div>
   );
-}
+};
 
 export default UserComplaint;

@@ -219,7 +219,7 @@ function Additem() {
                     className={`status-btn1 ${item.STATUS && typeof item.STATUS === 'string' && item.STATUS.toLowerCase() === 'unclaimed' ? 'unclaimed' : 'claimed'}`}
                     onClick={() => handleStatusChange(item)}
                   >
-                    {item.STATUS || 'Unclaimed'}
+                    {item.STATUS || 'unclaimed'}
                     <IoMdArrowDropdown className='arrow1' />
                   </button>
                   <button className="view-btn1" onClick={() => openModal(item)}>
@@ -253,7 +253,7 @@ function Additem() {
                   placeholder="Finder Name"
                   value={itemData.FINDER}
                   onChange={handleInputChange}
-                  required
+                  required={!selectedItem}
                 />
               </div>
 
@@ -267,7 +267,7 @@ function Additem() {
                   placeholder="Item Name"
                   value={itemData.ITEM}
                   onChange={handleInputChange}
-                  required
+                  required={!selectedItem}
                 />
               </div>
 
@@ -281,7 +281,7 @@ function Additem() {
                   placeholder="Description"
                   value={itemData.DESCRIPTION}
                   onChange={handleInputChange}
-                  required
+                  required={!selectedItem}
                 ></textarea>
               </div>
 
@@ -296,7 +296,7 @@ function Additem() {
                   placeholder="Contact Number"
                   value={itemData.CONTACT_OF_THE_FINDER}
                   onChange={handleInputChange}
-                  required
+                  required={!selectedItem}
                 />
               </div>
 
@@ -308,7 +308,7 @@ function Additem() {
                   name="DATE_FOUND"
                   value={itemData.DATE_FOUND}
                   onChange={handleInputChange}
-                  required
+                  required={!selectedItem}
                 />
               </div>
 
@@ -322,7 +322,7 @@ function Additem() {
                   placeholder="Location"
                   value={itemData.FOUND_LOCATION}
                   onChange={handleInputChange}
-                  required
+                  required={!selectedItem}
                 />
               </div>
 
@@ -334,7 +334,7 @@ function Additem() {
                   name="TIME_RETURNED"
                   value={itemData.TIME_RETURNED}
                   onChange={handleInputChange}
-                  required
+                  required={!selectedItem}
                 />
               </div>
 

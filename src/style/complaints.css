@@ -1,12 +1,12 @@
 /* General layout */
   
-  .breadcrumb2 {
+  .breadcrumb3 {
     margin: 10px 8px 0 -20px;
     font-size: 20px;
     color: #000000;
     font-weight: bold;
   }
-  .manage-bulletin2 {
+  .manage-bulletin3 {
     margin: 30px;
     display: flex;
     align-items: flex-start; /* Align to the top */
@@ -21,7 +21,7 @@
   
   
   
-  .search-bar2 {
+  .search-bar3 {
     display: flex; /* Enable flexbox for alignment */
     align-items: center; /* Vertically center items */
     left: -20px;
@@ -33,12 +33,12 @@
     
   }
 
-  .search-bar2 input:hover {
+  .search-bar3 input:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     
   }
   
-  .search-bar2 input {
+  .search-bar3 input {
     width: 435px;
     height: 35px; /* Increased height for better visual balance with icons */
     padding: 10px;
@@ -48,32 +48,32 @@
     border-radius: 35px;
   }
 
-  .search-bar2 select:focus, .search-bar2 input:focus {
+  .search-bar3 select:focus, .search-bar3 input:focus {
     border-color: #3c6abe;
     outline: none;
     box-shadow: 0 0 5px rgb(60, 106, 190);
 
   }
 
-  .search-bar2 input::placeholder {
+  .search-bar3 input::placeholder {
     font-weight: bold;
     font-size:17px;
     color: #888;
 
   }
   
-  .search-icon2, .filter-icon2 {
+  .search-icon3, .filter-icon3 {
     color: #a92525;
     cursor: pointer;
     width: 30px; /* Adjust icon size for better proportion with the input */
     height: 30px; /* Maintain square aspect ratio */
   }
 
-  .search-icon2:hover, .filter-icon2:hover{
+  .search-icon3:hover, .filter-icon3:hover{
     transform: translateY(-3px);
   }
 
-  .search-input2 {
+  .search-input3 {
     padding: 10px 40px 10px 40px; /* Add padding to the input */
     width: 100%; /* Full width */
     border: 1px solid #ccc; /* Border style */
@@ -84,7 +84,7 @@
   
 
 /* Top-Right Buttons Container */
-.top-right-buttons2 {
+.top-right-buttons3 {
   display: flex; /* Enable flexbox for alignment */
   align-items: center; /* Vertically center items */
   left: -480px;
@@ -94,7 +94,7 @@
   }
   
   /* Button Styling */
-  .add-item-btn2, .register-qr-btn2 {
+  .add-item-btn3, .register-qr-btn3 {
     background-color: #800000; /* Dark red color for buttons */
     color: white;
     padding: 10px 10px; /* Adjusted padding for better button sizing */
@@ -106,7 +106,7 @@
     margin-left: 10px; /* Space between buttons */
   }
   
-  .add-item-btn2:hover, .register-qr-btn2:hover {
+  .add-item-btn3:hover, .register-qr-btn3:hover {
     background-color: #660000; /* Darker red on hover */
     color: #ffd324;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
@@ -115,7 +115,7 @@
   
 
   
-  .ffound-items-table2 {
+  .ffound-items-table3 {
     
     width: 100%; /* Full width of the parent */
     max-width: 1200px; /* Set a max width for the table */
@@ -126,7 +126,7 @@
     table-layout: fixed; /* Use fixed table layout to respect column widths */
 }
 
-.ffound-items-table2 th, .ffound-items-table2 td {
+.ffound-items-table3 th, .ffound-items-table3 td {
     padding: 10px;
     border: 1px solid #d5d2d2;
     text-align: center;
@@ -137,35 +137,35 @@
     overflow-wrap: break-word; /* Allow long words to break */
 }
 
-.ffound-items-table2 th {
+.ffound-items-table3 th {
     background-color: #ddd;
 }
 
-.ffound-items-table2 tr {
+.ffound-items-table3 tr {
     height: auto; /* Allow rows to stretch based on content */
 }
 
-.ffound-items-table2 th.action, .ffound-items-table2 td.action {
+.ffound-items-table3 th.action, .ffound-items-table3 td.action {
     width: 50px; /* Adjust width as needed */
     text-align: center; /* Center-align the buttons */
 }
 
 /* Set specific widths for other columns */
-.ffound-items-table2 th:nth-child(1), .ffound-items-table2 td:nth-child(1) { width: 20%; }
-.ffound-items-table2 th:nth-child(2), .ffound-items-table2 td:nth-child(2) { width: 15%; }
-.ffound-items-table2 th:nth-child(3), .ffound-items-table2 td:nth-child(3) { width: 25%; }
-.ffound-items-table2 th:nth-child(4), .ffound-items-table2 td:nth-child(4) { width: 20%; }
-.ffound-items-table2 th:nth-child(5), .ffound-items-table2 td:nth-child(5) { width: 15%; }
-.ffound-items-table2 th:nth-child(6), .ffound-items-table2 td:nth-child(6) { width: 15%; }
-.ffound-items-table2 th:nth-child(7), .ffound-items-table2 td:nth-child(7) { width: 10%; }
-.ffound-items-table2 th:nth-child(8), .ffound-items-table2 td:nth-child(8) { width: 25%; }
-.ffound-items-table2 th:nth-child(9), .ffound-items-table2 td:nth-child(9) { width: 25%; }
-.ffound-items-table2 th:nth-child(10), .ffound-items-table2 td:nth-child(10) { width: 25%; }
+.ffound-items-table3 th:nth-child(1), .ffound-items-table3 td:nth-child(1) { width: 20%; }
+.ffound-items-table3 th:nth-child(2), .ffound-items-table3 td:nth-child(2) { width: 15%; }
+.ffound-items-table3 th:nth-child(3), .ffound-items-table3 td:nth-child(3) { width: 25%; }
+.ffound-items-table3 th:nth-child(4), .ffound-items-table3 td:nth-child(4) { width: 20%; }
+.ffound-items-table3 th:nth-child(5), .ffound-items-table3 td:nth-child(5) { width: 15%; }
+.ffound-items-table3 th:nth-child(6), .ffound-items-table3 td:nth-child(6) { width: 15%; }
+.ffound-items-table3 th:nth-child(7), .ffound-items-table3 td:nth-child(7) { width: 10%; }
+.ffound-items-table3 th:nth-child(8), .ffound-items-table3 td:nth-child(8) { width: 25%; }
+.ffound-items-table3 th:nth-child(9), .ffound-items-table3 td:nth-child(9) { width: 25%; }
+.ffound-items-table3 th:nth-child(10), .ffound-items-table3 td:nth-child(10) { width: 25%; }
   
   
 
   
-  .view-btn2 {
+  .view-btn3 {
     background-color: #4CAF50;
     color: white;
     padding: 5px 12px;
@@ -180,13 +180,13 @@
   }
 
 
-  .view-btn2:hover{
+  .view-btn3:hover{
     background-color: #55cf59;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
   }
   
-  .ppagination2 {
+  .ppagination3 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -196,7 +196,7 @@
     
 }
 
-.page-nav2 {
+.page-nav3 {
     padding: 8px 12px;
     margin: 0 10px; /* Adjust margin for better spacing */
     height: 50px;
@@ -210,23 +210,23 @@
     border-radius:  10px;
 }
 
-.page-nav2.active {
+.page-nav3.active {
     background-color: #8B0000; /* Highlight the active page */
     color: white; /* Change text color for active page */
 }
 
-.page-nav2:disabled {
+.page-nav3:disabled {
     background-color: #f0f0f0;
     color: #ccc;
     cursor: not-allowed;
 }
-.page-nav2:disabled:hover {
+.page-nav3:disabled:hover {
   background-color: #dbd9d9;
   color: #ccc;
   cursor: not-allowed;
 }
 
-.page-nav2:hover {
+.page-nav3:hover {
   background-color: #f7d953;
   color: #8B0000;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
@@ -279,7 +279,7 @@
     color: white;
   } */
   
-  .modal-overlay2 {
+  .modal-overlay3 {
     position: fixed;
     top: 0;
     left: 0;
@@ -292,7 +292,7 @@
     z-index: 1000;
 }
 
-.modal2 {
+.modal3 {
     display: flex;
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align items to the start */
@@ -305,7 +305,7 @@
     text-align: left;
 }
 
-.modal2 h2 {
+.modal3 h3 {
     margin-bottom: 20px;
     font-size: 1.8rem;
     color: #222222;
@@ -313,41 +313,41 @@
     font-weight: bold;
 }
 
-.modal2 form {
+.modal3 form {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Two columns for labels and inputs */
     gap: 20px;
     width: 100%; /* Ensure the form takes full width */
 }
 
-.form-group2 {
+.form-group3 {
     display: flex;
     flex-direction: column; /* Stack label above input */
     width: 100%; /* Ensure full width */
 }
 
-.modal2 label {
+.modal3 label {
     font-weight: 500;
     color: #444444;
     margin-bottom: 5px;
 }
 
-.modal2 select{
+.modal3 select{
   font-weight: 500;
     color: #444444;
     margin-bottom: 5px;
 }
 
-.modal2 textarea{
+.modal3 textarea{
   font-weight: 500;
     color: #444444;
     margin-bottom: 5px;
     height: 50px;
 }
 
-.modal2 input,
-.modal2 select,
-.modal2 textarea {
+.modal3 input,
+.modal3 select,
+.modal3 textarea {
     padding: 12px;
     font-size: 1rem;
     border: 1px solid #cccccc;
@@ -355,15 +355,15 @@
     width: 90%;
 }
 
-.modal2 input:focus,
-.modal2 select:focus,
-.modal2 textarea:focus {
+.modal3 input:focus,
+.modal3 select:focus,
+.modal3 textarea:focus {
     border-color: #3c6abe;
     outline: none;
     box-shadow: 0 0 5px rgb(60, 106, 190);
 }
 
-.item-pic-input2 {
+.item-pic-input3 {
     border: 2px dashed #aaaaaa;
     padding: 20px;
     text-align: center;
@@ -375,12 +375,12 @@
     width: 100%; /* Ensures the input takes full width */
 }
 
-.item-pic2 input:hover {
+.item-pic3 input:hover {
     background: #f1f1f1;
 }
 
-.submit-btn2,
-.cancel-btn2,.delete-btn2 {
+.submit-btn3,
+.cancel-btn3,.delete-btn3 {
     padding: 15px;
     font-size: 1rem;
     font-weight: bold;
@@ -391,41 +391,41 @@
 
 }
 
-.submit-btn2 {
+.submit-btn3 {
     background-color: #45a049;
     color: white;
 }
 
-.cancel-btn2 {
+.cancel-btn3 {
     background-color: #FF0000;
     color: white;
 }
 
-.delete-btn2 {
+.delete-btn3 {
   background-color: #8B0000;
   color: white;
 }
 
-.submit-btn2:hover {
+.submit-btn3:hover {
     background-color: #61ce67;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
 }
 
-.cancel-btn2:hover {
+.cancel-btn3:hover {
     background-color: #dd1f1f;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
   }
 
-  .delete-btn2:hover {
+  .delete-btn3:hover {
     background-color: #c01515;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
   }
 
   
-  .button-container2 {
+  .button-container3 {
     display: flex;
     
     align-items: flex-start; /* Align buttons to the start (left) */
@@ -434,42 +434,42 @@
     gap: 10px; /* Space between buttons */
 }
 
-.status-btn2{
+.status-btn3{
   color: white;
   padding: 5px 12px;
   font-size: 12px;
-  margin: 0 2px; /* Adds horizontal spacing between buttons */
+  margin: 10% 2px; /* Adds horizontal spacing between buttons */
   border: none;
   cursor: pointer;
   font-size: 15px;
   width: 110px;
   border-radius: 20px;
   margin-left: 0px;
- 
   
 }
 
-.status-btn2.not-found {
-  background-color: #6c757d ; /* Red for unclaimed */
+.status-btn3.not-found {
+  background-color: red; /* Red for unclaimed */
 }
 
-.status-btn2.found {
-  background-color: #28a745 ; /* Green for claimed */
+.status-btn3.found {
+  background-color: #45a049; /* Green for claimed */
 }
 
 
 
-.status-btn2:hover{
+
+.status-btn3:hover{
 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 transform: translateY(-1px);
 }
 
-.arrow2 {
+.arrow3 {
   width: 14px; /* Adjust icon size for better proportion with the input */
   height: 14px; /* Maintain square aspect ratio */
 }
 
-.grid-container2 {
+.grid-container3 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
   margin-top: 190px;
@@ -480,7 +480,7 @@ transform: translateY(-1px);
   justify-items: left; /* Center items within their grid cells */
 }
 
-.grid-item2 {
+.grid-item3 {
   background-color: #f0f0f0; /* Background color for items */
   padding: 20px; /* Padding inside items */
   border: 1px solid #ccc; /* Optional: Border for items */
@@ -490,7 +490,7 @@ transform: translateY(-1px);
   width: 105%; /* Ensure grid items take full width of their cell */
 }
 
-.grid-container2 {
+.grid-container3 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
   margin-top: 190px;
@@ -502,7 +502,7 @@ transform: translateY(-1px);
   justify-items: left; /* Center items within their grid cells */
 }
 
-.grid-item2 {
+.grid-item3 {
   overflow-y: auto;  /* Enable vertical scrolling */
   word-wrap: break-word;
   background-color: #f0f0f0; /* Background color for items */
@@ -515,7 +515,7 @@ transform: translateY(-1px);
 }
 
 
-.grid-item2 h2 {
+.grid-item3 h2 {
   overflow: hidden; /* Hide overflowing content */
   color: #8B0000;
   text-align: center; /* Align text to the left */
@@ -523,16 +523,16 @@ transform: translateY(-1px);
   margin-bottom:20px ; /* Remove default margin */
 }
 
-.grid-item2 p {
+.grid-item3 p {
   margin-top: 20px;
   text-align: left; /* Align text to the left */
   margin: 5px 0; /* Add some vertical spacing */
   font-weight: normal; /* Normal weight for paragraph text */
 }
-.grid-item2 span {
+.grid-item3 span {
   font-weight: bold; /* Normal weight for paragraph text */
 }
-.view-mode-toggle2 {
+.view-mode-toggle3 {
   background: none; /* No background */
   border: none; /* No border */
   cursor: pointer; /* Pointer cursor on hover */
@@ -545,7 +545,7 @@ transform: translateY(-1px);
 }
 
 
-.view-mode-toggle2:hover {
+.view-mode-toggle3:hover {
   
   transform: translateY(-2px);
   color: #a50303; /* Change color on hover */
