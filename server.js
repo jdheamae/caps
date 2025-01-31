@@ -173,7 +173,7 @@ app.delete("/complaints/:id", async (req, res) => {
 
 //------------------------------addding found items for admin database--------------------------------------------------
 app.post('/items', async (req, res) => {
-  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS } = req.body;
+  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS ,  IMAGE_URL} = req.body;
 
   try {
     
@@ -189,6 +189,7 @@ app.post('/items', async (req, res) => {
       OWNER,
       DATE_CLAIMED,
       STATUS,
+      IMAGE_URL,
     });
 
     // Save the new item to the database
@@ -204,7 +205,7 @@ app.post('/items', async (req, res) => {
 
 //---------------------------------------adding found items for user database to be able to display--------------------
 app.post('/useritems', async (req, res) => {
-  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS } = req.body;
+  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS ,IMAGE_URL} = req.body;
 
   try {
     
@@ -220,6 +221,7 @@ app.post('/useritems', async (req, res) => {
       OWNER,
       DATE_CLAIMED,
       STATUS,
+      IMAGE_URL,
     });
 
     // Save the new item to the database
@@ -378,7 +380,7 @@ app.get("/usercomplaints/:id", async (req, res) => {
 
 //----------------------------------------------user requesting for retrieval------------------------------------------------------------------------------
 app.post('/retrieval-request', async (req, res) => {
-  const { name, description, contactNumber, id, itemId, userId } = req.body;
+  const { name, description, contactNumber, id, itemId, userId,status } = req.body;
 
   try {
     // Create a new retrieval request with the userId included
@@ -388,7 +390,8 @@ app.post('/retrieval-request', async (req, res) => {
       contactNumber,
       id,
       itemId,
-      userId
+      userId,
+      status,
     });
 
     await newRequest.save();
@@ -404,17 +407,117 @@ app.post('/retrieval-request', async (req, res) => {
   }
 });
 //-----------------------------admin fetching the retrievals---------------------------------------------------------------------
+
+
+
 app.get('/retrieval-requests', async (req, res) => {
   try {
-    const requests = await RetrievalRequestSchema.find({}, 'name description contactNumber id'); // Only select these fields
-    res.json({ requests });
+    const requests = await RetrievalRequestSchema.find()
+      .populate('itemId', 'ITEM DESCRIPTION DATE_FOUND STATUS') 
+      .populate('userId', 'name email'); 
+    res.status(200).json({ success: true, requests });
   } catch (error) {
     console.error('Error fetching retrieval requests:', error);
-    res.status(500).json({ message: 'Error fetching retrieval requests', error });
+    res.status(500).json({ success: false, error: 'Failed to fetch retrieval requests' });
   }
 });
+app.get("/retrieval-requests/:id", async (req, res) => {
+  try {
+    const requests= await RetrievalRequestSchema.find({ userId: req.params.id });    
+    res.json(requests);
+  } catch (error) {
+   
+    res.status(500).json({ message: error.message });
+  }
+});
+//-------------------------------------update retrieval request for admin---------------------//
+app.put('/retrieval-request/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    // Find the request by ID and update the status
+    const updatedRequest = await RetrievalRequestSchema.findOneAndUpdate(
+      { id }, 
+      { status }, 
+      
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedRequest) {
+      return res.status(404).json({ message: 'Retrieval request not found.' });
+    }
+
+    res.json({
+      message: 'Retrieval request status updated successfully.',
+      request: updatedRequest,
+    });
+  } catch (error) {
+    console.error('Error updating retrieval request status:', error);
+    res.status(500).json({ message: 'Failed to update status.' });
+  }
+  
+});
+
+//----------------------------------update item status of the retrieval request-------------------
+app.put('/found-item/:itemId/status', async (req, res) => {
+  const { itemId } = req.params;
+  const { status } = req.body;
+
+  if (!itemId) {
+    return res.status(400).json({ message: 'Invalid item ID' });
+  }
+
+  console.log(`Updating item with ID: ${itemId}, New Status: ${status}`); // Debugging
+
+  try {
+    const updatedItem = await Item.findOneAndUpdate(
+      { _id: itemId },  // ✅ Ensure we filter by the correct item
+      { $set: { STATUS: status } },  // ✅ Use `$set` to modify only the `STATUS`
+      { new: true } // ✅ Return the updated document
+    );
+
+    if (!updatedItem) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    res.json({
+      message: 'Item status updated successfully.',
+      item: updatedItem,
+    });
+  } catch (error) {
+    console.error('Error updating item status:', error);
+    res.status(500).json({ message: 'Failed to update item status.' });
+  }
+});//goods
+
+//---------------------------UPDATE USER RETRIEVAL REQUEST USER----------------------------
+// Update request (only description and contactNumber)
+app.put('/retrieval-requests/:id', async (req, res) => {
+  const { description, contactNumber } = req.body;
+  try {
+    const updatedRequest = await RetrievalRequestSchema.findByIdAndUpdate(
+      req.params.id,
+      { description, contactNumber },
+      { new: true }
+    );
+    res.json(updatedRequest);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating request' });
+  }
+});//goods
+
+// -----------------------------------------Delete request
+app.delete('/retrieval-requests/:id', async (req, res) => {
+  try {
+    await RetrievalRequestSchema.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Request deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting request' });
+  }
+});//goods
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`deyamemyidol}`);
+  console.log(`deyamemyidol`);
 });
