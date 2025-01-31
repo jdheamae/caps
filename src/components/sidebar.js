@@ -58,7 +58,7 @@ const Sidebar = () => {
             <NavLink to="/dashboard" activeClassName="active">
               <FaChartLine className="nav-icon" /> Dashboard
             </NavLink>
-            <NavLink to="/prof" activeClassName="active">
+            <NavLink to="/profile" activeClassName="active">
               <FaHome className="nav-icon" /> Profile
             </NavLink>
             <NavLink to="/complaints" activeClassName="active">

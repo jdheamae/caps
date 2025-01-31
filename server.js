@@ -45,6 +45,50 @@ app.post("/signup", async (req, res) => {
       res.status(500).json({ error: "Error registering user" });
     }
   });
+  app.get("/profile/:id", async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      res.status(500).json({ error: "Error fetching profile" });
+    }
+  });
+  
+  // Update user profile (first name, last name, email)
+  app.put("/update-profile/:userId", async (req, res) => {
+    const { userId } = req.params;
+    const { firstName, lastName, email, password ,image_Url} = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      // Update the user fields
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.email = email;
+      user.image_Url=image_Url;
+  
+      // If password is provided, hash it before saving
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+      }
+  
+      await user.save(); // Save updated user data
+  
+      res.status(200).json({ message: "Profile updated successfully!" });
+    } catch (error) {
+      console.error("Error updating user:", error);
+      res.status(500).json({ message: "Error updating profile" });
+    }
+  });
   //----------------------------------login ----------------------------------------------------
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
