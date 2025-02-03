@@ -6,6 +6,7 @@ import Sidebar from "./sidebar";
 import axios from 'axios';
 
 import { jwtDecode } from 'jwt-decode';
+import Header from './header';
 function Bulletin() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
@@ -105,9 +106,8 @@ const handleModalSubmit = async () => {
   return (
     <div className="home-container">
       <Sidebar />
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+      <Header />
+    
       <div className="content">
         <div className="manage-bulletin">
           <div className="breadcrumb">Manage Lost and Found {'>'} Manage Found Items</div>

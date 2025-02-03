@@ -69,12 +69,15 @@ function Auth() {
     <div className={`container ${!isLogin ? "active" : ""}`} id="container">
       {/* Sign Up Form */}
       <div className={`form-container sign-up`}>
-        <form onSubmit={handleSignUp}>
+        <form className='create' onSubmit={handleSignUp}>
           <h1>Create Account</h1>
-          <input type="text" name="name" placeholder="Name" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="password" name="password" placeholder="Password" required />
-          <button type="submit">Sign Up</button>
+          <input type="text" name="fname" placeholder="First" required />
+          <input type="text" name="lname" placeholder="Last" required />
+          <input  type="email" name="email" placeholder="Email" required />
+          <input  type="number" name="number" placeholder="Contact Number" required />
+          <input  type="password" name="password" placeholder="Password" required />
+
+          <button className="signin" type="submit">Sign Up</button>
         </form>
       </div>
 
@@ -84,8 +87,7 @@ function Auth() {
           <h1>Sign In</h1>
           <input type="email" name="email" placeholder="Email" required />
           <input type="password" name="password" placeholder="Password" required />
-          <a href="#">Forgot Your Password?</a>
-          <button type="submit">Sign In</button>
+          <button className="signin1" type="submit">Sign In</button>
         </form>
       </div>
 
@@ -93,17 +95,15 @@ function Auth() {
       <div className="toggle-container">
         <div className="toggle">
           <div className="toggle-panel toggle-left">
-            <h1>Welcome Back!</h1>
-            <p>Enter your personal details to use all site features</p>
-            <button className="hidden" id="login" onClick={handleFormSwitch}>
-              Sign In
+
+            <button className="hidden1" id="login" onClick={handleFormSwitch}>
+              SignIn
             </button>
           </div>
           <div className="toggle-panel toggle-right">
             <h1>Hello, Friend!</h1>
-            <p>Register with your personal details to use all site features</p>
             <button className="hidden" id="register" onClick={handleFormSwitch}>
-              Sign Up
+              SignUp
             </button>
           </div>
         </div>

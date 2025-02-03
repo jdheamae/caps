@@ -3,6 +3,8 @@ import { FaSearch, FaFilter } from 'react-icons/fa';
 import axios from 'axios'; // Import axios
 import Sidebar from "./sidebar";
 import '../style/manaReq.css';
+import Header from "./header";
+
 
 function ManageRequest() {
   const [filterText, setFilterText] = useState('');
@@ -34,7 +36,7 @@ function ManageRequest() {
   return (
     <div className="home-container">
       <Sidebar />
-
+      <Header />
       <header className="header">
         <h2>FIRI LOGO</h2>
       </header>

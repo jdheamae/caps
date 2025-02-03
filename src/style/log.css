@@ -217,3 +217,135 @@
 .container.active .toggle-right {
   transform: translateX(200%);
 }
+
+
+
+/* ----------------------------------------------------------- */
+@media (max-width: 768px) {
+
+        /* Sign Up Form */
+  .container {
+    margin: auto;
+    margin-top: 20%;
+    border-radius: 0%;
+    min-height:50;
+    width: 90%;
+    background-color: #fff;
+    border-radius: 30px;
+
+    width: 768px;
+    max-width: 95%;
+    min-height: 380px;
+  
+  }
+  .container form{
+    height: 75%;
+  } 
+
+
+  .sign-up form  {
+    margin-left: -100px;
+  }
+
+  .sign-up button{
+    background-color: #850F13;
+  }
+
+  .sign-up h1 {
+    font-size:2ch;
+    margin-top: 90px;
+  }
+
+
+  .container input {
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    border: 1px solid #8d8888;
+    margin-left: 12%;
+  }
+
+/* Sign In form */
+  .sign-in input {
+    width: 200%;
+    margin-left: 70%;
+  }
+  .sign-in h1 {
+    font-size:2ch;
+  }
+
+  .signin1 {
+    margin-left: 50%;
+    min-width: 150%;
+    height: 13%;
+  }
+
+/* Toggle Container */
+  .toggle-container {
+    position: absolute;
+    top: 0;
+    left: 70%;
+    width: 30%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 0px 0 0 0px;
+    z-index: 1000;
+  }
+
+  .container.active .toggle-container {
+    transform: translateX(-100%);
+    border-radius: 0 0px 0px 0;
+    width: 30%;
+    margin-left: -40%;
+  }
+
+  .toggle-right {
+    right: 0;
+    transform: translateX(0);
+    background-color:#850F13;
+    margin-right: -50px;
+ 
+  }
+ 
+.container button.hidden {
+  background-color: transparent;
+  border-color: #fff;
+  background-color: #850F13;
+  height: 10%;
+  font-size: 10px;
+  margin: auto;
+  width: 0;
+  margin-left: -10px;
+  display: flex;
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  text-align: center;
+
+
+}
+
+.container button.hidden1 {
+  background-color: transparent;
+  border-color: #ffffff;
+  background-color:#F3D558;
+  height: 10%;
+  font-size: 10px;
+  margin: auto;
+  width: 0;
+  margin-left:-20px;
+  display: flex;
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  text-align: center;
+
+
+}
+
+
+}

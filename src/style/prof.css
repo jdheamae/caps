@@ -24,7 +24,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   text-align: center;
-  margin-right: 2rem;
+  margin-top: -325px;
 }
 
 .profile-avatar .avatar-image {
@@ -99,19 +99,32 @@
     align-items: center;
     margin-left: 0;
     padding: 50px;
-    overflow: hidden;
+    
   }
 
   .profile-sidebar {
     width: 100%;
-    margin-top: 200px;
+    margin-top: 30px;
 
+  }
+  
+  .form-group input {
+    padding: 15px;
+    border: 1px solid #080808;
+    border-radius: 3px;
+    width: 90%;
   }
 
   .profile-form {
-    width: 90%;
-    padding: 50px;
+    width: 117%;
+    padding: 10px;
+    
+
   }
+  .profile-form h3 {
+    margin-top: 0px;
+  }
+
 }
 
 

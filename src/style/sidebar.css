@@ -122,8 +122,5 @@ border-right: 4px solid #ffd324;  /* Right side border to indicate active page *
       left: 0;
   }
 
-  /* Prevent scrolling when sidebar is open */
-  body.sidebar-open {
-      overflow: hidden;
-  }
+
 }

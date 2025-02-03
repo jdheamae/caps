@@ -3,7 +3,6 @@ import { jwtDecode } from 'jwt-decode';
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-
 import Home from './components/home'; // Adjust the path if necessary
 import Manage from './components/Complaints';
 import ManageRequest from './components/manageRequest';
@@ -14,6 +13,8 @@ import Additem from './components/additem';
 import UserComplaint from './components/userComplaint';
 import Bulletin from './components/bulletinboard';
 import Profile from './components/prof';
+import Header from './components/header';
+
 // Helper function to check if the user is an admin
 const isAdmin = () => {
   const token = localStorage.getItem('token'); // Assuming the JWT token is stored in localStorage
@@ -119,6 +120,7 @@ function App() {
           />
           <Route path="/login" element={<Auth />} />
           <Route path="/prof" element={<Profile />} />
+          <Route path="/header" element={<Header />} />
 
         </Routes>
         
