@@ -1,39 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
-import '../style/bulletinboard.css';
-import '../style/reportmanage.css';
-import Sidebar from './sidebar';
+import '../style/userBulletin.css';
+import Sidebar from "./sidebar";
 import axios from 'axios';
+import { FaTable } from "react-icons/fa6";
+import { IoGridOutline } from "react-icons/io5";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { FaPlus } from "react-icons/fa6"
+import Pagination from './pagination';
 import { jwtDecode } from 'jwt-decode';
+
 
 function Bulletin() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedRequest, setSelectedRequest] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const [modalData, setModalData] = useState({
+
+  //for Request
+  const [itemData, setItemData] = useState({
     name: '',
     description: '',
     contactNumber: '',
     id: '',
   });
 
-  const [itemData, setItemData] = useState({
-    ITEM: '',
-    DESCRIPTION: '',
-    DATE_FOUND: '',
-    TIME_RETURNED: '',
-    FINDER: '',
-    CONTACT_OF_THE_FINDER: '',
-    FOUND_LOCATION: '',
-    OWNER: '',
-    DATE_CLAIMED: '',
-    STATUS: 'unclaimed',
-    IMAGE_URL:'',
-  });
+
 
   useEffect(() => {
     fetchItems();
@@ -48,40 +44,62 @@ function Bulletin() {
     }
   };
 
+  // Handle modal data changes
   const handleModalChange = (e) => {
     const { name, value } = e.target;
-    setModalData((prev) => ({ ...prev, [name]: value }));
+    setItemData((prev) => ({ ...prev, [name]: value }));
   };
-
-  const handleModalSubmit = async () => {
-   
-
-    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-    if (!token) {
-      console.error('No token found');
-      return;
-    }
-
-    const decodedToken = jwtDecode(token); // Decode the token
-    const userId = decodedToken.id; // Extract userId from the decoded token
-
+  const handleModalSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+  
     try {
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.id; // Get userId from the token
+  
       const response = await axios.post('http://10.10.83.224:5000/retrieval-request', {
-        name: modalData.name,
-        description: modalData.description,
-        contactNumber: modalData.contactNumber,
-        id: modalData.id,
-        itemId: selectedItem._id, // Include the selected item ID
-        userId: userId, // Include the user ID
+        name: itemData.name,
+        description: itemData.description,
+        contactNumber: itemData.contactNumber,
+        id: itemData.id,
+        itemId: selectedItem._id, // Assuming you're passing the selected item ID
+        userId: userId, // Include userId in the request
       });
-
-    
-      setShowModal(false); // Close the modal after submission
+  
+      console.log('Response:', response.data); // Log the response
+      alert('Request submitted successfully!'); // Confirmation alert
+  
+      // Reset itemData to clear the form fields
+      setItemData({
+        name: '',
+        description: '',
+        contactNumber: '',
+        id: '',
+      });
+  
+      setShowModal(false); // Close the modal after successful submission
     } catch (error) {
-      console.error('Error submitting the form:', error);
+      console.error('Error submitting the form:', error); // Log any errors
+      alert('Error submitting the form. Please try again.'); // Alert on error
     }
   };
 
+  const handleAddComplaint = () => {
+    setSelectedRequest(null); // Clear selected request for new complaint
+    setItemData({
+      itemname: '',
+      type: '',
+      contact: '',
+      date: '',
+      location: '',
+      description: '',
+      time: '',
+      status: 'not-found',
+    });
+    setShowModal(true); // Open modal for adding a complaint
+  };
+
+  // Filtered requests based on the filterText
   const filteredRequests = requests.filter((item) => {
     return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
   });
@@ -97,139 +115,168 @@ function Bulletin() {
     currentPage * itemsPerPage
   );
 
+
+
+
+
   return (
     <div className="home-container">
       <Sidebar />
       <header className="header">
         <h2>FIRI LOGO</h2>
       </header>
+
+
       <div className="content">
-        <div className="manage-bulletin">
-          <div className="breadcrumb">Manage Lost and Found {'>'} Manage Found Items</div>
-          <div className="top-right-buttons"></div>
-          <div className="search-bar">
+        <div className="manage-bulletin4">
+          <div className="breadcrumb4">Manage Lost and Found {'>'} Manage Found Items</div>
+
+
+
+
+
+          <div className="search-bar4">
             <input
               type="text"
               placeholder="Search"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
+              className="search-input4"
             />
-            <FaSearch className="search-icon" />
-            <FaFilter className="filter-icon" />
+
+
+
+
           </div>
-          {displayedRequests.length > 0 ? (
-            <table className="found-items-table">
-              <thead>
-                <tr>
-                  <th>Item Name</th>
-                  <th>Date Found</th>
-                  <th>Location</th>
-                  <th>Image</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {displayedRequests.map((item) => (
-                  <tr key={item._id}>
-                    <td>{item.ITEM}</td>
-                    <td>{item.DATE_FOUND}</td>
-                    <td>{item.FOUND_LOCATION}</td>
-                    <td>
-  <img
-    src={item.IMAGE_URL || "default-image-url"}
-    alt="Product"
-    style={{
-      width: "100px",
-      height: "100px",
-      objectFit: "cover",
-      borderRadius: "5px",//this is just optional image in here ,can be removed , should be added to be in a card format and bulletin pero blur siya dapat
-      filter: "blur(2px)", // Adds a blur effect
-    }}
-  />
-</td>
-                    <td>
-                      <button
-                        className="bulletinview-btn"
-                        onClick={() => {
-                          setSelectedItem(item);
-                          setShowModal(true);
-                        }}
-                      >
-                        Request Retrieval
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div className="no-data">No matching requests found</div>
-          )}
-          <div className="pagination">
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index}
-                className="page-nav"
-                onClick={() => handlePageChange(index + 1)}
-                disabled={currentPage === index + 1}
-              >
-                {index + 1}
-              </button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div className="grid-container4">
+            {displayedRequests.map((item) => (
+              <div className="grid-item4" key={item._id}>
+                <h2>{item.ITEM}</h2>
+                {item.IMAGE_URL && (
+                  <img src={item.IMAGE_URL || "default-image-url"} alt="Product" className="item-image4" />
+                )}
+                <p><span>Date Found: </span> {item.DATE_FOUND}</p>
+                <p><span>Location: </span> {item.FOUND_LOCATION}</p>
+
+                <button className="view-btn4" onClick={() => {
+                  setSelectedItem(item);
+                  setShowModal(true);
+                }}>
+                  <FaPlus /> View More
+                </button>
+              </div>
             ))}
           </div>
+
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
       </div>
 
-      {/* Modal */}
+
       {showModal && (
-        <div className="bulletinmodal-overlay">
-          <div className="bulletinmodal">
-            <h3>Request Retrieval</h3>
-            <form>
-              <label>
-                Name:
+        <div className="modal-overlay4">
+          <div className="modal4">
+            <h2>File a Request</h2>
+            <form onSubmit={handleModalSubmit}>
+              <div className="form-group4">
+                <label htmlFor="name">Name:</label>
                 <input
                   type="text"
+                  id="name"
                   name="name"
-                  value={modalData.name}
+                  maxLength="100"
+                  placeholder="Name"
+                  value={itemData.name}
                   onChange={handleModalChange}
                   required
                 />
-              </label>
-              <label>
-                Description:
+              </div>
+
+              <div className="form-group4">
+                <label htmlFor="description">Description</label>
                 <textarea
+                  type="text"
+                  id="description"
                   name="description"
-                  value={modalData.description}
+                  maxLength="500"
+                  placeholder="Description"
+                  value={itemData.description}
                   onChange={handleModalChange}
                   required
-                ></textarea>
-              </label>
-              <label>
-                Contact Number:
+                />
+              </div>
+
+              <div className="form-group4">
+                <label htmlFor="contactNumber">Contact Number:</label>
                 <input
                   type="text"
+                  id="contactNumber"
                   name="contactNumber"
-                  value={modalData.contactNumber}
+                  maxLength="50"
+                  placeholder="Contact Number"
+                  value={itemData.contactNumber}
                   onChange={handleModalChange}
                   required
-                />
-              </label>
-              <label>
-                ID:
+                ></input>
+              </div>
+
+
+              <div className="form-group4">
+                <label htmlFor="id">ID:</label>
                 <input
                   type="text"
+                  id="id"
                   name="id"
-                  value={modalData.id}
+                  maxLength="50"
+                  placeholder="ID Number"
+                  value={itemData.id}
                   onChange={handleModalChange}
                   required
                 />
-              </label>
-              <div className="bulletinmodal-buttons">
-                <button type="button" onClick={handleModalSubmit}>
+              </div>
+
+
+
+              <div className="button-container4">
+                <button type="submit" className="submit-btn4">
                   Submit
                 </button>
-                <button type="button" onClick={() => setShowModal(false)}>
+
+                {/* {selectedItem && (
+                  <button
+                    type="button"
+                    className="delete-btn1"
+                    onClick={() => {
+                      handleDelete(selectedItem._id);
+                      setShowModal(false); // Close the modal after deletion
+                    }}
+                  >
+                    Delete
+                  </button>
+                )} */}
+                <button
+                  type="button"
+                  className="cancel-btn4"
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </button>
               </div>
@@ -238,6 +285,9 @@ function Bulletin() {
         </div>
       )}
     </div>
+
+
+
   );
 }
 

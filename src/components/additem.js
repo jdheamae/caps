@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { FaTable } from "react-icons/fa6";
+import { IoGridOutline } from "react-icons/io5";
 import { FaSearch, FaFilter } from 'react-icons/fa';
+import { IoMdArrowDropdown } from "react-icons/io";
+import { FaPlus } from "react-icons/fa6";
 import Sidebar from "./sidebar";
-import '../style/additem.css';
+import '../style/Found.css';
 import axios from 'axios';
 import { storage } from "../firebase"; // Import Firebase storage
-import { ref, uploadBytesResumable, uploadString,getDownloadURL } from "firebase/storage"; 
+import Pagination from './pagination';
+import { ref, uploadBytesResumable, uploadString, getDownloadURL } from "firebase/storage";
+
+
 function Additem() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
@@ -12,6 +19,7 @@ function Additem() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
   const [itemData, setItemData] = useState({
     ITEM: '',
     DESCRIPTION: '',
@@ -37,7 +45,15 @@ function Additem() {
   const fetchItems = async () => {
     try {
       const response = await axios.get('http://10.10.83.224:5000/items');
-      setRequests(response.data);
+      
+      const sortedRequests = response.data.sort((a, b) => {
+        // Combine DATE_FOUND and TIME_RETURNED into a single Date object
+        const dateA = new Date(`${a.DATE_FOUND}T${a.TIME_RETURNED}`);
+        const dateB = new Date(`${b.DATE_FOUND}T${b.TIME_RETURNED}`);
+        return dateB - dateA; // Sort in descending order
+      });
+  
+      setRequests(sortedRequests);
     } catch (error) {
       console.error('Error fetching items:', error);
     }
@@ -50,9 +66,14 @@ function Additem() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    
-    // Step 1: Upload the image to Firebase Storage if available
     let imageUrl = itemData.IMAGE_URL; // Default to existing URL if any
+
+   // Check if adding a new item and no image is captured
+  if (!selectedItem && !image) {
+    alert('Please capture an image before submitting the form.'); // Alert if no image is captured
+    return; // Exit the function
+  }
+    // Step 1: Upload the image to Firebase Storage if available
     if (image) {
       const imageRef = ref(storage, `images/${Date.now()}.png`);
       try {
@@ -70,23 +91,30 @@ function Additem() {
     try {
       if (selectedItem) {
         await axios.put(`http://10.10.83.224:5000/items/${selectedItem._id}`, updatedData);
+        alert('Item updated successfully!');
       } else {
         const response = await axios.post('http://10.10.83.224:5000/items', updatedData);
         setRequests([...requests, response.data]);
+        alert('Item updated successfully!');
       }
       setShowModal(false);
       fetchItems();
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('Error submitting form. Please try again.');
     }
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://10.10.83.224:5000/items/${id}`);
-      fetchItems();
-    } catch (error) {
-      console.error('Error deleting item:', error);
+    if (window.confirm('Are you sure you want to delete this item?')) {
+      try {
+        await axios.delete(`http://10.10.83.224:5000/items/${id}`);
+        fetchItems();
+        alert('Item deleted successfully!'); // Alert on successful deletion
+      } catch (error) {
+        console.error('Error deleting item:', error);
+        alert('Error deleting item. Please try again.'); // Alert on error
+      }
     }
   };
 
@@ -107,8 +135,49 @@ function Additem() {
         IMAGE_URL: '',
       }
     );
+    setImage(null); // Reset the captured image when opening the modal
     setShowModal(true);
+    startCamera();
   };
+
+  const filteredRequests = requests.filter((item) => {
+    return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
+  });
+
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const displayedRequests = filteredRequests.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleStatusChange = async (item) => {
+    const newStatus = item.STATUS === 'unclaimed' ? 'claimed' : 'unclaimed'; // Toggle status
+    try {
+      await axios.put(`http://10.10.83.224:5000/items/${item._id}`, { ...item, STATUS: newStatus });
+      setRequests((prevRequests) =>
+        prevRequests.map((req) =>
+          req._id === item._id ? { ...req, STATUS: newStatus } : req
+        )
+      );
+      alert(`Status updated to ${newStatus}!`);
+    } catch (error) {
+      console.error('Error updating status:', error);
+      alert('Error updating status. Please try again.');
+    }
+  };
+
+  const [viewMode, setViewMode] = useState('table'); // Default to 'table' mode
+  const toggleViewMode = () => {
+    setViewMode((prevMode) => (prevMode === 'table' ? 'grid' : 'table'));
+  };
+
+
+
 
   const startCamera = () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -137,21 +206,6 @@ function Additem() {
     }
   };
 
-  const filteredRequests = requests.filter((item) => {
-    return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
-  });
-
-  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const displayedRequests = filteredRequests.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   return (
     <div className="home-container">
       <Sidebar />
@@ -159,24 +213,33 @@ function Additem() {
         <h2>FIRI LOGO</h2>
       </header>
       <div className="content">
-        <div className="manage-bulletin">
-          <div className="breadcrumb">Manage Lost and Found {'>'} Manage Found Items</div>
-          <div className="top-right-buttons">
-            <button className="add-item-btn" onClick={() => openModal()}>+ Add Found Item</button>
-            <button className="register-qr-btn">Register QR Code</button>
-          </div>
-          <div className="search-bar">
+        <div className="manage-bulletin1">
+          <div className="breadcrumb1">Manage Lost and Found {'>'} Manage Found Items</div>
+
+
+
+
+          <div className="search-bar1">
             <input
               type="text"
               placeholder="Search"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
+              className="search-input1"
             />
-            <FaSearch className="search-icon" />
-            <FaFilter className="filter-icon" />
+            <button onClick={toggleViewMode} className="view-mode-toggle1">
+              {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
+            </button>
+
+            <div className="top-right-buttons1">
+              <button className="add-item-btn1" onClick={() => openModal()}>+ Add Found Item</button>
+              <button className="register-qr-btn1">Register QR Code</button>
+            </div>
           </div>
-          {displayedRequests.length > 0 ? (
-            <table className="found-items-table">
+
+
+          {viewMode === 'table' ? (
+            <table className="ffound-items-table1">
               <thead>
                 <tr>
                   <th>Finder</th>
@@ -185,7 +248,7 @@ function Additem() {
                   <th>Contact</th>
                   <th>Date Found</th>
                   <th>Location</th>
-                  <th>Time</th>
+                  <th>Time Recieved</th>
                   <th>Owner</th>
                   <th>Status</th>
                   <th>Image</th>
@@ -201,158 +264,246 @@ function Additem() {
                     <td>{item.CONTACT_OF_THE_FINDER}</td>
                     <td>{item.DATE_FOUND}</td>
                     <td>{item.FOUND_LOCATION}</td>
-                    <td>{item.TIME_RETURNED}</td>
+                     <td>{item.TIME_RETURNED} </td>{/* it supposed to be TIME_RECIEVED */}
                     <td>{item.OWNER}</td>
-                    <td>
-  <img
-    src={item.IMAGE_URL || "default-image-url"}
-    alt="Product"
-    style={{
-      width: "100px",
-      height: "100px",
-      objectFit: "cover",
-      borderRadius: "5px",//this is just optional image in here ,can be removed , should be added to be in a card format and bulletin pero blur siya dapat
-      //filter: "blur(0px)", // Adds a blur effect
-    }}
-  />
-</td>
+                    <td> <img
+                      src={item.IMAGE_URL || "default-image-url"}
+                      alt="Product"
+                      className="default-image-url1"
 
-                    <td>{item.STATUS}</td>
+                    /></td>
                     <td>
-                      <button className="view-btn" onClick={() => openModal(item)}>View More</button>
-                      <button className="edit-btn" onClick={() => openModal(item)}>Edit</button>
-                      <button className="delete-btn" onClick={() => handleDelete(item._id)}>Delete</button>
+                      <button
+                        className={`status-btn1 ${item.STATUS && typeof item.STATUS === 'string' && item.STATUS.toLowerCase() === 'unclaimed' ? 'unclaimed' : 'claimed'}`}
+                        onClick={() => handleStatusChange(item)}
+                      >
+                        {item.STATUS || 'Unclaimed'}
+                        <IoMdArrowDropdown className='arrow1' />
+                      </button>
+                    </td>
+                    <td>
+                      <button className="view-btn1" onClick={() => openModal(item)}>
+                        <FaPlus /> View More
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           ) : (
-            <div className="no-data">No matching requests found</div>
-          )}
-          <div className="pagination">
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index}
-                className="page-nav"
-                onClick={() => handlePageChange(index + 1)}
-                disabled={currentPage === index + 1}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            {/* Camera Section */}
-            <div className="camera-section">
-              <video ref={videoRef} width="320" height="240" autoPlay />
-              <canvas ref={canvasRef} style={{ display: 'none' }} />
-              <button onClick={startCamera}>Start Camera</button>
-              <button onClick={captureImage}>Capture Image</button>
-              {image && <img src={image} alt="Captured" />}
-            </div>
+            <div className="grid-container1">
+              {displayedRequests.map((item) => (
+                <div className="grid-item1" key={item._id}>
+                  <h2>{item.ITEM}</h2>
+                  <img
+                    src={item.IMAGE_URL || "default-image-url"}
+                    alt="Product"
+                    className="default-image-url11"
 
-            {/* Form Section */}
-            <form onSubmit={handleFormSubmit}>
-              <div>
-                <label>Item Name</label>
-                <input
-                  type="text"
-                  name="ITEM"
-                  value={itemData.ITEM}
-                  onChange={handleInputChange}
-                />
+                  />
+                  <p><span>Description: </span>{item.DESCRIPTION}</p>
+                  <p><span>Finder: </span> {item.FINDER}</p>
+                  <p><span>Contact: </span> {item.CONTACT_OF_THE_FINDER}</p>
+                  <p><span>Date Found: </span> {item.DATE_FOUND}</p>
+                  <p><span>Location: </span> {item.FOUND_LOCATION}</p>
+                  <p><span>Time: </span> {item.TIME_RETURNED}</p>
+                  <p><span>Owner: </span> {item.OWNER}</p>
+                  <button
+                    className={`status-btn1 ${item.STATUS && typeof item.STATUS === 'string' && item.STATUS.toLowerCase() === 'unclaimed' ? 'unclaimed' : 'claimed'}`}
+                    onClick={() => handleStatusChange(item)}
+                  >
+                    {item.STATUS || 'unclaimed'}
+                    <IoMdArrowDropdown className='arrow1' />
+                  </button>
+                  <button className="view-btn1" onClick={() => openModal(item)}>
+                    <FaPlus /> View More
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
+      </div>
+
+      {showModal && (
+        <div className="modal-overlay1">
+          <div className="modal1">
+            <h2>{selectedItem ? 'Update Item' : 'File a Found Item'}</h2>
+
+            {/* Wrap form fields and camera in a flex container */}
+            <div className="form-and-camera">
+              <form onSubmit={handleFormSubmit} className="form-fields">
+                <div className="form-group1">
+                  <label htmlFor="finderName">Finder Name</label>
+                  <input
+                    type="text"
+                    id="finderName"
+                    name="FINDER"
+                    maxLength="100"
+                    placeholder="Finder Name"
+                    value={itemData.FINDER}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  />
+                </div>
+
+                <div className="form-group1">
+                  <label htmlFor="itemName">Item Name</label>
+                  <input
+                    type="text"
+                    id="itemName"
+                    name="ITEM"
+                    maxLength="100"
+                    placeholder="Item Name"
+                    value={itemData.ITEM}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  />
+                </div>
+
+                <div className="form-group1">
+                  <label htmlFor="description">Description</label>
+                  <textarea
+                    id="description"
+                    name="DESCRIPTION"
+                    maxLength="500"
+                    placeholder="Description"
+                    value={itemData.DESCRIPTION}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  ></textarea>
+                </div>
+
+                <div className="form-group1">
+                  <label htmlFor="contact">Contact</label>
+                  <input
+                    type="text"
+                    id="contact"
+                    name="CONTACT_OF_THE_FINDER"
+                    maxLength="50"
+                    placeholder="Contact Number"
+                    value={itemData.CONTACT_OF_THE_FINDER}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  />
+                </div>
+
+                <div className="form-group1">
+                  <label htmlFor="dateFound">Date Found</label>
+                  <input
+                    type="date"
+                    id="dateFound"
+                    name="DATE_FOUND"
+                    value={itemData.DATE_FOUND}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  />
+                </div>
+
+                <div className="form-group1">
+                  <label htmlFor="location">Location</label>
+                  <input
+                    type="text"
+                    id="location"
+                    name="FOUND_LOCATION"
+                    maxLength="200"
+                    placeholder="Location"
+                    value={itemData.FOUND_LOCATION}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  />
+                </div>
+
+                <div className="form-group1">
+                  <label htmlFor="timeReceived">Time Received</label>
+                  <input
+                    type="time"
+                    id="timeReceived"
+                    name="TIME_RETURNED"
+                    value={itemData.TIME_RETURNED}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  />
+                </div>
+
+                <div className="form-group1">
+                  <label htmlFor="owner">Owner Name</label>
+                  <input
+                    type="text"
+                    id="owner"
+                    name="OWNER"
+                    maxLength="50"
+                    placeholder="May skip if owner is not yet identified"
+                    value={itemData.OWNER}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="form-group1">
+                  <label htmlFor="status">Status</label>
+                  <select
+                    id="status"
+                    name="STATUS"
+                    value={itemData.STATUS}
+                    onChange={handleInputChange}
+                  >
+                    <option value="unclaimed">Unclaimed</option>
+                    <option value="claimed">Claimed</option>
+                  </select>
+                </div>
+
+                {/* Buttons inside the form */}
+                <div className="button-container1">
+                  <button type="submit" className="submit-btn1">
+                    {selectedItem ? 'Update' : 'Submit'}
+                  </button>
+                  {selectedItem && (
+                    <button
+                      type="button"
+                      className="delete-btn1"
+                      onClick={() => {
+                        handleDelete(selectedItem._id);
+                        setShowModal(false);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="cancel-btn1"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+
+
+              {/* Camera Section on the Right */}
+              <div className="camera-section">
+                <video ref={videoRef} width="320" height="240" autoPlay />
+                <canvas ref={canvasRef} style={{ display: 'none' }} />
+                <div className="camera-buttons">
+                  <button type="button" onClick={captureImage}>Capture Image</button>
+                </div>
+                {/* Show the saved image only when updating an existing item */}
+                {selectedItem && itemData.IMAGE_URL && !image && (
+                  <img src={itemData.IMAGE_URL} alt="Saved" className="captured-image" />
+                )}
+
+                {/* Show the captured image if available */}
+                {image && (
+                  <img src={image} alt="Captured" className="captured-image" />
+                )}
               </div>
-              <div>
-                <label>Description</label>
-                <input
-                  type="text"
-                  name="DESCRIPTION"
-                  value={itemData.DESCRIPTION}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Date Found</label>
-                <input
-                  type="date"
-                  name="DATE_FOUND"
-                  value={itemData.DATE_FOUND}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Time Returned</label>
-                <input
-                  type="time"
-                  name="TIME_RETURNED"
-                  value={itemData.TIME_RETURNED}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Finder</label>
-                <input
-                  type="text"
-                  name="FINDER"
-                  value={itemData.FINDER}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Contact</label>
-                <input
-                  type="text"
-                  name="CONTACT_OF_THE_FINDER"
-                  value={itemData.CONTACT_OF_THE_FINDER}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Location</label>
-                <input
-                  type="text"
-                  name="FOUND_LOCATION"
-                  value={itemData.FOUND_LOCATION}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Owner</label>
-                <input
-                  type="text"
-                  name="OWNER"
-                  value={itemData.OWNER}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Date Claimed</label>
-                <input
-                  type="date"
-                  name="DATE_CLAIMED"
-                  value={itemData.DATE_CLAIMED}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Status</label>
-                <select
-                  name="STATUS"
-                  value={itemData.STATUS}
-                  onChange={handleInputChange}
-                >
-                  <option value="unclaimed">Unclaimed</option>
-                  <option value="claimed">Claimed</option>
-                </select>
-              </div>
-              <button type="submit">Submit</button>
-              <button type="button" onClick={() => setShowModal(false)}>Cancel</button>
-            </form>
+            </div>
           </div>
         </div>
       )}

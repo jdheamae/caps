@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import Sidebar from "./sidebar";
-import "../style/manag.css";
+import "../style/complaints.css";
+import { FaTable } from "react-icons/fa6";
+import { IoGridOutline } from "react-icons/io5";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { FaPlus } from "react-icons/fa6";
+import Pagination from './pagination';
+import axios from 'axios';
 
 function Manage() {
   const [filterText, setFilterText] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showViewMoreModal, setShowViewMoreModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);  // State to manage update modal visibility
+  // const [showUpdateModal, setShowUpdateModal] = useState(false);  // State to manage update modal visibility
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [requests, setRequests] = useState([]); // No initial data here
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const [itemData, setItemData] = useState({
+    itemname: '',
+    type: '',
+    contact: '',
+    date: '',
+    location: '',
+    time: '',
+    description: '',
+    status: 'not-found',
+    finder:'',
+  });
 
   // Fetch all data from the database when the component mounts
   useEffect(() => {
@@ -22,13 +42,15 @@ function Manage() {
         console.error("Error fetching requests:", error);
       }
     };
-    
+
     fetchRequests();
   }, []);
 
-  const filteredRequests = requests.filter((item) =>
-    item.complainer.toLowerCase().includes(filterText.toLowerCase())
-  );
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setItemData({ ...itemData, [name]: value });
+  };
+
 
   const handleComplaintSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +63,7 @@ function Manage() {
       date: formData.get("date"),
       location: formData.get("location"),
       time: formData.get("time"),
-      description:formData.get("description"),
+      description: formData.get("description"),
     };
 
     try {
@@ -54,7 +76,7 @@ function Manage() {
       if (response.ok) {
         const result = await response.json();
         alert(result.message);
-        setRequests([...requests, { ...newComplaint, status: "Not Found", finder: "N/A" }]);
+        setRequests([...requests, { ...newComplaint, status: "not-found", finder: "N/A" }]);
         setShowModal(false);
       } else {
         alert("Error filing complaint. Please try again.");
@@ -66,21 +88,23 @@ function Manage() {
   };
 
   const handleViewMore = (request) => {
-    setSelectedRequest(request);
-    setShowViewMoreModal(true);
+    setSelectedRequest(request); // Set the selected request
+    setItemData(request); // Populate itemData with the selected request's data
+    setShowModal(true); // Open modal for viewing more details
   };
+
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this request?")) {
       // Optimistically remove the complaint from the state
       const updatedRequests = requests.filter((req) => req._id !== selectedRequest._id);
       setRequests(updatedRequests);
-  
+
       try {
         const response = await fetch(
           `http://10.10.83.224:5000/complaints/${selectedRequest._id}`,
           { method: "DELETE" }
         );
-  
+
         if (response.ok) {
           const result = await response.json();
           alert(result.message || "Complaint successfully deleted.");
@@ -98,27 +122,17 @@ function Manage() {
       }
     }
   };
-  
-  
 
-  const handleUpdate = () => {
-    setShowUpdateModal(true);  // Show the update modal when the "Update" button is clicked
-  };
-  const handleUpdateSubmit = async (e) => {
+
+
+  // const handleUpdate = () => {
+  //   setShowUpdateModal(true);  // Show the update modal when the "Update" button is clicked
+  // };
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
     const updatedRequest = {
       ...selectedRequest,
-      complainer: formData.get("complainer"),
-      itemname: formData.get("itemname"),
-      type: formData.get("type"),
-      description: formData.get("description"),
-      contact: formData.get("contact"),
-      date: formData.get("date"),
-      location: formData.get("location"),
-      time: formData.get("time"),
-      status: formData.get("status"),
-      finder: formData.get("finder"),
+      ...itemData,
     };
 
     try {
@@ -132,19 +146,26 @@ function Manage() {
         const result = await response.json();
         alert(result.message);
 
-        // Update the requests state with the updated request
         setRequests(
           requests.map((req) =>
             req._id === selectedRequest._id ? updatedRequest : req
           )
         );
 
-        // Close the update modal and view more modal
-        setShowUpdateModal(false);
-        setShowViewMoreModal(false);
+        setShowModal(false); // Close the modal after successful update
+        setSelectedRequest(null);// Clear selected request
+        setItemData({ // Reset itemData after update
+          itemname: '',
+          type: '',
+          contact: '',
+          date: '',
+          location: '',
+          description: '',
+          time: '',
+          status: 'not-found',
+          finder: ''
+        });
 
-        // Optionally, re-fetch the latest data
-        fetchRequests(); // Refresh the data
       } else {
         alert("Error updating complaint. Please try again.");
       }
@@ -153,6 +174,8 @@ function Manage() {
       alert("Error updating complaint. Please try again.");
     }
   };
+
+
   const fetchRequests = async () => {
     try {
       const response = await fetch("http://10.10.83.224:5000/complaints");
@@ -164,6 +187,57 @@ function Manage() {
   };
 
 
+  const filteredRequests = requests.filter((item) => {
+    return item.complainer && item.complainer.toLowerCase().includes(filterText.toLowerCase());
+  });
+
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const displayedRequests = filteredRequests.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const [viewMode, setViewMode] = useState('table'); // Default to 'table' mode
+  const toggleViewMode = () => {
+    setViewMode((prevMode) => (prevMode === 'table' ? 'grid' : 'table'));
+  };
+
+  const handleAddComplaint = () => {
+    setSelectedRequest(null); // Clear selected request for new complaint
+    setItemData({
+      itemname: '',
+      type: '',
+      contact: '',
+      date: '',
+      location: '',
+      description: '',
+      time: '',
+      status: 'not-found',
+    });
+    setShowModal(true); // Open modal for adding a complaint
+  };
+
+  const handleStatusChange = async (item) => {
+    const newStatus = item.status === 'not-found' ? 'found' : 'not-found'; // Toggle status
+    try {
+      await axios.put(`http://10.10.83.224:5000/complaints/${item._id}`, { ...item, status: newStatus });
+      setRequests((prevRequests) =>
+        prevRequests.map((req) =>
+          req._id === item._id ? { ...req, status: newStatus } : req
+        )
+      );
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  };
+
+
+
   return (
     <div className="home-container">
       <Sidebar />
@@ -173,31 +247,34 @@ function Manage() {
       </header>
 
       <div className="content">
-        <div className="manage-bulletin">
-          <div className="breadcrumb">
+        <div className="manage-bulletin3">
+          <div className="breadcrumb3">
             Manage Lost And Found {'>'} Manage Reports and Complaints
           </div>
 
-          <div className="top-right-buttons">
-            <button className="add-item-btn" onClick={() => setShowModal(true)}>
-              + File Complaints
-            </button>
-            <button className="register-qr-btn">Register QR Code</button>
-          </div>
 
-          <div className="search-bar">
+
+          <div className="search-bar3">
             <input
               type="text"
               placeholder="Search"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
+              className="search-input3"
             />
-            <FaSearch className="search-icon" />
-            <FaFilter className="filter-icon" />
+            <button onClick={toggleViewMode} className="view-mode-toggle2">
+              {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
+            </button>
+
+            <div className="top-right-buttons3">
+              <button className="add-item-btn3" onClick={handleAddComplaint}>+ File Complaint</button>
+              <button className="register-qr-btn3">Register QR Code</button>
+            </div>
+
           </div>
 
-          {filteredRequests.length > 0 ? (
-            <table className="ffound-items-table">
+          {viewMode === 'table' ? (
+            <table className="ffound-items-table3">
               <thead>
                 <tr>
                   <th>Complainer</th>
@@ -213,8 +290,8 @@ function Manage() {
                 </tr>
               </thead>
               <tbody>
-                {filteredRequests.map((item, index) => (
-                  <tr key={index}>
+                {displayedRequests.map((item) => (
+                  <tr key={item._id}>
                     <td>{item.complainer}</td>
                     <td>{item.itemname}</td>
                     <td>{item.type}</td>
@@ -222,11 +299,19 @@ function Manage() {
                     <td>{item.date}</td>
                     <td>{item.location}</td>
                     <td>{item.time}</td>
-                    <td>{item.status}</td>
+                    <td>
+                    <button
+                        className={`status-btn3 ${item.status && typeof item.status === 'string' && item.status.toLowerCase() === 'not-found' ? 'not-found' : 'found'}`}
+                        onClick={() => handleStatusChange(item)}
+                      >
+                        {item.status || 'not-found'}
+                        <IoMdArrowDropdown className='arrow3' />
+                      </button>
+                      </td>
                     <td>{item.finder}</td>
                     <td>
-                      <button className="view-btn" onClick={() => handleViewMore(item)}>
-                        View More
+                      <button className="view-btn3" onClick={() => handleViewMore(item)}>
+                        <FaPlus /> View More
                       </button>
                     </td>
                   </tr>
@@ -234,154 +319,211 @@ function Manage() {
               </tbody>
             </table>
           ) : (
-            <div className="no-data">No matching requests found</div>
+            <div className="grid-container3">
+              {displayedRequests.map((item) => (
+                <div className="grid-item3" key={item._id}>
+                  <h2>{item.itemname}</h2>
+                  <p><span>Complainer: </span>{item.complainer}</p>
+                  <p><span>Item Type: </span> {item.type}</p>
+                  <p><span>Contact of the Complainer: </span> {item.contact}</p>
+                  <p><span>Date: </span> {item.date}</p>
+                  <p><span>Location: </span> {item.location}</p>
+                  <p><span>Time: </span> {item.time}</p>
+                  <p><span>Status: </span> {item.status}</p>
+                  <p><span>Finder: </span> {item.finder}</p>
+                  <button className="view-btn3" onClick={() => setShowModal(item)}>
+                    <FaPlus /> View More
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
         </div>
 
-        <div className="ppagination">
-          <button className="page-nav">&lt; Previous</button>
-          <button className="page-nav">Next &gt;</button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
       </div>
 
       {/* Modal for filing complaints */}
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modaladminbulletin">
-            <h2>File a Complaint</h2>
-            <form onSubmit={handleComplaintSubmit}>
-              <input type="text" name="complainer" placeholder="Your Name" required />
-              <input type="text" name="itemname" placeholder="Item Name" required />
-              <input type="text" name="type" placeholder="Item Type" required />
-              <textarea type="text" name="description" placeholder="Description" required />
-              <input type="text" name="contact" placeholder="Your Contact" required />
-              <input type="date" name="date" required />
-              <input type="text" name="location" placeholder="Location" required />
-              <input type="time" name="time" required />
-              <button type="submit" className="submit-btn">Submit</button>
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
+        <div className="modal-overlay3">
+          <div className="modal3">
+            <h2>{selectedRequest ? 'Update Complaint' : 'File a Complaint'}</h2>
+            <form onSubmit={selectedRequest ? handleUpdate : handleComplaintSubmit}>
+              <div className="form-group3">
+                <label htmlFor="complainerName">Complainer Name</label>
+                <input
+                  type="text"
+                  id="complainerName"
+                  name="complainer"
+                  maxLength="100"
+                  placeholder="Complainer Name"
+                  value={itemData.complainer}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+
+              <div className="form-group3">
+                <label htmlFor="itemName">Item Name</label>
+                <input
+                  type="text"
+                  id="itemName"
+                  name="itemname"
+                  maxlength="100"
+                  placeholder="Item Name"
+                  value={itemData.itemname}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+
+              <div className="form-group3">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  type="text"
+                  id="description"
+                  name="description"
+                  maxlength="500"
+                  placeholder="Description"
+                  value={itemData.description}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+
+              <div className="form-group3">
+                <label htmlFor="itemType">Item Type</label>
+                <input
+                  type="text"
+                  id="itemType"
+                  name="type"
+                  maxlength="100"
+                  placeholder="Item Type"
+                  value={itemData.type}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                ></input>
+              </div>
+
+
+              <div className="form-group3">
+                <label htmlFor="contact">Contact of the Complainer</label>
+                <input
+                  type="text"
+                  id="contact"
+                  name="contact"
+                  maxlength="50"
+                  placeholder="Contact of the Complainer"
+                  value={itemData.contact}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+
+              <div className="form-group3">
+                <label htmlFor="dateC">Date</label>
+                <input
+                  type="date"
+                  id="dateC"
+                  name="date"
+                  value={itemData.date}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+
+              <div className="form-group3">
+                <label htmlFor="location">Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  maxlength="200"
+                  placeholder="Location"
+                  value={itemData.location}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+
+              <div className="form-group3">
+                <label htmlFor="time">Time</label>
+                <input
+                  type="time"
+                  id="time"
+                  name="time"
+                  value={itemData.time}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="status">Status</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={itemData.status}
+                  onChange={handleInputChange}
+                >
+                  option
+                  <option value="found">found</option>
+                  <option value="not-found">not-found</option>
+                </select>
+              </div>
+
+              <div className="form-group3">
+                <label htmlFor="finder">Finder</label>
+                <input
+                  type="text"
+                  id="finder"
+                  name="finder"
+                  placeholder="Finder's Name"
+                  value={itemData.finder}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+
+
+
+
+              <div className="button-container3">
+                <button type="submit" className="submit-btn3">
+                  {selectedRequest ? 'Update' : 'Submit'}
+                </button>
+                {selectedRequest && (
+                  <button
+                    type="button"
+                    className="delete-btn1"
+                    onClick={() => {
+                      handleDelete(selectedRequest._id);
+                      setShowModal(false); // Close the modal after deletion
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  className="cancel-btn3"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* View More Modal */}
-      {showViewMoreModal && selectedRequest && (
-        <div className="modal-overlay">
-          <div className="modaladminbulletin">
-            <h2>Details</h2>
-            <p><strong>Complainer:</strong> {selectedRequest.complainer}</p>
-            <p><strong>Item Name:</strong> {selectedRequest.itemname}</p>
-            <p><strong>Type:</strong> {selectedRequest.type}</p>
-            <p><strong>Description: </strong>{selectedRequest.description}</p>
-            <p><strong>Contact:</strong> {selectedRequest.contact}</p>
-            <p><strong>Date:</strong> {selectedRequest.date}</p>
-            <p><strong>Location:</strong> {selectedRequest.location}</p>
-            <p><strong>Time:</strong> {selectedRequest.time}</p>
-          
-            <p><strong>Status:</strong> {selectedRequest.status}</p>
-            <p><strong>Finder:</strong> {selectedRequest.finder}</p>
-            <button className="update-btn" onClick={handleUpdate}>Update</button>
-            <button className="delete-btn" onClick={handleDelete}>Delete</button>
-            <button className="cancel-btn" onClick={() => setShowViewMoreModal(false)}>Close</button>
-          </div>
-        </div>
-      )}
 
-      {/* Update Modal */}
-      {showUpdateModal && selectedRequest && (
-        <div className="modal-overlay">
-          <div className="modaladminbulletin">
-            <h2>Update Complaint</h2>
-            <form onSubmit={handleUpdateSubmit}>
-              <input
-                type="text"
-                name="complainer"
-                placeholder="Complainer"
-                defaultValue={selectedRequest.complainer}
-                required
-              />
-              <input
-                type="text"
-                name="itemname"
-                placeholder="Item Name"
-                defaultValue={selectedRequest.itemname}
-                required
-              />
-              <input
-                type="text"
-                name="type"
-                placeholder="Item Type"
-                defaultValue={selectedRequest.type}
-                required
-              />
-              <textarea
-              type="text"
-                name="description"
-                placeholder="Description"
-                defaultValue={selectedRequest.description}
-                required
-              />
-              <input
-                type="text"
-                name="contact"
-                placeholder="Contact"
-                defaultValue={selectedRequest.contact}
-                required
-              />
-              <input
-                type="date"
-                name="date"
-                defaultValue={selectedRequest.date}
-                required
-              />
-              <input
-                type="text"
-                name="location"
-                placeholder="Location"
-                defaultValue={selectedRequest.location}
-                required
-              />
-                  <input
-                type="time"
-                name="time"
-                defaultValue={selectedRequest.time}
-                required
-              />
-              <select
-  name="status"
-  defaultValue={selectedRequest.status}
-  required
->
-  <option value="found">Found</option>
-  <option value="not-found">Not Found</option>
-</select>
 
-                 <input
-                type="text"
-                name="finder"
-                defaultValue={selectedRequest.finder}
-                required
-              />
-             
-              <button type="submit" className="submit-btn">Update</button>
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => setShowUpdateModal(false)}
-              >
-                Cancel
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
