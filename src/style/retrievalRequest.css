@@ -620,3 +620,26 @@ font-weight: 500;
   width: 320px; /* or any desired width */
   height: auto;
 }
+
+
+@media (max-width: 768px) {
+  .manage-bulletin6 {
+    padding: 50px;
+    margin-left: 0px; /* Space to avoid8lap with the sidebar */
+  
+  }
+  .grid-item6 {
+
+    width: 110%; /* Ensure grid items take full width of their cell */
+  }
+    
+  .search-bar6 input {
+    width: 300px;
+    height: 35px; /* Increased height for better visual balance with icons */
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    border: 1px solid #6d6c6c;
+    border-radius: 35px;
+  }
+}

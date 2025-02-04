@@ -4,6 +4,7 @@ import Sidebar from './sidebar';
 import '../style/retrievalRequest.css';
 import { FaPlus } from "react-icons/fa6";
 import Pagination from './pagination';
+import Header from './header';
 
 function UserRetrievalRequests() {
   const [requests, setRequests] = useState([]);
@@ -118,9 +119,7 @@ function UserRetrievalRequests() {
   return (
     <div className="home-container">
       <Sidebar />
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+      <Header />
       <div className="content">
         <div className="manage-bulletin6">
           <div className="breadcrumb6">Manage Retrieval Requests</div>
