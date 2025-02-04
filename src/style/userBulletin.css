@@ -551,3 +551,151 @@ transform: translateY(-1px);
   border-radius: 8px; /* Optional: add rounded corners */
   filter: blur(2px); /*Adds a blur effect */
 }
+
+
+@media (max-width: 768px) {
+  .manage-bulletin4 {
+    margin: 30px;
+    display: flex;
+    align-items: flex-start; /* Align to the top */
+    flex-grow: 1; /* Take up the remaining space */
+    padding: 50px;
+    margin-left: 0px; /* Space to avoid8lap with the sidebar */
+    flex-direction:column;
+
+  }
+
+  .search-bar4 input {
+    width: 280px;
+    height: 35px; /* Increased height for better visual balance with icons */
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    border: 1px solid #6d6c6c;
+    border-radius: 35px;
+    z-index: -1;
+  }
+
+  .grid-container4 {
+
+    width: 110%; /* Ensure the grid takes full width */
+ 
+  }
+  .grid-item4 {
+    z-index: -1;
+  }
+  .item-image4 {
+    max-width: 100%; /* Make the image responsive */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Add some space below the image */
+    border-radius: 8px; /* Optional: add rounded corners */
+    filter: blur(2px); /*Adds a blur effect */
+    z-index: -1000;
+  }
+
+  .ppagination1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px; /* Adjust margin to avoid covering the table */
+    margin-left: 8px;
+    margin-bottom: 50px; 
+    min-width: 10px;
+    font-size: small;
+
+  }
+  
+  .page-nav1 {
+    height: min-content;
+    width: 80px;
+    font-size: small;
+    margin-left: -2px;
+
+  }
+
+/* MODAL */
+
+
+  .modal-overlay4 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal4 {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start */
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 80%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+.modal4 h3 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #222222;
+    text-align: center;
+    font-weight: bold;
+}
+
+.modal4 form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns for labels and inputs */
+    gap: 20px;
+    width: 100%; /* Ensure the form takes full width */
+}
+
+.form-group4 {
+    display: flex;
+    flex-direction: column; /* Stack label above input */
+    width: 100%; /* Ensure full width */
+}
+
+.modal4 label {
+    font-weight: 500;
+    color: #444444;
+    margin-bottom: 5px;
+}
+
+.modal3 select{
+  font-weight: 500;
+    color: #444444;
+    margin-bottom: 5px;
+}
+
+.modal4 textarea{
+  font-weight: 500;
+    color: #444444;
+    margin-bottom: 5px;
+    height: 50px;
+}
+
+.modal4 input,
+.modal4 select,
+.modal4 textarea {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    width: 90%;
+}
+
+.modal4 input:focus,
+.modal4 select:focus,
+.modal4 textarea:focus {
+    border-color: #3c6abe;
+    outline: none;
+    box-shadow: 0 0 5px rgb(60, 106, 190);
+}
+}

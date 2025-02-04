@@ -1,6 +1,8 @@
 /* General layout */
-  
-  .breadcrumb2 {
+.content {
+  width: 100% ;
+}
+.breadcrumb2 {
     margin: 10px 8px 0 -20px;
     font-size: 20px;
     color: #000000;
@@ -16,7 +18,6 @@
     flex-direction:column;
   }
 
-  
   /* ----------------------------------------------------------------------------- */
   
   
@@ -29,7 +30,6 @@
     
      /*height: 300px; Full viewport height to center vertically */
     /* gap: 10px; Add spacing between the input and icons */
-    position: relative;
     
   }
 
@@ -86,11 +86,10 @@
 /* Top-Right Buttons Container */
 .top-right-buttons2 {
   display: flex; /* Enable flexbox for alignment */
-  align-items: center; /* Vertically center items */
-  left: -480px;
-  top: 100px;
+  margin-top: 180px;
+  margin-left: -500px;
   gap: 10px; /* Add spacing between the input and icons */
-  position: relative;
+
   }
   
   /* Button Styling */
@@ -119,7 +118,7 @@
     
     width: 100%; /* Full width of the parent */
     max-width: 1200px; /* Set a max width for the table */
-    margin: 190px auto 0px; /* Center the table horizontally */
+    margin: 50px auto 0px; /* Center the table horizontally */
     padding: 0; /* Remove any default padding */
     border-collapse: collapse;
     font-size: 14px;
@@ -158,7 +157,7 @@
 .ffound-items-table2 th:nth-child(5), .ffound-items-table2 td:nth-child(5) { width: 15%; }
 .ffound-items-table2 th:nth-child(6), .ffound-items-table2 td:nth-child(6) { width: 15%; }
 .ffound-items-table2 th:nth-child(7), .ffound-items-table2 td:nth-child(7) { width: 10%; }
-.ffound-items-table2 th:nth-child(8), .ffound-items-table2 td:nth-child(8) { width: 25%; }
+.ffound-items-table2 th:nth-child(8), .ffound-items-table2 td:nth-child(8) { width: 20%; }
 .ffound-items-table2 th:nth-child(9), .ffound-items-table2 td:nth-child(9) { width: 25%; }
 .ffound-items-table2 th:nth-child(10), .ffound-items-table2 td:nth-child(10) { width: 25%; }
   
@@ -232,53 +231,7 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
   transform: translateY(-1px);
 }
-  
-  /* modal
-  .modal-overlay1 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal1 {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  }
-  
-  .modal1 form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .modal1 .submit-btn1,
-  .modal1 .cancel-btn1 {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .modal1 .submit-btn1 {
-    background: #4caf50;
-    color: white;
-  }
-  
-  .modal1 .cancel-btn1 {
-    background: #f44336;
-    color: white;
-  } */
-  
+ 
   .modal-overlay2 {
     position: fixed;
     top: 0;
@@ -442,27 +395,32 @@
   border: none;
   cursor: pointer;
   font-size: 15px;
-  width: 110px;
+  width: 115px;
   border-radius: 20px;
   margin-left: 0px;
- 
   
 }
 
-.status-btn2.not-found {
-  background-color: #6c757d ; /* Red for unclaimed */
+.status-btn2.unclaimed {
+  background-color: red; /* Red for unclaimed */
 }
 
-.status-btn2.found {
-  background-color: #28a745 ; /* Green for claimed */
+.status-btn2.claimed {
+  background-color: #4CAF50; /* Green for claimed */
 }
 
+.status-btn2.Unclaimed {
+  background-color: red; /* Red for unclaimed */
+}
 
+.status-btn2.Claimed {
+  background-color: #4CAF50; /* Green for claimed */
+}
 
-/* .status-btn2:hover{
+.status-btn2:hover{
 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 transform: translateY(-1px);
-} */
+}
 
 .arrow2 {
   width: 14px; /* Adjust icon size for better proportion with the input */
@@ -539,8 +497,8 @@ transform: translateY(-1px);
   font-size: 38px; /* Adjust size of the icon */
   color: #8B0000; /* Change color as needed */
   padding: 5px; /* Add some padding */
-  
   margin-top: 5px;
+  margin-left: 05px;
   
 }
 
@@ -551,3 +509,129 @@ transform: translateY(-1px);
   color: #a50303; /* Change color on hover */
 }
 
+
+
+@media (max-width: 768px) {
+  /* Fixed Header */
+  .content {
+    width: 100%;
+  }
+
+  .manage-bulletin2 {
+    margin: 30px;
+    display: flex;
+    align-items: flex-start; /* Align to the top */
+    flex-grow: 1; /* Take up the remaining space */
+    padding: 50px;
+    flex-direction:column;
+  }
+
+  .search-bar2 {
+    margin-left: -10px;
+    margin-top: -70px;
+    
+  }
+  .search-bar2 input {
+    height: 35px; /* Increased height for better visual balance with icons */
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    border: 1px solid #6d6c6c;
+    border-radius: 35px;
+    margin-left: -50px;
+    width: 260px;
+  }
+
+  .view-mode-toggle2 {
+
+    margin-left: 05px;
+    
+  }
+
+  .breadcrumb2 {
+    margin-top: 0px;
+    margin-left: -60px;
+    font-size: 25px;
+    color:#800000;
+    font-weight: bold;
+    width: 160%;
+  }
+  header {
+    margin-left: 0; /* Remove margin for header on mobile */
+    padding: 10px 0;
+    z-index: 0;
+    height: 6%;
+
+  }
+
+  .sidhead {
+    width: 85%;
+    height: 120%;
+    margin-left: 240px;
+    margin-top: -3px;
+  }
+
+  .grid-item2 {
+    background-color: #f0f0f0; /* Background color for items */
+    padding: 20px; /* Padding inside items */
+    border: 1px solid #ccc; /* Optional: Border for items */
+    border-radius: 4px; /* Rounded corners */
+    text-align: center; /* Center text */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
+    width: 250px; /* Ensure grid items take full width of their cell */
+    margin-left: -26px;
+  } 
+
+  .grid-container2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+    margin-top: 30px;
+
+    row-gap: 35px; /* Space between grid items */
+    column-gap:85px;
+    padding: 16px; /* Padding around the grid */
+    justify-items: left; /* Center items within their grid cells */
+  }
+  
+  .top-right-buttons2 {
+    display: flex; /* Enable flexbox for alignment */
+    align-items: center; /* Vertically center items */
+    margin-left: -345px;
+    gap: 10px; /* Add spacing between the input and icons */
+    
+    }
+
+    .page-nav2 {
+      height: 40px;
+      font-weight: bold;
+      font-size: 12px;
+      border: 1px solid #8B0000;
+      background-color: #fff;
+      cursor: pointer;
+      color: #8B0000;
+      border-radius:  10px;
+      margin-left: 0;
+  }
+
+  .ppagination1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px; /* Adjust margin to avoid covering the table */
+    margin-left: 10px;
+    margin-bottom: 50px; /* Add some space below the pagination */
+  }
+
+  .add-item-btn2, .register-qr-btn2 {
+    background-color: #800000; /* Dark red color for buttons */
+    color: white;
+    padding: 10px 20px; /* Adjusted padding for better button sizing */
+    font-size: 15px;
+    height: 60px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px; /* Space between buttons */
+    width: 150px;
+  }
+}

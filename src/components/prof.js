@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from './sidebar'; // Assuming you have a Sidebar component
 import '../style/prof.css'; // Ensure this CSS file exists
+import Header from './header';
 
 
 function Profile() {
@@ -45,6 +46,7 @@ function Profile() {
   return (
     <div className="home-container1">
       <Sidebar />
+      <Header />
     
       {/* Profile Content */}
       <div className="profile-container">

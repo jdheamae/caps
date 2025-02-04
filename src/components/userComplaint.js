@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./sidebar";
 import "../style/Lost.css";
+import Header from "./header"
 import { FaTable } from "react-icons/fa6";
 import { IoGridOutline } from "react-icons/io5";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -20,6 +21,7 @@ function UserComplaint() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+
   const [itemData, setItemData] = useState({
     itemname: '',
     type: '',
@@ -28,7 +30,7 @@ function UserComplaint() {
     location: '',
     time: '',
     description: '',
-    status: 'not-found',
+    status: 'Not Found',
   });
 
   // Fetch all data from the database when the component mounts
@@ -44,6 +46,13 @@ function UserComplaint() {
     };
 
     fetchRequests();
+
+    const handleResize = () => {
+      setViewMode(window.innerWidth <= 768 ? 'grid' : 'table');
+    };
+  
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleInputChange = (e) => {
@@ -82,7 +91,7 @@ function UserComplaint() {
       if (response.ok) {
         const result = await response.json();
         alert(result.message);
-        setRequests([...requests, { ...newComplaint, status: "not-found ", finder: "N/A" }]);
+        setRequests([...requests, { ...newComplaint, status: "Not Found", finder: "N/A" }]);
         setShowModal(false);
       } else {
         alert("Error filing complaint. Please try again.");
@@ -133,7 +142,7 @@ function UserComplaint() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const updatedRequest = {
+    const updatedRequest ={
       ...selectedRequest,
       ...itemData,
     };
@@ -157,7 +166,7 @@ function UserComplaint() {
 
         setShowModal(false); // Close the modal after successful update
         setSelectedRequest(null);// Clear selected request
-        setItemData({ // Reset itemData after update
+        setItemData ({ // Reset itemData after update
           itemname: '',
           type: '',
           contact: '',
@@ -165,7 +174,7 @@ function UserComplaint() {
           location: '',
           description: '',
           time: '',
-          status: 'not-found'
+          status: 'Not Found'
         });
 
       } else {
@@ -241,7 +250,7 @@ function UserComplaint() {
       location: '',
       description: '',
       time: '',
-      status: 'not-found',
+      status: 'Not Found',
     });
     setShowModal(true); // Open modal for adding a complaint
   };
@@ -250,15 +259,12 @@ function UserComplaint() {
   return (
     <div className="home-container">
       <Sidebar />
-
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+      <Header />
 
       <div className="content">
         <div className="manage-bulletin2">
           <div className="breadcrumb2">
-            Manage Lost And Found {'>'} Manage Reports and Complaints
+            MANAGE LOST AND FOUND {'>'} Manage Reports and Complaints
           </div>
 
 
@@ -269,7 +275,7 @@ function UserComplaint() {
               placeholder="Search"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
-              className="search-input2"
+              className="search-input3"
             />
             <button onClick={toggleViewMode} className="view-mode-toggle2">
               {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
@@ -311,13 +317,7 @@ function UserComplaint() {
                     <td>{item.date}</td>
                     <td>{item.location}</td>
                     <td>{item.time}</td>
-                    <td><button
-                      className={`status-btn2 ${item.status && typeof item.status === 'string' && item.status.toLowerCase() === 'not-found' ? 'not-found' : 'found'}`}
-                      
-                    >
-                      {item.status || 'not-found'}
-                     
-                    </button></td>
+                    <td>{item.status}</td>
                     <td>{item.finder}</td>
                     <td>
 

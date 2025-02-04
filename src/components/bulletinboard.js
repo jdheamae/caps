@@ -9,6 +9,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6"
 import Pagination from './pagination';
 import { jwtDecode } from 'jwt-decode';
+import Header from './header';
 
 
 function Bulletin() {
@@ -122,9 +123,7 @@ function Bulletin() {
   return (
     <div className="home-container">
       <Sidebar />
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+      <Header />
 
 
       <div className="content">
@@ -148,17 +147,6 @@ function Bulletin() {
 
 
           </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
           <div className="grid-container4">
