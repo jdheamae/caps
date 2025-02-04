@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import "../style/log.css";
+import "..//style/log.css";
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleFormSwitch = () => {
     setIsLogin(!isLogin);
@@ -23,6 +24,8 @@ function Auth() {
       });
 
       const data = await response.json();
+      setLoading(false); // Hide loading animation
+
       if (response.ok) {
         alert("Sign up successful! Please log in.");
         setIsLogin(true); // Switch to login form after successful sign up
@@ -37,9 +40,10 @@ function Auth() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setLoading(true); // Show loading animation
     const email = e.target.email.value;
     const password = e.target.password.value;
-    
+
     try {
       const response = await fetch("http://10.10.83.224:5000/login", {
         method: "POST",
@@ -48,6 +52,8 @@ function Auth() {
       });
 
       const data = await response.json();
+      setLoading(false); // Hide loading animation
+
       if (response.ok) {
         // Store JWT in localStorage
         localStorage.setItem("token", data.token);  // Store token in localStorage
@@ -66,49 +72,88 @@ function Auth() {
   };
 
   return (
-    <div className={`container ${!isLogin ? "active" : ""}`} id="container">
-      {/* Sign Up Form */}
-      <div className={`form-container sign-up`}>
-        <form onSubmit={handleSignUp}>
-          <h1>Create Account</h1>
-          <input type="text" name="name" placeholder="Name" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="password" name="password" placeholder="Password" required />
-          <button type="submit">Sign Up</button>
-        </form>
-      </div>
+    <>
+      {/* Loading Animation */}
+      {loading && (
+        <div className="loading-overlay">
+          <img src="/load.gif" alt="Loading..." className="loading-gif" />
+        </div>
+      )}
+      
+      <div className={`container ${!isLogin ? "active" : ""}`} id="container">
+        {/* Sign Up Form */}
+        <div className={`form-container sign-up`}>
+          <form onSubmit={handleSignUp}>
+            <h1>Create Account</h1>
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="number" name="email" placeholder="Contact Number" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Sign Up</button>
+          </form>
+        </div>
 
-      {/* Sign In Form */}
-      <div className={`form-container sign-in`}>
-        <form onSubmit={handleSignIn}>
-          <h1>Sign In</h1>
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="password" name="password" placeholder="Password" required />
-          <a href="#">Forgot Your Password?</a>
-          <button type="submit">Sign In</button>
-        </form>
-      </div>
+        {/* Sign In Form */}
+        <div className={`form-container sign-in`}>
+          <form onSubmit={handleSignIn}>
+            <h1>Sign In</h1>
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <a href="#">Forgot Your Password?</a>
+            <button type="submit">Sign In</button>
+          </form>
+        </div>
 
-      {/* Toggle Container */}
-      <div className="toggle-container">
-        <div className="toggle">
-          <div className="toggle-panel toggle-left">
-            <h1>Welcome Back!</h1>
-            <p>Enter your personal details to use all site features</p>
-            <button className="hidden" id="login" onClick={handleFormSwitch}>
-              Sign In
-            </button>
-          </div>
-          <div className="toggle-panel toggle-right">
-            <h1>Hello, Friend!</h1>
-            <p>Register with your personal details to use all site features</p>
-            <button className="hidden" id="register" onClick={handleFormSwitch}>
-              Sign Up
-            </button>
+        {/* Toggle Container */}
+        <div className="toggle-container">
+          <div className="toggle">
+            <div className="toggle-panel toggle-left">
+            <img 
+                src="firigif.gif" 
+                alt="Welcome GIF" 
+                className="welcome-gifleft"
+              />
+            <img 
+                src="firi2.png" 
+                alt="Welcome GIF" 
+                className="welcome-gif1left"
+              />
+              <div className="churva"> 
+              <p>Join FIRI – Find It, Retrieve It!
+                <br></br>
+                <br></br>
+                Sign up to report, track, and reclaim lost items with ease! 🔍✨ </p>
+              </div>
+
+              <button className="hidden1" id="login" onClick={handleFormSwitch}>
+                SignIn
+              </button>
+            </div>
+            <div className="toggle-panel toggle-right">
+              <img 
+                src="firigif.gif" 
+                alt="Welcome GIF" 
+                className="welcome-gif"
+              />
+            <img 
+                src="firi.png" 
+                alt="Welcome GIF" 
+                className="welcome-gif1"
+              />
+              <p>Welcome to FIRI – Find It, Retrieve It!
+                <br></br>
+                <br></br>
+                Easily report lost and found items. Let’s help reunite valuables with their owners! 🔍✨
+                </p>
+              <button className="hidden" id="register" onClick={handleFormSwitch}>
+                SignUp
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

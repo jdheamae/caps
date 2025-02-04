@@ -20,7 +20,21 @@
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.3px;
-  margin: 20px 0;
+  margin: 10px 10px;
+  margin-left: 70px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+.churva p {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  margin: 10px 10px;
+  margin-right: 70px;
+  text-align: justify;
+  text-justify: inter-word;
+  color: #850F13;
+  font-weight: 500;
 }
 
 .container span {
@@ -62,10 +76,25 @@
     cursor: pointer;
   }
 
+  .container button.hidden1 {
+    background-color: transparent;
+    border-color:#850F13;
+    background-color:#F3D558;
+    margin-left: -70px;
+    margin-bottom: 50px;
+  }
+  .container button.hidden1:hover {
+    background-color: transparent;
+    border-color: #fff;
+    background-color:#850F13;
+  }
+
 .container button.hidden {
   background-color: transparent;
   border-color: #fff;
   background-color: #850F13;
+  margin-left: 80px;
+  margin-bottom: 50px;
 }
 .container button.hidden:hover {
     background-color: transparent;
@@ -201,6 +230,7 @@
 
 .toggle-left {
   transform: translateX(-200%);
+
 }
 
 .container.active .toggle-left {
@@ -212,8 +242,178 @@
   right: 0;
   transform: translateX(0);
   background-color: #850F13;
+
+
 }
+
 
 .container.active .toggle-right {
   transform: translateX(200%);
+}
+
+.welcome-gif {
+  width: 280px;  /* Adjust size */
+  height: auto;
+  margin-bottom: 10px; /* Space between GIF and text */
+  margin-left: 80px;
+  margin-top: 10px;
+}
+.welcome-gif1 {
+  width: 100px;  /* Adjust size */
+  height: auto;
+  margin-bottom: 10px; /* Space between GIF and text */
+  margin-left: 80px;
+  margin-top: -10px;
+}
+
+.welcome-gifleft {
+  width: 300px;  /* Adjust size */
+  height: auto;
+  margin-bottom: 10px; /* Space between GIF and text */
+  margin-right: 80px;
+  margin-top: 0px;
+}
+.welcome-gif1left {
+  width: 100px;  /* Adjust size */
+  height: auto;
+  margin-bottom: 10px; /* Space between GIF and text */
+  margin-right: 80px;
+  margin-top: -10px;
+}
+
+.loading-gif {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(96, 93, 93, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-gif {
+  width: 200px;
+  height: 100px;
+  object-fit: contain;
+}
+/* -------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+  /* Sign Up Form */
+  .container {
+    width: 98%;
+    margin-left: 5px;
+  
+  }
+
+  .container p {
+    font-size: 10px;
+    width: 95px;
+    margin-top: -5px;
+  }
+
+  .container form {
+    width: 110%;
+    height: 100%;
+
+
+  }
+  .sign-up h1 {
+    margin-left: -170px;
+    font-size: 30px;
+  }
+  .sign-up input {
+    margin-left: -170px;
+    padding: 10px;
+  }
+
+  .sign-up button {
+    margin-left: -150px;
+    background-color: #850F13;
+  }
+
+  /* Sign In Form */
+  .sign-in input {
+    margin-left: -20px;
+  }
+
+    /* toggle */
+  .toggle-container {
+    position: absolute;
+    top: 0;
+    left: 70%;
+    width: 30%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 0px 0 0 0px;
+    z-index: 1000;
+  }
+
+  .container.active .toggle-container {
+    transform: translateX(-100%);
+    border-radius: 0 0px 0px 0;
+    width: 30%;
+    margin-left: -40%;
+  }
+
+
+  .welcome-gif {
+    width: 150px;  /* Adjust size */
+    height: auto;
+    margin-bottom: 10px; /* Space between GIF and text */
+    margin-left: 60px;
+    margin-top: 10px;
+  }
+
+  .welcome-gif1 {
+    margin-right: 20px;
+  }
+
+  .welcome-gifleft {
+    width: 150px;  /* Adjust size */
+    height: auto;
+    margin-bottom: 10px; /* Space between GIF and text */
+    margin-left: 20px;
+    margin-top: 10px;
+  }
+
+  .welcome-gif1left {
+
+    margin-right: 50px;
+    margin-top: -10px;
+  }
+
+
+  .container button.hidden1 {
+    margin-left: -60px;
+    width: 100px;
+    height: 8%;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    text-align: center; /* Ensures text inside is centered */
+  }
+
+  .container button.hidden {
+    width: 100px;
+    height: 8%;
+    margin-left: 60px;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    text-align: center; /* Ensures text inside is centered */
+  }
 }
