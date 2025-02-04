@@ -38,8 +38,8 @@ const Sidebar = () => {
             <NavLink to="/" activeClassName="active">
               <FaHome className="nav-icon" /> Home
             </NavLink>
-            <NavLink to="/prof" activeClassName="active">
-              <FaHome className="nav-icon" /> Profile
+            <NavLink to="/profile" activeClassName="active">
+              <FaUser className="nav-icon" /> Profile
             </NavLink>
        
             <NavLink to="/userComplaints" activeClassName="active">
@@ -59,7 +59,7 @@ const Sidebar = () => {
               <FaChartLine className="nav-icon" /> Dashboard
             </NavLink>
             <NavLink to="/profile" activeClassName="active">
-              <FaHome className="nav-icon" /> Profile
+              <FaUser className="nav-icon" /> Profile
             </NavLink>
             <NavLink to="/complaints" activeClassName="active">
               <FaBox className="nav-icon" /> Lost Complaint done
