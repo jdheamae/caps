@@ -579,19 +579,9 @@ transform: translateY(-1px);
   .grid-container4 {
 
     width: 110%; /* Ensure the grid takes full width */
- 
+
   }
-  .grid-item4 {
-    z-index: -1;
-  }
-  .item-image4 {
-    max-width: 100%; /* Make the image responsive */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 10px; /* Add some space below the image */
-    border-radius: 8px; /* Optional: add rounded corners */
-    filter: blur(2px); /*Adds a blur effect */
-    z-index: -1000;
-  }
+  
 
   .ppagination1 {
     display: flex;
@@ -615,7 +605,9 @@ transform: translateY(-1px);
 
 /* MODAL */
 
-
+  .modal-overlay4.active {
+    display: flex; /* Show modal when the "active" class is added */
+  }
   .modal-overlay4 {
     position: fixed;
     top: 0;
@@ -639,6 +631,7 @@ transform: translateY(-1px);
     width: 80%;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     text-align: left;
+    z-index: 5;
 }
 
 .modal4 h3 {
