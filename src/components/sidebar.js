@@ -97,12 +97,16 @@ const Sidebar = () => {
               <NavLink to="/additem" activeClassName="active">
                 <FaQrcode className="nav-icon" /> Found Items
               </NavLink>
-              <NavLink to="/database" activeClassName="active">
+              {/* <NavLink to="/database" activeClassName="active">
                 <FaFileAlt className="nav-icon" /> Database
-              </NavLink>
+              </NavLink> */}
               <NavLink to="/manaRequests" activeClassName="active">
                 <FaUserCheck className="nav-icon" /> Manage Request
               </NavLink>
+              <NavLink to="/prof" activeClassName="active">
+                <FaUser className="nav-icon" /> Profile
+              </NavLink>
+
             </>
           )}
           <div className="logout">

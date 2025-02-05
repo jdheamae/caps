@@ -27,26 +27,84 @@ mongoose
 const SECRET_KEY = "polgary";
 //--------------------signing upppp----------------------------------------
 app.post("/signup", async (req, res) => {
-    const { name, email, password,usertype } = req.body;
+  const { firstName,lastName, email, password,usertype,contactNumber, } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already in use" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ firstName,lastName,contactNumber, email, password: hashedPassword ,usertype: "student"});
+
+    await user.save();
+    res.status(201).json({ message: "User registered successfully" });
+  } catch (error) {
+    console.error("Error saving user to MongoDB:", error);
+    res.status(500).json({ error: "Error registering user" });
+  }
+});
+app.get("/profile/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ error: "Error fetching profile" });
+  }
+});
+
+// Update user profile (first name, last name, email)
+app.put("/update-profile/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const { firstName, lastName, email, password ,contactNumber,image_Url} = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user fields
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.email = email;
+    user.image_Url=image_Url;
+    user.contactNumber=contactNumber;
+
+    // If password is provided, hash it before saving
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
+
+    await user.save(); // Save updated user data
+
+    res.status(200).json({ message: "Profile updated successfully!" });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Error updating profile" });
+  }
+});
+  //idk what is this ahahahah-------------------------------------------
+app.post("/register", async (req, res) => {
+    const { name, email, contact, college, id } = req.body;
   
     try {
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return res.status(400).json({ error: "Email already in use" });
-      }
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = new User({ name, email, password: hashedPassword ,usertype: "student"});
-  
-      await user.save();
-      res.status(201).json({ message: "User registered successfully" });
+      const newItem = new Item({ name, email, contact, college, id });
+      await newItem.save();
+      res.status(201).json({ message: "Item saved successfully" });
     } catch (error) {
-      console.error("Error saving user to MongoDB:", error);
-      res.status(500).json({ error: "Error registering user" });
+      console.error("Error saving item to MongoDB:", error);
+      res.status(500).json({ message: "Error saving item" });
     }
   });
-  //----------------------------------login ----------------------------------------------------
-app.post("/login", async (req, res) => {
+
+  app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     // Validate user credentials (replace with your logic)
@@ -61,21 +119,6 @@ app.post("/login", async (req, res) => {
     });
   
     res.json({ token });
-  });
-
-
-  //idk what is this ahahahah-------------------------------------------
-app.post("/register", async (req, res) => {
-    const { name, email, contact, college, id } = req.body;
-  
-    try {
-      const newItem = new Item({ name, email, contact, college, id });
-      await newItem.save();
-      res.status(201).json({ message: "Item saved successfully" });
-    } catch (error) {
-      console.error("Error saving item to MongoDB:", error);
-      res.status(500).json({ message: "Error saving item" });
-    }
   });
 
 

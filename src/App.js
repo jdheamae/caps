@@ -65,7 +65,14 @@ function App() {
               </AdminRoute>
             }
           />
-    
+     {/* <Route
+            path="/profile"
+            element={
+              <AdminRoute>
+                <Profile />
+              </AdminRoute>
+            }
+          /> */}
           <Route
             path="/manaRequests"
             element={

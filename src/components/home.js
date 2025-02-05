@@ -70,18 +70,18 @@ function Home() {
           <h2>Meet Our Developer Team</h2>
           <div className="developer-grid">
             <div className="developer-card">
-              <img src="1.png" alt="John Doe" className="developer-img" />
-              <h3>John Doe</h3>
-              <p>Front-End Devel oper</p>
-            </div>
-            <div className="developer-card">
-              <img src="2.png" alt="Jane Smith" className="developer-img" />
-              <h3>Jane Smith</h3>
+              <img src="https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.6435-9/139882766_2902835443285522_765340742253343005_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEfUzhO3vC6P-_k7IYREfEh224pQsjs5ZjbbilCyOzlmDxdCKyEr29GzfuMtx9Ck6EkHfcbCystCx_8D4eMJ8hH&_nc_ohc=LUKjLJxmXloQ7kNvgGoWhDX&_nc_zt=23&_nc_ht=scontent.fcgy1-1.fna&_nc_gid=A0iVzjJVDtaGxH_PhuWmrAs&oh=00_AYCcN7fpF5qKJhEU07gAIbChWedD6shsxYRaxFwJWwYawQ&oe=67CA6BD0" alt="John Doe" className="developer-img" />
+              <h3>Jean Dhea Mae Ampong</h3>
               <p>Front-End Developer</p>
             </div>
             <div className="developer-card">
-              <img src="2.png " alt="Mark Johnson" className="developer-img" />
-              <h3>Mark Johnson</h3>
+              <img src="https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.6435-9/139882766_2902835443285522_765340742253343005_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEfUzhO3vC6P-_k7IYREfEh224pQsjs5ZjbbilCyOzlmDxdCKyEr29GzfuMtx9Ck6EkHfcbCystCx_8D4eMJ8hH&_nc_ohc=LUKjLJxmXloQ7kNvgGoWhDX&_nc_zt=23&_nc_ht=scontent.fcgy1-1.fna&_nc_gid=A0iVzjJVDtaGxH_PhuWmrAs&oh=00_AYCcN7fpF5qKJhEU07gAIbChWedD6shsxYRaxFwJWwYawQ&oe=67CA6BD0" alt="Jane Smith" className="developer-img" />
+              <h3>Christian Albert Muana</h3>
+              <p>Front-End Developer</p>
+            </div>
+            <div className="developer-card">
+              <img src="https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.6435-9/139882766_2902835443285522_765340742253343005_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEfUzhO3vC6P-_k7IYREfEh224pQsjs5ZjbbilCyOzlmDxdCKyEr29GzfuMtx9Ck6EkHfcbCystCx_8D4eMJ8hH&_nc_ohc=LUKjLJxmXloQ7kNvgGoWhDX&_nc_zt=23&_nc_ht=scontent.fcgy1-1.fna&_nc_gid=A0iVzjJVDtaGxH_PhuWmrAs&oh=00_AYCcN7fpF5qKJhEU07gAIbChWedD6shsxYRaxFwJWwYawQ&oe=67CA6BD0" alt="Mark Johnson" className="developer-img" />
+              <h3>Paul Gary Oca</h3>
               <p>Back-End Developer</p>
             </div>
           </div>
