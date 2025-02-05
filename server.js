@@ -7,12 +7,26 @@ const Item = require('./src/models/Item'); // Import the Item model
 const jwt = require('jsonwebtoken');
 const Complaint = require('./src/models/Complaint'); // Import the Complaint model
 const RetrievalRequestSchema =require('./src/models/RetrievalRequest');
+const fs = require('fs');
+const https = require('https');
+const options = {
+  key: fs.readFileSync(__dirname + '/server.key'),
+  cert: fs.readFileSync(__dirname + '/server.crt')
+};
 
 const app = express();
 const PORT = 5000;
+const allowedOrigins = ['http://localhost:3000', 'http://10.10.83.224:3000']; // Add your local network IP here
 
-// Middleware
-app.use(cors());
+
+
+app.use(cors({
+  origin: '*', // Allow all origins for testing (replace with specific URL for production)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+
 app.use(express.json());
 
 mongoose
@@ -561,6 +575,9 @@ app.delete('/retrieval-requests/:id', async (req, res) => {
 });//goods
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`deyamemyidol`);
+// Read the SSL certificate files
+
+// Create HTTPS server
+https.createServer(options, app).listen(PORT, '0.0.0.0', () => {
+  console.log(`HTTPS Server is running on https://<YourLocalIP>:${PORT}`);
 });

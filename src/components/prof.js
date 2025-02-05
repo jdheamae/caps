@@ -28,7 +28,7 @@ function Profile() {
     const fetchUserData = async () => {
       if (!userId) return;
       try {
-        const response = await fetch(`http://10.10.83.224:5000/profile/${userId}`, {
+        const response = await fetch(`https://10.10.83.224:5000/profile/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();
@@ -106,7 +106,7 @@ function Profile() {
     }
 
     try {
-      const response = await fetch(`http://10.10.83.224:5000/update-profile/${userId}`, {
+      const response = await fetch(`https://10.10.83.224:5000/update-profile/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
