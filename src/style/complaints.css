@@ -22,14 +22,11 @@
   
   
   .search-bar3 {
-    display: flex; /* Enable flexbox for alignment */
+    display: flex;
     align-items: center; /* Vertically center items */
-    left: -20px;
-    top: 50px;
-    
-     /*height: 300px; Full viewport height to center vertically */
-    /* gap: 10px; Add spacing between the input and icons */
-    position: relative;
+    margin-top: -100px;
+     /*height: 3  00px; Full viewport height to center vertically */
+
     
   }
 
@@ -46,6 +43,7 @@
     font-size: 15px;
     border: 1px solid #6d6c6c;
     border-radius: 35px;
+    margin-top: 50px
   }
 
   .search-bar3 select:focus, .search-bar3 input:focus {
@@ -86,11 +84,9 @@
 /* Top-Right Buttons Container */
 .top-right-buttons3 {
   display: flex; /* Enable flexbox for alignment */
-  align-items: center; /* Vertically center items */
-  left: -480px;
-  top: 100px;
-  gap: 10px; /* Add spacing between the input and icons */
-  position: relative;
+  margin-top: 250px;
+  margin-left: -500px;
+
   }
   
   /* Button Styling */
@@ -540,7 +536,7 @@ transform: translateY(-1px);
   color: #8B0000; /* Change color as needed */
   padding: 5px; /* Add some padding */
   
-  margin-top: 5px;
+  margin-top: 50px;
   
 }
 

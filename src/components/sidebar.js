@@ -91,7 +91,7 @@ const Sidebar = () => {
               <NavLink to="/dashboard" activeClassName="active">
                 <FaChartLine className="nav-icon" /> Dashboard
               </NavLink>
-              <NavLink to="/complaints" activeClassName="active">
+              <NavLink to="/Complaints" activeClassName="active">
                 <FaBox className="nav-icon" /> Lost Complaint
               </NavLink>
               <NavLink to="/additem" activeClassName="active">

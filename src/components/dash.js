@@ -2,6 +2,7 @@ import React from "react";
 import { FaBox, FaCheck, FaFileAlt, FaUserCheck } from "react-icons/fa";
 import "../style/dash.css";
 import Sidebar from "./sidebar";
+import Header from "./header";
 
 function Dashboard () {
   // Mock data for the dashboard
@@ -16,9 +17,7 @@ function Dashboard () {
     <div className="dashboard-container">
       <Sidebar />
       {/* Fixed Header */}
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+    <Header /> 
 
       <div className="name" >
         <div className="dah">

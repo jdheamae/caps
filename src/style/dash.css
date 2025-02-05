@@ -40,13 +40,13 @@
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
     border: 1px solid #d5d2d2;
-    position: relative;
+    display: block;
   }
   
   /* Add a colored line below each card */
   .dashboard-card::after {
     content: "";
-    position: absolute;
+
     bottom: 5px;  /* Position the line at the bottom */
     left: 30px;
     width: 80%;
@@ -81,3 +81,18 @@
   }
   
 
+@media (max-width: 768px) {
+
+  .dashboard-cards {
+    margin-left: 10px;
+
+  }
+
+  .dah h2 {
+    margin-top: 90px;  /* Adjust the space from the top */
+    margin-left: 80px;
+
+  }
+
+
+}

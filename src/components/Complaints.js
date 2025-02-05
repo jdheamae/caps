@@ -8,6 +8,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import Pagination from './pagination';
 import axios from 'axios';
+import Header from "./header";
 
 function Manage() {
   const [filterText, setFilterText] = useState("");
@@ -241,10 +242,9 @@ function Manage() {
   return (
     <div className="home-container">
       <Sidebar />
+      <Header />
 
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+
 
       <div className="content">
         <div className="manage-bulletin3">
@@ -262,7 +262,7 @@ function Manage() {
               onChange={(e) => setFilterText(e.target.value)}
               className="search-input3"
             />
-            <button onClick={toggleViewMode} className="view-mode-toggle2">
+            <button onClick={toggleViewMode} className="view-mode-toggle3">
               {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
             </button>
 
