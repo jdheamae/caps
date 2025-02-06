@@ -1,4 +1,3 @@
-
 import { jwtDecode } from 'jwt-decode';
 
 import React from 'react';
@@ -10,6 +9,7 @@ import ManageRequest from './components/manageRequest';
 import ReportItem from './components/report';
 import Dashboard from './components/dash';
 import Auth from './components/log';
+
 import Additem from './components/additem';
 import UserComplaint from './components/userComplaint';
 import Bulletin from './components/bulletinboard';
@@ -28,6 +28,10 @@ const isAdmin = () => {
     }
   }
   return false;
+};
+const loggedin = () => {
+  const token = localStorage.getItem('token'); // Check if the token exists in localStorage
+  return token ? true : false; // Return true if logged in, false otherwise
 };
 const isStudent=()=>{
   const token = localStorage.getItem('token'); // Assuming the JWT token is stored in localStorage
@@ -49,13 +53,22 @@ const AdminRoute = ({ children }) => {
 const StudentRoute = ({ children }) => {
   return isStudent() ? children : <Navigate to="/login" />;
 };
+const NotLoggedIn = ({ children }) => {
+  return loggedin() ? children : <Navigate to="/login" />;
+};
+
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-        <Route path="/prof" element={<Profile />} />
+        {/* <Route path="/prof" element={<Profile />} /> */}
+    
+
+
+
+
           <Route path="/" element={<Home />} />
           <Route
             path="/complaints"
@@ -65,7 +78,15 @@ function App() {
               </AdminRoute>
             }
           />
-    
+  
+        <Route
+            path="/profile"
+            element={
+              <NotLoggedIn>
+                <Profile />
+              </NotLoggedIn>
+            }
+          />
           <Route
             path="/manaRequests"
             element={
