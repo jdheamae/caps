@@ -7,13 +7,13 @@
     font-weight: bold;
 
   }
-  .manage-bulletin {
+  .manage-bulletin11 {
     margin: 30px;
     display: flex;
     align-items: flex-start; /* Align to the top */
     flex-grow: 1; /* Take up the remaining space */
     padding: 50px;
-    margin-left: 240px; /* Space to avoid8lap with the sidebar */
+    margin-left: -540px; /* Space to avoid8lap with the sidebar */
     flex-direction:column;
   }
   

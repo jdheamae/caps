@@ -99,7 +99,6 @@ function Auth() {
             <h1>Sign In</h1>
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="password" placeholder="Password" required />
-            <a href="#">Forgot Your Password?</a>
             <button type="submit">Sign In</button>
           </form>
         </div>

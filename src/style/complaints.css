@@ -6,6 +6,7 @@
     color: #000000;
     font-weight: bold;
   }
+
   .manage-bulletin3 {
     margin: 30px;
     display: flex;
@@ -112,10 +113,9 @@
 
   
   .ffound-items-table3 {
-    
     width: 100%; /* Full width of the parent */
     max-width: 1200px; /* Set a max width for the table */
-    margin: 190px auto 0px; /* Center the table horizontally */
+    margin: 70px auto 0px; /* Center the table horizontally */
     padding: 0; /* Remove any default padding */
     border-collapse: collapse;
     font-size: 14px;
@@ -296,7 +296,9 @@
     padding: 30px;
     border-radius: 12px;
     width: 90%;
-    max-width: 800px; /* Adjusted for more space */
+    max-width: 600px; /* Adjusted for a single column layout */
+    max-height: 85vh; /* Limit height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     text-align: left;
 }
@@ -307,12 +309,13 @@
     color: #222222;
     text-align: center;
     font-weight: bold;
+    width: 100%;
 }
 
 .modal3 form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns for labels and inputs */
-    gap: 20px;
+    display: flex;
+    flex-direction: column; /* Single column layout */
+    gap: 15px;
     width: 100%; /* Ensure the form takes full width */
 }
 
@@ -328,27 +331,14 @@
     margin-bottom: 5px;
 }
 
-.modal3 select{
-  font-weight: 500;
-    color: #444444;
-    margin-bottom: 5px;
-}
-
-.modal3 textarea{
-  font-weight: 500;
-    color: #444444;
-    margin-bottom: 5px;
-    height: 50px;
-}
-
-.modal3 input,
 .modal3 select,
-.modal3 textarea {
+.modal3 textarea,
+.modal3 input {
     padding: 12px;
     font-size: 1rem;
     border: 1px solid #cccccc;
     border-radius: 6px;
-    width: 90%;
+    width: 100%; /* Adjusted for full width in single column */
 }
 
 .modal3 input:focus,
@@ -545,5 +535,84 @@ transform: translateY(-1px);
   
   transform: translateY(-2px);
   color: #a50303; /* Change color on hover */
-}
 
+
+}
+/* ------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .manage-bulletin3 {
+    margin: 30px;
+    display: flex;
+    align-items: flex-start; /* Align to the top */
+    flex-grow: 1; /* Take up the remaining space */
+    padding: 50px;
+      flex-direction:column;
+  }
+
+  .breadcrumb3 {
+    margin: 10px 8px 0 -50px;
+    font-size: 20px;
+    color:#800000;
+    font-weight: bold;
+    width: 150%;
+  }
+
+  .search-bar3 input {
+    width: 320px;
+    height: 35px; /* Increased height for better visual balance with icons */
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    border: 1px solid #6d6c6c;
+    border-radius: 35px;
+    margin-top: 50px;
+    margin-left: -50px;
+  }
+
+  .top-right-buttons3 {
+    display: flex; /* Enable flexbox for alignment */
+    margin-top: 250px;
+    margin-left: -320px;
+    }
+
+    .ffound-items-table3 {
+      margin: 50px auto 0px; /* Center the table horizontally */
+
+  }
+
+  .grid-container3 {
+    margin-top: 50px;
+  }
+
+  .grid-item3 {
+    margin-left: -30px;
+    width: 130%; /* Ensure grid items take full width of their cell */
+  }
+  /* modal ---------------------------------- */
+  .modal-overlay3 {
+  width: 100%;
+}
+  .modal3 {
+    display: flex;
+    width: 80%;
+    max-width: 800px; /* Adjusted for more space */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+
+  .modal3 form {
+    display: flex;
+    flex-direction: column; /* Single column layout */
+    gap: 10px;
+    width: 90%; /* Ensure the form takes full width */
+  }
+
+  .modal3 select{
+      padding: 12px;
+      font-size: 1rem;
+      border: 1px solid #cccccc;
+      border-radius: 6px;
+      width: 110%; /* Adjusted for full width in single column */
+    }
+}

@@ -25,11 +25,7 @@
     display: flex; /* Enable flexbox for alignment */
     align-items: center; /* Vertically center items */
     left: -20px;
-    top: 50px;
-    
-     /*height: 300px; Full viewport height to center vertically */
-    /* gap: 10px; Add spacing between the input and icons */
-    position: relative;
+    margin-top: 50px;
     
   }
 
@@ -427,7 +423,7 @@ transform: translateY(-1px);
 .grid-container5 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-  margin-top: 190px;
+  margin-top: 60px;
   margin-left: -37px;
   row-gap: 35px; /* Space between grid items */
   column-gap:85px;
@@ -559,6 +555,11 @@ transform: translateY(-1px);
 font-weight: 500;
   color: #444444;
   margin-bottom: 5px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  width: 90%;
 }
 
 .modal5 textarea{
@@ -569,7 +570,6 @@ font-weight: 500;
 }
 
 .modal5 input,
-.modal5 select,
 .modal5 textarea {
   padding: 12px;
   font-size: 1rem;
@@ -628,4 +628,39 @@ font-weight: 500;
   margin-top: 10px;
   width: 320px; /* or any desired width */
   height: auto;
+}
+
+@media (max-width: 768px) {
+  .manage-bulletin5 {
+    margin-left: 0px; /* Space to avoid8lap with the sidebar */
+
+  }
+  .search-bar5 {
+    margin-left: -20px;
+    
+  }
+  .search-bar5 input {
+    width: 250px;
+    height: 35px; /* Increased height for better visual balance with icons */
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    border: 1px solid #6d6c6c;
+    border-radius: 35px;
+  }
+
+  .grid-container5 {
+    margin-top: 50px;
+    width: 110%; /* Ensure the grid takes full width */
+  }
+
+
+  .modal5 {
+    width: 85%; 
+    min-width: 100px ;        /* Extend the modal width */
+  }
+
+  .modal5 select{
+      width: 100%;
+    }
 }

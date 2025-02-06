@@ -10,6 +10,7 @@ import axios from 'axios';
 import { storage } from "../firebase"; // Import Firebase storage
 import Pagination from './pagination';
 import { ref, uploadBytesResumable, uploadString, getDownloadURL } from "firebase/storage";
+import Header from './header';
 
 
 function Additem() {
@@ -209,9 +210,8 @@ function Additem() {
   return (
     <div className="home-container">
       <Sidebar />
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+      <Header />
+
       <div className="content">
         <div className="manage-bulletin1">
           <div className="breadcrumb1">Manage Lost and Found {'>'} Manage Found Items</div>

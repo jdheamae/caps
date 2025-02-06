@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: center; /* Center items horizontally */
   transition: transform 0.3s ease-in-out;
-  z-index: 1;
+;
 
 }
 
@@ -114,12 +114,13 @@ border-right: 4px solid #ffd324;  /* Right side border to indicate active page *
       top: 0;
       height: 100 vh;
       transition: left 0.3s ease-in-out;
-
+      z-index: 1000;
   }
 
   /* Sidebar Open on Mobile */
   .sidebar.open {
       left: 0;
+
   }
 
 

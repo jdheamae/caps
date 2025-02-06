@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import axios from 'axios';
 import Sidebar from './sidebar';
+import Header from './header';
 import '../style/manageRequest.css';
 import { FaTable } from "react-icons/fa6";
 import { IoGridOutline } from "react-icons/io5";
@@ -92,9 +93,7 @@ function ManageRequest() {
   return (
     <div className="home-container">
       <Sidebar />
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+    <Header /> 
       <div className="content">
         <div className="manage-bulletin5">
           <div className="breadcrumb5">Manage Lost and Found {'>'} Manage Request</div>
