@@ -22,17 +22,35 @@ function Additem() {
   const itemsPerPage = 10;
 
   const [itemData, setItemData] = useState({
-    ITEM: '',
-    DESCRIPTION: '',
-    DATE_FOUND: '',
-    TIME_RETURNED: '',
-    FINDER: '',
-    CONTACT_OF_THE_FINDER: '',
-    FOUND_LOCATION: '',
+    // ITEM: '',
+    // DESCRIPTION: '',
+    // DATE_FOUND: '',
+    // TIME_RETURNED: '',
+    // FINDER: '',
+    // CONTACT_OF_THE_FINDER: '',
+    // FOUND_LOCATION: '',
+    // OWNER: '',
+    // DATE_CLAIMED: '',
+    // STATUS: 'unclaimed',
+    // IMAGE_URL: '',  // Store image URL
+    FINDER: '',//based  on their csv
+    FINDER_TYPE:'',//for data visualization 
+    ITEM: '',//item name ,based on their csv
+    ITEM_TYPE:'',//for data visualization
+    DESCRIPTION: '',//item description ,base on their csv
+    IMAGE_URL:'',//change to item image later
+    CONTACT_OF_THE_FINDER: '',//based on their csv
+    DATE_FOUND: '',//based on their csv
+    GENERAL_LOCATION:'',//for data visualization
+    FOUND_LOCATION: '',//based on their csv
+    TIME_RETURNED: '',  //time received
     OWNER: '',
+    OWNER_COLLEGE: '',
+    OWNER_CONTACT:'',
+    OWNER_IMAGE: '',
     DATE_CLAIMED: '',
+    TIME_CLAIMED:'',
     STATUS: 'unclaimed',
-    IMAGE_URL: '',  // Store image URL
   });
 
   const [image, setImage] = useState(null); // State to hold the captured image
@@ -123,17 +141,24 @@ function Additem() {
     setSelectedItem(item);
     setItemData(
       item || {
-        ITEM: '',
-        DESCRIPTION: '',
-        DATE_FOUND: '',
-        TIME_RETURNED: '',
-        FINDER: '',
-        CONTACT_OF_THE_FINDER: '',
-        FOUND_LOCATION: '',
+        FINDER: '',//based  on their csv
+        FINDER_TYPE:'',//for data visualization 
+        ITEM: '',//item name ,based on their csv
+        ITEM_TYPE:'',//for data visualization
+        DESCRIPTION: '',//item description ,base on their csv
+        IMAGE_URL:'',//change to item image later
+        CONTACT_OF_THE_FINDER: '',//based on their csv
+        DATE_FOUND: '',//based on their csv
+        GENERAL_LOCATION:'',//for data visualization
+        FOUND_LOCATION: '',//based on their csv
+        TIME_RETURNED: '',  //time received
         OWNER: '',
+        OWNER_COLLEGE: '',
+        OWNER_CONTACT:'',
+        OWNER_IMAGE: '',
         DATE_CLAIMED: '',
+        TIME_CLAIMED:'',
         STATUS: 'unclaimed',
-        IMAGE_URL: '',
       }
     );
     setImage(null); // Reset the captured image when opening the modal
@@ -243,15 +268,24 @@ function Additem() {
               <thead>
                 <tr>
                   <th>Finder</th>
+                  <th>Finder Type</th>{/* for visualization */}            
                   <th>Item Name</th>
-                  <th>Description</th>
-                  <th>Contact</th>
+                  <th>Item Type</th>{/* for visualization */}
+                  <th>Item Description</th>
+                  <th>Item Image</th>
+                  <th>Finder Contact</th>
                   <th>Date Found</th>
-                  <th>Location</th>
+                  <th>General Location</th>{/* for visualization */}
+                  <th>Specific Location</th>
+              
                   <th>Time Recieved</th>
                   <th>Owner</th>
-                  <th>Status</th>
-                  <th>Image</th>
+                  <th>Owner College</th>{/* for visualization */}
+                  <th>Contact</th>
+                  <th>Owner Image</th>
+                  <th>Date Claimed</th>{/* for visualization */}
+                  <th>Time Claimed</th>
+                  <th>Status</th>{/* for visualization */}
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -259,19 +293,28 @@ function Additem() {
                 {displayedRequests.map((item) => (
                   <tr key={item._id}>
                     <td>{item.FINDER}</td>
+                    <td>{item.FINDER_TYPE}</td>
                     <td>{item.ITEM}</td>
+                    <td>{item.ITEM_TYPE}</td>
                     <td>{item.DESCRIPTION}</td>
-                    <td>{item.CONTACT_OF_THE_FINDER}</td>
-                    <td>{item.DATE_FOUND}</td>
-                    <td>{item.FOUND_LOCATION}</td>
-                     <td>{item.TIME_RETURNED} </td>{/* it supposed to be TIME_RECIEVED */}
-                    <td>{item.OWNER}</td>
                     <td> <img
                       src={item.IMAGE_URL || "default-image-url"}
                       alt="Product"
                       className="default-image-url1"
 
                     /></td>
+                    <td>{item.CONTACT_OF_THE_FINDER}</td>
+                    <td>{item.DATE_FOUND}</td>
+                    <td>{item.GENERAL_LOCATION}</td>
+                    <td>{item.FOUND_LOCATION}</td>
+                  
+                     <td>{item.TIME_RETURNED} </td>{/* it supposed to be TIME_RECIEVED */}
+                    <td>{item.OWNER}</td>
+                    <td>{item.OWNER_COLLEGE}</td>
+                    <td>{item.OWNER_CONTACT}</td>
+                   <td>{item.OWNER_IMAGE}</td>
+                   <td>{item.DATE_CLAIMED}</td>
+                   <td>{item.TIME_CLAIMED}</td>
                     <td>
                       <button
                         className={`status-btn1 ${item.STATUS && typeof item.STATUS === 'string' && item.STATUS.toLowerCase() === 'unclaimed' ? 'unclaimed' : 'claimed'}`}
@@ -352,7 +395,26 @@ function Additem() {
                     required={!selectedItem}
                   />
                 </div>
-
+                
+             
+                 <div className="form-group1">
+                  <label htmlFor="finderType">Finder TYPE</label>  {/* ADD DROP DOWN */}
+                  
+                   <select           
+                    id="finderType"
+                    name="FINDER_TYPE"
+                   
+                    placeholder="Finder TYPE"
+                    value={itemData.FINDER_TYPE}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  >  
+                  <option value="STUDENT">STUDENT</option>
+                    <option value="UTILITIES">UTILITIES</option>
+                    <option value="GUARD">GUARD</option>
+                    <option value="VISITORS">VISITORS</option>
+                    </select>
+                </div>
                 <div className="form-group1">
                   <label htmlFor="itemName">Item Name</label>
                   <input
@@ -366,9 +428,23 @@ function Additem() {
                     required={!selectedItem}
                   />
                 </div>
-
                 <div className="form-group1">
-                  <label htmlFor="description">Description</label>
+                  <label htmlFor="itemType">ITEM TYPE</label>  {/* ADD DROP DOWN */}
+                    <select
+                                  
+                    id="itemType"
+                    name="ITEM_TYPE"
+                    placeholder="Item TYPE"
+                    value={itemData.ITEM_TYPE}
+                    onChange={handleInputChange}
+                    required={!selectedItem}
+                  >
+                    <option value="PERSONAL">PERSONAL</option>
+                    <option value="ELECTRONICS">ELECTRONICS</option>
+                  </select>
+                </div>
+                <div className="form-group1">
+                  <label htmlFor="description">Item Description</label>
                   <textarea
                     id="description"
                     name="DESCRIPTION"
@@ -381,7 +457,7 @@ function Additem() {
                 </div>
 
                 <div className="form-group1">
-                  <label htmlFor="contact">Contact</label>
+                  <label htmlFor="contact">Finder Contact</label>
                   <input
                     type="text"
                     id="contact"
@@ -405,15 +481,28 @@ function Additem() {
                     required={!selectedItem}
                   />
                 </div>
-
                 <div className="form-group1">
-                  <label htmlFor="location">Location</label>
+                  <label htmlFor="generalLocation">General Location</label>  {/* ADD DROP DOWN */}
+                
+                     <select
+                    id="generalLocation"
+                    name="GENERAL_LOCATION"
+                    placeholder="General Location"
+                    value={itemData.GENERAL_LOCATION}
+                    onChange={handleInputChange}
+                  >
+                    <option value="GYM">GYM</option>
+                    <option value="LIBRARY">Library</option>
+                  </select>
+                </div>
+                <div className="form-group1">
+                  <label htmlFor="location">Specific Location</label>
                   <input
                     type="text"
                     id="location"
                     name="FOUND_LOCATION"
                     maxLength="200"
-                    placeholder="Location"
+                    placeholder="Specific Location"
                     value={itemData.FOUND_LOCATION}
                     onChange={handleInputChange}
                     required={!selectedItem}
@@ -444,7 +533,67 @@ function Additem() {
                     onChange={handleInputChange}
                   />
                 </div>
+                <div className="form-group1">
+                  <label htmlFor="ownerCollege">Owner College</label>
+                  <select
+                    id="ownerCollege"
+                    name="OWNER_COLLEGE"
+                    value={itemData.OWNER_COLLEGE}
+                    onChange={handleInputChange}
+                  >
+                    <option value="COE">COE</option>
+                    <option value="CCS">CCS</option>
+                  </select>
+                </div>
 
+                <div className="form-group1">
+                  <label htmlFor="ownerContact">Owner Contact</label>
+                  <input
+                    type="text"
+                    id="ownerContact"
+                    name="OWNER_CONTACT"
+                    maxLength="50"
+                    placeholder="May skip if owner is not yet identified"
+                    value={itemData.OWNER_CONTACT}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="form-group1">
+                  <label htmlFor="ownerImage">Owner Image</label>
+                  <input
+                    type="text"
+                    id="ownerImage"
+                    name="OWNER_IMAGE"
+                    maxLength="50"
+                    placeholder="May skip if owner is not yet identified"
+                    value={itemData.OWNER_IMAGE}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="form-group1">
+                  <label htmlFor="dateClaimed">Date Claimed</label>
+                  <input
+                      type="date"
+                    id="dateClaimed"
+                    name="DATE_CLAIMED"
+                    maxLength="50"
+                    placeholder="May skip if owner is not yet identified"
+                    value={itemData.DATE_CLAIMED}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="form-group1">
+                  <label htmlFor="ownerImage">Time Claimed</label>
+                  <input
+                    type="time"
+                    id="timeClaimed"
+                    name="TIME_CLAIMED"
+                    maxLength="50"
+                    placeholder="May skip if owner is not yet identified"
+                    value={itemData.TIME_CLAIMED}
+                    onChange={handleInputChange}
+                  />
+                </div>
                 <div className="form-group1">
                   <label htmlFor="status">Status</label>
                   <select

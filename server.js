@@ -81,20 +81,49 @@ app.post("/register", async (req, res) => {
 
 //-----------------------------------creating complaints------------------------------------------
 app.post("/complaints", async (req, res) => {
-  const { complainer, itemname, type, contact, date, location, time,description } = req.body;
+  const { complainer ,
+college ,
+year_level,
+itemname ,
+type ,
+description ,
+contact ,
+general_location ,
+location ,
+time ,
+date,
+date_complained, 
+time_complained,
+
+ } = req.body;
 
   try {
     const newComplaint = new Complaint({
-      complainer,
-      itemname,
-      type,
-      contact,
-      date,
-      location,
-      time,
-      status: "Not Found",
-      finder: "N/A",
-      description,
+      // complainer,
+      // itemname,
+      // type,
+      // contact,
+      // date,
+      // location,
+      // time,
+      // status: "Not Found",
+      // finder: "N/A",
+      // description,
+      complainer ,
+college ,
+year_level,
+itemname ,
+type ,
+description ,
+contact ,
+general_location ,
+location ,
+time ,
+date,
+date_complained, 
+time_complained, 
+status: "Not Found",
+finder: "N/A",
     });
 
     await newComplaint.save();
@@ -118,7 +147,21 @@ app.get("/complaints", async (req, res) => {
 // ------------------------------------updating complaints------------------------------------------------------------
 app.put("/complaints/:id", async (req, res) => {
   const { id } = req.params;
-  const { complainer, itemname, type, contact, date, location, time, status, finder ,description} = req.body;
+  const {complainer ,
+    college ,
+    year_level,
+    itemname ,
+    type ,
+    description ,
+    contact ,
+    general_location ,
+    location ,
+    time ,
+    date,
+    date_complained, 
+    time_complained, 
+    status ,
+    finder } = req.body;
 
   try {
     // Find the complaint by ID
@@ -129,17 +172,31 @@ app.put("/complaints/:id", async (req, res) => {
     }
 
     // Update the complaint's fields with the new data if provided
+    // complaint.complainer = complainer || complaint.complainer;
+    // complaint.itemname = itemname || complaint.itemname;
+    // complaint.type = type || complaint.type;
+    // complaint.contact = contact || complaint.contact;
+    // complaint.date = date || complaint.date;
+    // complaint.location = location || complaint.location;
+    // complaint.time = time || complaint.time;
+    // complaint.status = status || complaint.status;
+    // complaint.finder = finder || complaint.finder;
+    // complaint.description=description||complaint.description;
     complaint.complainer = complainer || complaint.complainer;
-    complaint.itemname = itemname || complaint.itemname;
-    complaint.type = type || complaint.type;
-    complaint.contact = contact || complaint.contact;
-    complaint.date = date || complaint.date;
-    complaint.location = location || complaint.location;
-    complaint.time = time || complaint.time;
-    complaint.status = status || complaint.status;
-    complaint.finder = finder || complaint.finder;
-    complaint.description=description||complaint.description;
-
+    complaint.college=college||complaint.college ;
+    complaint.year_level=year_level||complaint.year_level;
+    complaint.itemname =itemname||complaint.itemname;
+    complaint.type  = type||complaint.type;
+    complaint.description = description||complaint.description;
+    complaint.contact = contact||complaint.contact;
+    complaint.general_location = general_location||complaint.general_location,
+    complaint.location = location||complaint.location;
+    complaint.time = time||complaint.time;
+    complaint.date=date||complaint.date;
+    complaint.date_complained = date_complained||complaint.date_complained; 
+    complaint.time_complained = time_complained||complaint.time_complained; 
+    complaint.status = status||complaint.status ;
+    complaint.finder = finder ||complaint.finder ;
     // Save the updated complaint
     await complaint.save();
 
@@ -173,23 +230,47 @@ app.delete("/complaints/:id", async (req, res) => {
 
 //------------------------------addding found items for admin database--------------------------------------------------
 app.post('/items', async (req, res) => {
-  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS ,  IMAGE_URL} = req.body;
+  const {    FINDER,//based  on their csv
+    FINDER_TYPE,//for data visualization 
+    ITEM,//item name ,based on their csv
+    ITEM_TYPE,//for data visualization
+    DESCRIPTION,//item description ,base on their csv
+    IMAGE_URL,//change to item image later
+    CONTACT_OF_THE_FINDER,//based on their csv
+    DATE_FOUND,//based on their csv
+    GENERAL_LOCATION,//for data visualization
+    FOUND_LOCATION,//based on their csv
+    TIME_RETURNED,  //time received
+    OWNER,
+    OWNER_COLLEGE,
+    OWNER_CONTACT,
+    OWNER_IMAGE,
+    DATE_CLAIMED,
+    TIME_CLAIMED,
+    STATUS } = req.body;
 
   try {
     
     // Create a new Item object
     const newItem = new Item({
-      ITEM,
-      DESCRIPTION,
-      DATE_FOUND,
-      TIME_RETURNED, // Store the complete Date object
-      FINDER,
-      CONTACT_OF_THE_FINDER,
-      FOUND_LOCATION,
+      FINDER,//based  on their csv
+      FINDER_TYPE,//for data visualization 
+      ITEM,//item name ,based on their csv
+      ITEM_TYPE,//for data visualization
+      DESCRIPTION,//item description ,base on their csv
+      IMAGE_URL,//change to item image later
+      CONTACT_OF_THE_FINDER,//based on their csv
+      DATE_FOUND,//based on their csv
+      GENERAL_LOCATION,//for data visualization
+      FOUND_LOCATION,//based on their csv
+      TIME_RETURNED,  //time received
       OWNER,
+      OWNER_COLLEGE,
+      OWNER_CONTACT,
+      OWNER_IMAGE,
       DATE_CLAIMED,
+      TIME_CLAIMED,
       STATUS,
-      IMAGE_URL,
     });
 
     // Save the new item to the database
@@ -205,23 +286,48 @@ app.post('/items', async (req, res) => {
 
 //---------------------------------------adding found items for user database to be able to display--------------------
 app.post('/useritems', async (req, res) => {
-  const { ITEM, DESCRIPTION, DATE_FOUND, TIME_RETURNED, FINDER, CONTACT_OF_THE_FINDER, FOUND_LOCATION, OWNER, DATE_CLAIMED, STATUS ,IMAGE_URL} = req.body;
+  const {    FINDER,//based  on their csv
+    FINDER_TYPE,//for data visualization 
+    ITEM,//item name ,based on their csv
+    ITEM_TYPE,//for data visualization
+    DESCRIPTION,//item description ,base on their csv
+    IMAGE_URL,//change to item image later
+    CONTACT_OF_THE_FINDER,//based on their csv
+    DATE_FOUND,//based on their csv
+    GENERAL_LOCATION,//for data visualization
+    FOUND_LOCATION,//based on their csv
+    TIME_RETURNED,  //time received
+    OWNER,
+    OWNER_COLLEGE,
+    OWNER_CONTACT,
+    OWNER_IMAGE,
+    DATE_CLAIMED,
+    TIME_CLAIMED,
+    STATUS
+  } = req.body;
 
   try {
     
     // Create a new Item object
     const newItem = new Item({
-      ITEM,
-      DESCRIPTION,
-      DATE_FOUND,
-      TIME_RETURNED, // Store the complete Date object
-      FINDER,
-      CONTACT_OF_THE_FINDER,
-      FOUND_LOCATION,
-      OWNER,
-      DATE_CLAIMED,
-      STATUS,
-      IMAGE_URL,
+         FINDER,//based  on their csv
+        FINDER_TYPE,//for data visualization 
+        ITEM,//item name ,based on their csv
+        ITEM_TYPE,//for data visualization
+        DESCRIPTION,//item description ,base on their csv
+        IMAGE_URL,//change to item image later
+        CONTACT_OF_THE_FINDER,//based on their csv
+        DATE_FOUND,//based on their csv
+        GENERAL_LOCATION,//for data visualization
+        FOUND_LOCATION,//based on their csv
+        TIME_RETURNED,  //time received
+        OWNER,
+        OWNER_COLLEGE,
+        OWNER_CONTACT,
+        OWNER_IMAGE,
+        DATE_CLAIMED,
+        TIME_CLAIMED,
+        STATUS
     });
 
     // Save the new item to the database
@@ -286,22 +392,50 @@ app.delete('/items/:id', async (req, res) => {
 
 //--------------------adding complaints for student users-----------------------------------
 app.post("/usercomplaints", async (req, res) => {
-  const { complainer, itemname, type, contact, date, location, time, description, userId } = req.body;
+  const {  complainer ,
+    college ,
+    year_level,
+    itemname ,
+    type ,
+    description ,
+    contact ,
+    general_location ,
+    location ,
+    time ,
+    date,
+    date_complained, 
+    time_complained,  userId } = req.body;
 
   try {
     const newComplaint = new Complaint({
-      complainer,
-      itemname,
-      type,
-      contact,
+      // complainer,
+      // itemname,
+      // type,
+      // contact,
+      // date,
+      // location,
+      // time,
+      // status: "Not Found",
+      // finder: "N/A",
+      // description,
+      // userId, // Add userId here
+      complainer ,
+      college ,
+      year_level,
+      itemname ,
+      type ,
+      description ,
+      contact ,
+      general_location ,
+      location ,
       date,
-      location,
-      time,
+      time ,
+      date_complained, 
+      time_complained, 
       status: "Not Found",
       finder: "N/A",
-      description,
       userId, // Add userId here
-    });
+          });
 
     await newComplaint.save();
     res.status(201).json({ message: "Complaint filed successfully" });
@@ -333,20 +467,45 @@ app.delete("/usercomplaints/:id", async (req, res) => {
 //------------------------------updating complaints for student users-----------------------------------
 app.put("/usercomplaints/:id", async (req, res) => {
   const complaintId = req.params.id;
-  const { complainer, itemname, type, contact, date, location, time, description, userId } = req.body;
+  const {  complainer ,
+    college ,
+    year_level,
+    itemname ,
+    type ,
+    description ,
+    contact ,
+    general_location ,
+    location ,
+    time ,
+    date,
+    date_complained, 
+    time_complained, userId } = req.body;
 
   try {
     const updatedComplaint = await Complaint.findByIdAndUpdate(
       complaintId, 
       {
-        complainer,
-        itemname,
-        type,
-        contact,
+        // complainer,
+        // itemname,
+        // type,
+        // contact,
+        // date,
+        // location,
+        // time,
+        // description,
+        complainer ,
+        college ,
+        year_level,
+        itemname ,
+        type ,
+        description ,
+        contact ,
+        general_location ,
+        location ,
+        time ,
         date,
-        location,
-        time,
-        description,
+        date_complained, 
+        time_complained, 
         userId, // userId is updated as well
         status: "Not Found",  // Default status can be kept or updated based on your logic
         finder: "N/A", // Default finder value, this can also be updated

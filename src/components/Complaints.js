@@ -21,15 +21,21 @@ function Manage() {
   const itemsPerPage = 10;
 
   const [itemData, setItemData] = useState({
-    itemname: '',
+    complainer: '',
+    college: '',
+    year_level:'',
+   itemname: '',
     type: '',
-    contact: '',
-    date: '',
-    location: '',
-    time: '',
     description: '',
+    contact: '',
+    general_location: '',
+    location: '',
+    date:'',
+    time: '',
+    date_complained:'', 
+    time_complained:'', 
     status: 'not-found',
-    finder:'',
+    finder: '',
   });
 
   // Fetch all data from the database when the component mounts
@@ -57,14 +63,19 @@ function Manage() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const newComplaint = {
-      complainer: formData.get("complainer"),
-      itemname: formData.get("itemname"),
-      type: formData.get("type"),
-      contact: formData.get("contact"),
-      date: formData.get("date"),
-      location: formData.get("location"),
-      time: formData.get("time"),
-      description: formData.get("description"),
+      complainer :formData.get("complainer"),
+      college :formData.get("college"),
+      year_level :formData.get("year_level"),
+     itemname :formData.get("itemname"),
+      type :formData.get("type"),
+      description :formData.get("description"),
+      contact :formData.get("contact"),
+      general_location :formData.get("general_location"),
+      location :formData.get("location"),
+      date:formData.get("date"),
+      time :formData.get("time"),
+      date_complained :formData.get("date_complained"), 
+      time_complained :formData.get("time_complained"), 
     };
 
     try {
@@ -156,15 +167,30 @@ function Manage() {
         setShowModal(false); // Close the modal after successful update
         setSelectedRequest(null);// Clear selected request
         setItemData({ // Reset itemData after update
-          itemname: '',
-          type: '',
-          contact: '',
-          date: '',
-          location: '',
-          description: '',
-          time: '',
-          status: 'not-found',
-          finder: ''
+          // itemname: '',
+          // type: '',
+          // contact: '',
+          // date: '',
+          // location: '',
+          // description: '',
+          // time: '',
+          // status: 'not-found',
+          // finder: ''
+          complainer: '',
+  college: '',
+  year_level:'',
+ itemname: '',
+  type: '',
+  description: '',
+  contact: '',
+  general_location: '',
+  location: '',
+  time: '',
+  date:'',
+  date_complained:'', 
+  time_complained:'', 
+  status: 'not-found',
+  finder: '',
         });
 
       } else {
@@ -211,14 +237,21 @@ function Manage() {
   const handleAddComplaint = () => {
     setSelectedRequest(null); // Clear selected request for new complaint
     setItemData({
-      itemname: '',
+      complainer: '',
+      college: '',
+      year_level:'',
+     itemname: '',
       type: '',
-      contact: '',
-      date: '',
-      location: '',
       description: '',
+      contact: '',
+      general_location: '',
+      location: '',
       time: '',
+      date:'',
+      date_complained:'', 
+      time_complained:'', 
       status: 'not-found',
+     
     });
     setShowModal(true); // Open modal for adding a complaint
   };
@@ -278,13 +311,20 @@ function Manage() {
               <thead>
                 <tr>
                   <th>Complainer</th>
+                  <th>College</th>
+                  <th>Year Level</th>
                   <th>Item Name</th>
                   <th>Item Type</th>
+                  <th>Item Description</th>
                   <th>Contact of the Complainer</th>
-                  <th>Date</th>
-                  <th>Location</th>
-                  <th>Time</th>
+                  <th>General Location</th>
+                  <th>Specific Location</th>
+                  <th>Date Lost</th>
+                  <th>Time Lost</th>
+                  <th>Date Complained</th>
+                  <th>Time Complained</th>
                   <th>Status</th>
+
                   <th>Finder</th>
                   <th>Action</th>
                 </tr>
@@ -293,12 +333,18 @@ function Manage() {
                 {displayedRequests.map((item) => (
                   <tr key={item._id}>
                     <td>{item.complainer}</td>
+                    <td>{item.college}</td>{/* for visualization */}
+                    <td>{item.year_level}</td>{/* for visualization */}
                     <td>{item.itemname}</td>
-                    <td>{item.type}</td>
+                    <td>{item.type}</td>{/* for visualization */}
+                    <td>{item.description}</td>
                     <td>{item.contact}</td>
-                    <td>{item.date}</td>
+                    <td>{item.general_location}</td>{/* for visualization */}
                     <td>{item.location}</td>
-                    <td>{item.time}</td>
+                    <td>{item.date}</td>{/* for visualization */}
+                    <td>{item.time}</td>{/* for visualization */}
+                    <td>{item.date_complained}</td>
+                    <td>{item.time_complained}</td>
                     <td>
                     <button
                         className={`status-btn3 ${item.status && typeof item.status === 'string' && item.status.toLowerCase() === 'not-found' ? 'not-found' : 'found'}`}
@@ -366,7 +412,38 @@ function Manage() {
                   required={!selectedRequest}
                 />
               </div>
+              <div className="form-group3">
+                <label htmlFor="complainerCollege">College</label>
+                 <select
+                   id="college"
+                   name="college"
+                   value={itemData.college}
+                  onChange={handleInputChange}
+                >
+                  option
+                  <option value="coe">COE</option>
+                  <option value="ccs">CCS</option>
+                </select>
+              </div>
 
+              <div className="form-group3">
+                <label htmlFor="complainerLevel">Year Level</label>
+              
+                  <select
+                  id="year_level"
+                  name="year_level"
+                  maxLength="100"
+                  placeholder="Year Level"
+                  value={itemData.year_level}
+                  onChange={handleInputChange}
+                >
+                  option
+                  <option value="First Year">1</option>
+                  <option value="Second Year">2</option>
+                  <option value="Third Year">3</option>
+                  <option value="Fourth Year">4</option>
+                </select>
+              </div>
               <div className="form-group3">
                 <label htmlFor="itemName">Item Name</label>
                 <input
@@ -397,16 +474,18 @@ function Manage() {
 
               <div className="form-group3">
                 <label htmlFor="itemType">Item Type</label>
-                <input
-                  type="text"
-                  id="itemType"
-                  name="type"
-                  maxlength="100"
-                  placeholder="Item Type"
-                  value={itemData.type}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                ></input>
+                <select
+                id="itemType"
+                name="type"
+                maxlength="100"
+                placeholder="Item Type"
+                value={itemData.type}
+                onChange={handleInputChange}
+                >
+                  option
+                  <option value="Electronics">Electronics</option>
+                  <option value="Personal">Personal</option>
+                </select>
               </div>
 
 
@@ -424,18 +503,22 @@ function Manage() {
                 />
               </div>
 
+      
               <div className="form-group3">
-                <label htmlFor="dateC">Date</label>
-                <input
-                  type="date"
-                  id="dateC"
-                  name="date"
-                  value={itemData.date}
+                <label htmlFor="general_location">General Location</label>
+                 <select
+                  id="general_location"
+                  name="general_location"
+                  maxlength="200"
+                  placeholder="General Location"
+                  value={itemData.general_location}
                   onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
+                >
+                  option
+                  <option value="Gym">GYM</option>
+                  <option value="mainLibrary">MAIN LIBRARY</option>
+                </select>
               </div>
-
               <div className="form-group3">
                 <label htmlFor="location">Location</label>
                 <input
@@ -449,14 +532,46 @@ function Manage() {
                   required={!selectedRequest}
                 />
               </div>
-
               <div className="form-group3">
-                <label htmlFor="time">Time</label>
+                <label htmlFor="date">Date Lost</label>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  value={itemData.date}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+              <div className="form-group3">
+                <label htmlFor="time">Time Lost</label>
                 <input
                   type="time"
                   id="time"
                   name="time"
                   value={itemData.time}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+              <div className="form-group3">
+                <label htmlFor="date_complained">Date Complained</label>
+                <input
+                  type="date"
+                  id="date_complained"
+                  name="date_complained"
+                  value={itemData.date_complained}
+                  onChange={handleInputChange}
+                  required={!selectedRequest}
+                />
+              </div>
+              <div className="form-group3">
+                <label htmlFor="time_complained">Time Complained</label>
+                <input
+                  type="time"
+                  id="time_complained"
+                  name="time_complained"
+                  value={itemData.time_complained}
                   onChange={handleInputChange}
                   required={!selectedRequest}
                 />
@@ -485,7 +600,7 @@ function Manage() {
                   placeholder="Finder's Name"
                   value={itemData.finder}
                   onChange={handleInputChange}
-                  required={!selectedRequest}
+                  
                 />
               </div>
 
