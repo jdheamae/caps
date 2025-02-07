@@ -23,7 +23,7 @@ function Manage() {
   const [itemData, setItemData] = useState({
     complainer: '',
     college: '',
-    year_level:'',
+    year_lvl:'',
    itemname: '',
     type: '',
     description: '',
@@ -65,7 +65,7 @@ function Manage() {
     const newComplaint = {
       complainer :formData.get("complainer"),
       college :formData.get("college"),
-      year_level :formData.get("year_level"),
+      year_lvl :formData.get("year_lvl"),
      itemname :formData.get("itemname"),
       type :formData.get("type"),
       description :formData.get("description"),
@@ -178,7 +178,7 @@ function Manage() {
           // finder: ''
           complainer: '',
   college: '',
-  year_level:'',
+  year_lvl:'',
  itemname: '',
   type: '',
   description: '',
@@ -239,7 +239,7 @@ function Manage() {
     setItemData({
       complainer: '',
       college: '',
-      year_level:'',
+      year_lvl:'',
      itemname: '',
       type: '',
       description: '',
@@ -430,11 +430,11 @@ function Manage() {
                 <label htmlFor="complainerLevel">Year Level</label>
               
                   <select
-                  id="year_level"
-                  name="year_level"
+                  id="year_lvl"
+                  name="year_lvl"
                   maxLength="100"
                   placeholder="Year Level"
-                  value={itemData.year_level}
+                  value={itemData.year_lvl}
                   onChange={handleInputChange}
                 >
                   option

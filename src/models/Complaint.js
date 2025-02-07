@@ -4,7 +4,7 @@ const { MdDescription } = require("react-icons/md");
 const complaintSchema = new mongoose.Schema({
   complainer: { type: String, required: true },
   college: { type: String, required: true },
-  year_level:{ type: String, required: true },
+  year_lvl:{ type: String, required: true },
  itemname: { type: String, required: true },
   type: { type: String, required: true },
   description: { type: String, required: true },

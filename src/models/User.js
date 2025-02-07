@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
   contactNumber:{type:String,required: true },
   usertype: { type: String, default: 'admin' }, // Default usertype as 'admin'
   image_Url:{type:String,default:''},
+  college:{type:String,required:true},
+  year_lvl:{type:String,required:true}
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -27,7 +27,7 @@ mongoose
 const SECRET_KEY = "polgary";
 //--------------------signing upppp----------------------------------------
 app.post("/signup", async (req, res) => {
-  const { firstName,lastName, email, password,usertype,contactNumber, } = req.body;
+  const { firstName,lastName, email, password,usertype,contactNumber,college,year_lvl, } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -36,7 +36,7 @@ app.post("/signup", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ firstName,lastName,contactNumber, email, password: hashedPassword ,usertype: "student"});
+    const user = new User({ firstName,lastName,contactNumber, email, password: hashedPassword ,usertype: "student",college,year_lvl,});
 
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
@@ -61,7 +61,7 @@ app.get("/profile/:id", async (req, res) => {
 // Update user profile (first name, last name, email)
 app.put("/update-profile/:userId", async (req, res) => {
   const { userId } = req.params;
-  const { firstName, lastName, email, password ,contactNumber,image_Url} = req.body;
+  const { firstName, lastName, email, password ,contactNumber,image_Url,college,year_lvl} = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -74,8 +74,9 @@ app.put("/update-profile/:userId", async (req, res) => {
     user.lastName = lastName;
     user.email = email;
     user.image_Url=image_Url;
-    user.contactNumber=contactNumber;
-
+    user.contactNumber = contactNumber;
+    user.college = college;
+    user.year_lvl = year_lvl;
     // If password is provided, hash it before saving
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -101,7 +102,13 @@ app.post("/login", async (req, res) => {
   }
 
   // Generate JWT
-  const token = jwt.sign({ id: user._id, email: user.email }, SECRET_KEY, {
+  const token = jwt.sign({ id: user._id,
+     email: user.email,
+     college:user.college,
+     contactNumber:user.contactNumber,
+     firstName:user.firstName,
+     lastName:user.lastName,
+     year_lvl:user.year_lvl, }, SECRET_KEY, {
     expiresIn: '1h', // Token expiration time
   });
 
@@ -128,7 +135,7 @@ app.post("/register", async (req, res) => {
 app.post("/complaints", async (req, res) => {
   const { complainer ,
 college ,
-year_level,
+year_lvl,
 itemname ,
 type ,
 description ,
@@ -156,7 +163,7 @@ time_complained,
       // description,
       complainer ,
 college ,
-year_level,
+year_lvl,
 itemname ,
 type ,
 description ,
@@ -194,7 +201,7 @@ app.put("/complaints/:id", async (req, res) => {
   const { id } = req.params;
   const {complainer ,
     college ,
-    year_level,
+    year_lvl,
     itemname ,
     type ,
     description ,
@@ -229,7 +236,7 @@ app.put("/complaints/:id", async (req, res) => {
     // complaint.description=description||complaint.description;
     complaint.complainer = complainer || complaint.complainer;
     complaint.college=college||complaint.college ;
-    complaint.year_level=year_level||complaint.year_level;
+    complaint.year_lvl=year_lvl||complaint.year_lvl;
     complaint.itemname =itemname||complaint.itemname;
     complaint.type  = type||complaint.type;
     complaint.description = description||complaint.description;
@@ -439,7 +446,7 @@ app.delete('/items/:id', async (req, res) => {
 app.post("/usercomplaints", async (req, res) => {
   const {  complainer ,
     college ,
-    year_level,
+    year_lvl,
     itemname ,
     type ,
     description ,
@@ -466,7 +473,7 @@ app.post("/usercomplaints", async (req, res) => {
       // userId, // Add userId here
       complainer ,
       college ,
-      year_level,
+      year_lvl,
       itemname ,
       type ,
       description ,
@@ -514,7 +521,7 @@ app.put("/usercomplaints/:id", async (req, res) => {
   const complaintId = req.params.id;
   const {  complainer ,
     college ,
-    year_level,
+    year_lvl,
     itemname ,
     type ,
     description ,
@@ -540,7 +547,7 @@ app.put("/usercomplaints/:id", async (req, res) => {
         // description,
         complainer ,
         college ,
-        year_level,
+        year_lvl,
         itemname ,
         type ,
         description ,
@@ -584,14 +591,38 @@ app.get("/usercomplaints/:id", async (req, res) => {
 
 //----------------------------------------------user requesting for retrieval------------------------------------------------------------------------------
 app.post('/retrieval-request', async (req, res) => {
-  const { name, description, contactNumber, id, itemId, userId,status } = req.body;
+  const { claimer_name,
+    claimer_college,
+    claimer_lvl, 
+    contactNumber,
+    date_complained,
+    time_complained,
+    item_name, 
+    description,
+    general_location,
+    specific_location,
+    date_Lost,
+    time_Lost, 
+    id, 
+    itemId, 
+    userId,
+    status } = req.body;
 
   try {
     // Create a new retrieval request with the userId included
     const newRequest = new RetrievalRequestSchema({
-      name,
-      description,
+      claimer_name,
+      claimer_college,
+      claimer_lvl,
       contactNumber,
+      date_complained,
+      time_complained,
+      item_name,
+      description,
+      general_location,
+      specific_location,
+      date_Lost,
+      time_Lost,
       id,
       itemId,
       userId,

@@ -11,16 +11,20 @@ function Auth() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const name = e.target.name.value;
+    const firstName = e.target.firstName.value;
+    const lastName = e.target.lastName.value;
     const email = e.target.email.value;
+    const contactNumber = e.target.contactNumber.value;
     const password = e.target.password.value;
-    
+    const college=e.target.college.value;
+    const year_lvl=e.target.year_lvl.value;
+ 
 
     try {
       const response = await fetch("http://10.10.83.224:5000/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ firstName,lastName,contactNumber, email, password,college ,year_lvl,}),
       });
 
       const data = await response.json();
@@ -81,18 +85,31 @@ function Auth() {
       )}
       
       <div className={`container ${!isLogin ? "active" : ""}`} id="container">
-        {/* Sign Up Form */}
-        <div className={`form-container sign-up`}>
-          <form onSubmit={handleSignUp}>
-            <h1>Create Account</h1>
-            <input type="text" name="name" placeholder="Name" required />
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="number" name="email" placeholder="Contact Number" required />
-            <input type="password" name="password" placeholder="Password" required />
-            <button type="submit">Sign Up</button>
-          </form>
-        </div>
-
+      {/* Sign Up Form */}
+      <div className={`form-container sign-up`}>
+        <form onSubmit={handleSignUp}>
+          <h1>Create Account</h1>
+          <input type="text" name="firstName" placeholder="First Name" required />
+          <input type="text" name="lastName" placeholder="Last Name" required />
+          <select name="college" placeholder="college"  required >  
+                  <option value="ccs">CCS</option>
+                    <option value="coe">COE</option>
+                    <option value="cass">CASS</option>
+                    <option value="csm">CSM</option>
+                    </select> 
+          <select name="year_lvl" placeholder="year_lvl"  required >  
+                  <option value="First">1</option>
+                    <option value="Second">2</option>
+                    <option value="Third">3</option>
+                    <option value="Fourth">4</option>
+                    </select> 
+          <input type="text" name="contactNumber" placeholder="Contact Number" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Password" required />
+     
+          <button type="submit">Sign Up</button>
+        </form>
+      </div>
         {/* Sign In Form */}
         <div className={`form-container sign-in`}>
           <form onSubmit={handleSignIn}>

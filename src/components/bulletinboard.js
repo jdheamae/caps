@@ -24,9 +24,12 @@ function Bulletin() {
 
   //for Request
   const [itemData, setItemData] = useState({
-    name: '',
-    description: '',
-    contactNumber: '',
+    item_name: '',//11
+    description: '',//22
+    specific_location:'',//33
+    general_location:'',//44
+    date_Lost:'',//55
+    time_Lost:'',//66
     id: '',
   });
 
@@ -57,11 +60,27 @@ function Bulletin() {
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id; // Get userId from the token
-  
+      const claimer_name = `${decodedToken.firstName || ''} ${decodedToken.lastName || ''}`.trim();//user based,
+      const contactNumber=decodedToken.contactNumber;//2 user based
+      const claimer_college=decodedToken.college;//3 user based
+      const claimer_lvl=decodedToken.year_lvl;//4user based
+      const now = new Date();
+      const formattedDate = now.toISOString().split("T")[0]; // YYYY-MM-DD //5 user based
+      const formattedTime = now.toTimeString().split(" ")[0]; // HH:MM:SS //6 user based
       const response = await axios.post('http://10.10.83.224:5000/retrieval-request', {
-        name: itemData.name,
-        description: itemData.description,
-        contactNumber: itemData.contactNumber,
+        claimer_name: claimer_name,//1
+        claimer_college:claimer_college,//2
+        claimer_lvl:claimer_lvl,//3
+        contactNumber:contactNumber,//4
+        date_complained:formattedDate,//5
+        time_complained:formattedTime,//6
+
+        item_name:itemData.item_name,//11
+        description: itemData.description,//22
+        general_location:itemData.general_location,//33
+        specific_location:itemData.specific_location,//44
+        date_Lost:itemData.date_Lost,//55
+        time_Lost:itemData.time_Lost,//66
         id: itemData.id,
         itemId: selectedItem._id, // Assuming you're passing the selected item ID
         userId: userId, // Include userId in the request
@@ -72,10 +91,22 @@ function Bulletin() {
   
       // Reset itemData to clear the form fields
       setItemData({
-        name: '',
-        description: '',
-        contactNumber: '',
-        id: '',
+        // item_name: '',//11
+        // description: '',//22
+        // specific_Location:'',//33
+        // general_Location:'',//44
+        // date_Lost:'',//55
+        // time_Lost:'',//66
+        // id: '',
+      
+        item_name:'',
+        description:'',
+        general_location:'',
+        specific_location:'',
+        date_Lost:'',
+        time_Lost:'',
+        id:'',
+       
       });
   
       setShowModal(false); // Close the modal after successful submission
@@ -88,13 +119,13 @@ function Bulletin() {
   const handleAddComplaint = () => {
     setSelectedRequest(null); // Clear selected request for new complaint
     setItemData({
-      itemname: '',
-      type: '',
-      contact: '',
-      date: '',
-      location: '',
-      description: '',
-      time: '',
+      item_name:'',
+      description:'',
+      general_location:'',
+      specific_location:'',
+      date_Lost:'',
+      time_Lost:'',
+     
       status: 'not-found',
     });
     setShowModal(true); // Open modal for adding a complaint
@@ -184,15 +215,15 @@ function Bulletin() {
           <div className="modal4">
             <h2>File a Request</h2>
             <form onSubmit={handleModalSubmit}>
-              <div className="form-group4">
-                <label htmlFor="name">Name:</label>
+            <div className="form-group4">
+                <label htmlFor="item_name">Item Name:</label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  maxLength="100"
-                  placeholder="Name"
-                  value={itemData.name}
+                  id="item_name"
+                  name="item_name"
+                  maxLength="50"
+                  placeholder="Item Name"
+                  value={itemData.item_name}
                   onChange={handleModalChange}
                   required
                 />
@@ -211,35 +242,63 @@ function Bulletin() {
                   required
                 />
               </div>
-
               <div className="form-group4">
-                <label htmlFor="contactNumber">Contact Number:</label>
-                <input
-                  type="text"
-                  id="contactNumber"
-                  name="contactNumber"
-                  maxLength="50"
-                  placeholder="Contact Number"
-                  value={itemData.contactNumber}
-                  onChange={handleModalChange}
+                <label htmlFor="general_location">General Location</label>
+                <select
+                  id="general_location"
+                  name="general_location"
+                  maxlength="200"
+                  placeholder="General Location"
+                  value={itemData.general_location}
                   required
-                ></input>
+                >
+                  option
+                  <option value="Gym">GYM</option>
+                  <option value="mainLibrary">MAIN LIBRARY</option>
+                </select>
               </div>
-
-
               <div className="form-group4">
-                <label htmlFor="id">ID:</label>
-                <input
+
+                <label htmlFor="specific_location">Specific Location</label>
+                <textarea
                   type="text"
-                  id="id"
-                  name="id"
-                  maxLength="50"
-                  placeholder="ID Number"
-                  value={itemData.id}
+                  id="specific_location"
+                  name="specific_location"
+                  maxLength="500"
+                  placeholder="Specific location"
+                  value={itemData.specific_location}
                   onChange={handleModalChange}
                   required
                 />
               </div>
+              <div className="form-group4">
+                <label htmlFor="date_Lost">Date Lost</label>
+                <input
+                  type="date"
+                  id="date_Lost"
+                  name="date_Lost"
+                  maxLength="500"
+                  placeholder="Date Lost"
+                  value={itemData.date_Lost}
+                  onChange={handleModalChange}
+                  required
+                />
+              </div>
+             
+              <div className="form-group4">
+                <label htmlFor="time_Lost">Time Lost</label>
+                <input
+                  type="time"
+                  id="time_Lost"
+                  name="time_Lost"
+                  maxLength="500"
+                  placeholder="Time Lost"
+                  value={itemData.time_Lost}
+                  onChange={handleModalChange}
+                  required
+                />
+              </div>
+            
 
 
 

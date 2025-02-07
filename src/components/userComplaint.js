@@ -9,7 +9,7 @@ import { FaPlus } from "react-icons/fa6";
 import { jwtDecode } from 'jwt-decode';
 import Pagination from './pagination';
 import axios from 'axios';
-
+import moment from 'moment';
 function UserComplaint() {
   const [filterText, setFilterText] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -35,15 +35,17 @@ function UserComplaint() {
 
   // Fetch all data from the database when the component mounts
   useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const response = await fetch("http://10.10.83.224:5000/usercomplaints:id");
-        const data = await response.json();
-        setRequests(data);
-      } catch (error) {
-        console.error("Error fetching requests:", error);
-      }
-    };
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      console.log("Updated Token:", decodedToken); // Debugging
+  
+      setItemData(prevData => ({
+        ...prevData,
+        college: decodedToken.college || '' // Should now be present
+      }));
+    }
+ 
 
     fetchRequests();
 
@@ -53,6 +55,7 @@ function UserComplaint() {
   
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+    
   }, []);
 
   const handleInputChange = (e) => {
@@ -67,8 +70,15 @@ function UserComplaint() {
     // Decode the JWT token to extract the userId
     const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
     const decodedToken = jwtDecode(token);
+    console.log("Decoded Token:", decodedToken); // Check if 'college' exists
     const userId = decodedToken.id;
-
+    const userCollege = decodedToken.college; 
+    const userName = `${decodedToken.firstName || ''} ${decodedToken.lastName || ''}`.trim();
+    const userContact = decodedToken.contactNumber;
+    const now = new Date();
+    const formattedDate = now.toISOString().split("T")[0]; // YYYY-MM-DD
+    const formattedTime = now.toTimeString().split(" ")[0]; // HH:MM:SS
+    const year_lvl=decodedToken.year_lvl;
     const newComplaint = {
       // complainer: formData.get("complainer"),
       // itemname: formData.get("itemname"),
@@ -79,19 +89,19 @@ function UserComplaint() {
       // time: formData.get("time"),
       // description: formData.get("description"),
       // userId: userId, // Include the userId here
-      complainer :formData.get("complainer"),
-      college :formData.get("college"),
-      year_level :formData.get("year_level"),
+      complainer :userName,
+      college: userCollege, // Automatically set the college from the token
+      year_lvl :year_lvl,
      itemname :formData.get("itemname"),
       type :formData.get("type"),
       description :formData.get("description"),
-      contact :formData.get("contact"),
+      contact :userContact,
       general_location :formData.get("general_location"),
       location :formData.get("location"),
       date:formData.get("date"),
       time :formData.get("time"),
-      date_complained :formData.get("date_complained"), 
-      time_complained :formData.get("time_complained"), 
+      date_complained :formattedDate,
+      time_complained :formattedTime,
       userId: userId, // Include the userId here
     };
 
@@ -191,7 +201,7 @@ function UserComplaint() {
           // status: 'Not Found'
           complainer: '',
           college: '',
-          year_level:'',
+          year_lvl:'',
          itemname: '',
           type: '',
           description: '',
@@ -282,7 +292,7 @@ function UserComplaint() {
       // status: 'Not Found',
       complainer: '',
       college: '',
-      year_level:'',
+      year_lvl:'',
      itemname: '',
       type: '',
       description: '',
@@ -338,19 +348,19 @@ function UserComplaint() {
             <table className="ffound-items-table2">
               <thead>
                 <tr>
-                <th>Complainer</th>
-                  <th>College</th>
-                  <th>Year Level</th>
+                {/* <th>Complainer</th> */}
+                  {/* <th>College</th>
+                  <th>Year Level</th> */}
                   <th>Item Name</th>
                   <th>Item Type</th>
                   <th>Item Description</th>
-                  <th>Contact of the Complainer</th>
+                  {/* <th>Contact of the Complainer</th> */}
                   <th>General Location</th>
                   <th>Specific Location</th>
                   <th>Date Lost</th>
                   <th>Time Lost</th>
-                  <th>Date Complained</th>
-                  <th>Time Complained</th>
+                  {/* <th>Date Complained</th>
+                  <th>Time Complained</th> */}
                   <th>Status</th>
 
                   <th>Finder</th>
@@ -360,19 +370,19 @@ function UserComplaint() {
               <tbody>
                 {displayedRequests.map((item) => (
                   <tr key={item._id}>
-                     <td>{item.complainer}</td>
-                    <td>{item.college}</td>{/* for visualization */}
-                    <td>{item.year_level}</td>{/* for visualization */}
+                     {/* <td>{item.complainer}</td> */}
+                    {/* <td>{item.college}</td>for visualization */}
+                    {/* <td>{item.year_lvl}</td>for visualization */}
                     <td>{item.itemname}</td>
                     <td>{item.type}</td>{/* for visualization */}
                     <td>{item.description}</td>
-                    <td>{item.contact}</td>
+                    {/* <td>{item.contact}</td> */}
                     <td>{item.general_location}</td>{/* for visualization */}
                     <td>{item.location}</td>
                     <td>{item.date}</td>{/* for visualization */}
                     <td>{item.time}</td>{/* for visualization */}
-                    <td>{item.date_complained}</td>
-                    <td>{item.time_complained}</td>
+                    {/* <td>{item.date_complained}</td> */}
+                    {/* <td>{item.time_complained}</td> */}
                     <td>{item.status}</td>
                     <td>{item.finder}</td>
                     <td>
@@ -422,51 +432,10 @@ function UserComplaint() {
           <div className="modal2">
             <h2>{selectedRequest ? 'Update Complaint' : 'File a Complaint'}</h2>
             <form onSubmit={selectedRequest ? handleUpdate : handleComplaintSubmit}>
-            <div className="form-group2">
-                <label htmlFor="complainerName">Complainer Name</label>
-                <input
-                  type="text"
-                  id="complainerName"
-                  name="complainer"
-                  maxLength="100"
-                  placeholder="Complainer Name"
-                  value={itemData.complainer}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
-              <div className="form-group2">
-                <label htmlFor="complainerCollege">College</label>
-                 <select
-                   id="college"
-                   name="college"
-                   value={itemData.college}
-                  onChange={handleInputChange}
-                >
-                  option
-                  <option value="coe">COE</option>
-                  <option value="ccs">CCS</option>
-                </select>
-              </div>
+        
+           
 
-              <div className="form-group2">
-                <label htmlFor="complainerLevel">Year Level</label>
-              
-                  <select
-                  id="year_level"
-                  name="year_level"
-                  maxLength="100"
-                  placeholder="Year Level"
-                  value={itemData.year_level}
-                  onChange={handleInputChange}
-                >
-                  option
-                  <option value="First Year">1</option>
-                  <option value="Second Year">2</option>
-                  <option value="Third Year">3</option>
-                  <option value="Fourth Year">4</option>
-                </select>
-              </div>
+             
               <div className="form-group2">
                 <label htmlFor="itemName">Item Name</label>
                 <input
@@ -512,19 +481,6 @@ function UserComplaint() {
               </div>
 
 
-              <div className="form-group2">
-                <label htmlFor="contact">Contact of the Complainer</label>
-                <input
-                  type="text"
-                  id="contact"
-                  name="contact"
-                  maxlength="50"
-                  placeholder="Contact of the Complainer"
-                  value={itemData.contact}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
 
       
               <div className="form-group2">
@@ -577,28 +533,7 @@ function UserComplaint() {
                   required={!selectedRequest}
                 />
               </div>
-              <div className="form-group2">
-                <label htmlFor="date_complained">Date Complained</label>
-                <input
-                  type="date"
-                  id="date_complained"
-                  name="date_complained"
-                  value={itemData.date_complained}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
-              <div className="form-group2">
-                <label htmlFor="time_complained">Time Complained</label>
-                <input
-                  type="time"
-                  id="time_complained"
-                  name="time_complained"
-                  value={itemData.time_complained}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
+             
 
           
            

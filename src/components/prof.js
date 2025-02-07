@@ -38,6 +38,8 @@ function Profile() {
           email: data.email || "",
           image_Url: data.image_Url || "prof.jpg",
           contactNumber:data.contactNumber||"",
+          college:data.college||"",
+          year_lvl:data.year_lvl||"",
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -119,6 +121,8 @@ function Profile() {
           password: user.password,
           contactNumber:user.contactNumber,
           image_Url: user.image_Url,
+          college:user.college,
+          year_lvl:user.year_lvl,
         }),
       });
 
@@ -206,6 +210,14 @@ function Profile() {
             <div className="form-group">
               <label>Contact Number</label>
               <input type="text" value={user.contactNumber} onChange={(e) => setUser({ ...user, contactNumber: e.target.value })} />
+            </div>
+            <div className="form-group">
+              <label>College</label>
+              <input type="text" value={user.college} onChange={(e) => setUser({ ...user, college: e.target.value })} />
+            </div>
+            <div className="form-group">
+              <label>Year Level</label>
+              <input type="text" value={user.year_lvl} onChange={(e) => setUser({ ...user, year_lvl: e.target.value })} />
             </div>
             <div className="form-group">
               <label>Password (Leave blank to keep current password)</label>
