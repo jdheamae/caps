@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { FaSearch, FaFilter } from 'react-icons/fa';
+import { FaSearch, FaTable } from 'react-icons/fa';
+import { IoGridOutline } from 'react-icons/io5';
 import axios from 'axios';
 import Sidebar from './sidebar';
-import '../style/manaReq.css';
+import Header from './header';
+import Pagination from './pagination';
+import '../style/manageRequest.css';
 
 function ManageRequest() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [viewMode, setViewMode] = useState('table');
+  const [itemDetails, setItemDetails] = useState(null); // State to hold item details
 
   useEffect(() => {
     fetchRequests();
@@ -17,7 +24,15 @@ function ManageRequest() {
   const fetchRequests = async () => {
     try {
       const response = await axios.get('http://10.10.83.224:5000/retrieval-requests');
-      setRequests(response.data.requests);
+      console.log("API Response Data:", response.data);
+
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        setRequests(response.data);
+      } else {
+        console.error("Invalid API response:", response.data);
+        setRequests([]);
+      }
+      
       setLoading(false);
     } catch (error) {
       console.error('Error fetching retrieval requests:', error);
@@ -25,9 +40,18 @@ function ManageRequest() {
     }
   };
 
+  const fetchItemDetails = async (itemId) => {
+    try {
+      const response = await axios.get(`http://10.10.83.224:5000/items/${itemId}`);
+      setItemDetails(response.data);
+    } catch (error) {
+      console.error('Error fetching item details:', error);
+    }
+  };
+
   const handleStatusUpdate = async (type, id, updatedStatus) => {
     let endpoint = '';
-  
+
     if (type === 'request') {
       endpoint = `http://10.10.83.224:5000/retrieval-request/${id}/status`;
     } else if (type === 'item') {
@@ -37,86 +61,83 @@ function ManageRequest() {
       }
       endpoint = `http://10.10.83.224:5000/found-item/${id}/status`;
     }
-  
+
     try {
-      const response = await axios.put(endpoint, { status: updatedStatus });
-      console.log(`Updated ${type}:`, response.data);
+      await axios.put(endpoint, { status: updatedStatus });
       fetchRequests(); // Refresh UI after update
     } catch (error) {
       console.error(`Error updating ${type} status:`, error);
     }
   };
-  
-  
-  const handleStatusUpdate2 = async (type, id, updatedStatus) => {
-    let endpoint = '';
-  if (type === 'item') {
-      endpoint = `http://10.10.83.224:5000/found-item/${id}/status`;
-    }
-  
-    try {
-      await axios.put(endpoint, { status: updatedStatus });
-      fetchRequests(); // Refresh data after update
-    } catch (error) {
-      console.error(`Error updating ${type} status:`, error);
-    }
+
+  const handleRequestSelect = (request) => {
+    setSelectedRequest(request);
+    fetchItemDetails(request.itemId); // Fetch item details when a request is selected
   };
 
   const filteredRequests = requests.filter((request) =>
-    request.name.toLowerCase().includes(filterText.toLowerCase())
+    request.item_name?.toLowerCase().includes(filterText.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const displayedRequests = filteredRequests.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const toggleViewMode = () => setViewMode(viewMode === 'table' ? 'grid' : 'table');
 
   return (
     <div className="home-container">
       <Sidebar />
-      <header className="header">
-        <h2>FIRI LOGO</h2>
-      </header>
+      <Header />
       <div className="content">
-        <div className="manage-bulletin">
-          <div className="breadcrumb">Manage Lost and Found {'>'} Manage Request</div>
-          <div className="manareqsearch-bar">
+        <div className="manage-bulletin5">
+          <div className="breadcrumb5">Manage Lost and Found {'>'} Manage Request</div>
+
+          <div className="search-bar5">
             <input
               type="text"
               placeholder="Search"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
             />
-            <FaSearch className="ssearch-icon" />
-            <FaFilter className="ffilter-icon" />
+            <button onClick={toggleViewMode} className="view-mode-toggle5">
+              {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
+            </button>
           </div>
+
           {loading ? (
-            <div className="loading">Loading...</div>
-          ) : filteredRequests.length > 0 ? (
-            <table className="found-items-table">
+            <p>Loading requests...</p>
+          ) : displayedRequests.length === 0 ? (
+            <p>No matching requests found.</p>
+          ) : viewMode === 'table' ? (
+            <table className="ffound-items-table5">
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>Item Name</th>
                   <th>Description</th>
-                  <th>Contact Number</th>
-                  <th>ID</th>
-                  <th>Status</th>
-                  <th>Date Requested</th>
+                  <th>General Location</th>
+                  <th>Specific Location</th>
+                  <th>Date Lost</th>
+                  <th>Time Lost</th>
                   <th>Item Status</th>
                   <th>Action</th>
-                  
                 </tr>
               </thead>
               <tbody>
-                {filteredRequests.map((request, index) => (
-                  <tr key={index}>
-                    <td>{request.name}</td>
-                    <td>{request.description}</td>
-                    <td>{request.contactNumber}</td>
-                    <td>{request.id}</td>
-                    <td>{request.status}</td>
-                    <td>{request.createdAt}</td>
-                    <td>{request.itemId?.STATUS}</td>
+                {displayedRequests.map((request) => (
+                  <tr key={request._id}>
+                    <td>{request.item_name || "N/A"}</td>
+                    <td>{request.description || "N/A"}</td>
+                    <td>{request.general_location || "N/A"}</td>
+                    <td>{request.specific_location || "N/A"}</td>
+                    <td>{request.date_Lost || "N/A"}</td>
+                    <td>{request.time_Lost || "N/A"}</td>
+                    <td>{request.status || "N/A"}</td>
                     <td>
-                      <button
-                        className="show-btn"
-                        onClick={() => setSelectedRequest(request)}
-                      >
+                      <button className="view-btn5" onClick={() => handleRequestSelect(request)}>
                         Show
                       </button>
                     </td>
@@ -125,46 +146,61 @@ function ManageRequest() {
               </tbody>
             </table>
           ) : (
-            <div className="no-data">No matching requests found</div>
+            <div className="grid-container5">
+              {displayedRequests.map((request) => (
+                <div className="grid-item5" key={request._id}>
+                  <h2>{request.item_name}</h2>
+                  <p><strong>Description:</strong> {request.description}</p>
+                  <p><strong>General Location:</strong> {request.general_location}</p>
+                  <p><strong>Specific Location:</strong> {request.specific_location}</p>
+                  <p><strong>Date Lost:</strong> {request.date_Lost}</p>
+                  <p><strong>Time Lost:</strong> {request.time_Lost}</p>
+                  <p><strong>Status:</strong> {request.status}</p>
+
+                  <button className="view-btn5" onClick={() => handleRequestSelect(request)}>
+                    Show
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
         </div>
-        {selectedRequest && (
-          <div className="modalmanagereq">
-            <h3>Request Details</h3>
-            <p><strong>Name:</strong> {selectedRequest.name}</p>
-            <p><strong>Description:</strong> {selectedRequest.description}</p>
-            <p><strong>Contact Number:</strong> {selectedRequest.contactNumber}</p>
-            <p><strong>Date Requested:</strong> {selectedRequest.createdAt}</p>
-            <p><strong>Item Status:</strong>{selectedRequest.itemId?.STATUS}</p>
-            <p><strong>Request Status:</strong></p>
-            <select
-  value={selectedRequest.status}
-  onChange={(e) => handleStatusUpdate('request', selectedRequest.id, e.target.value)}
->
-  <option value="Pending">Pending</option>
-  <option value="Accepted">Accepted</option>
-  <option value="Declined">Declined</option>
-</select>
 
-            <p><strong>Found Item Details:</strong></p>
-            <li><strong>Item Name:</strong> {selectedRequest.itemId?.ITEM || 'N/A'}</li>
-            <li><strong>Description:</strong> {selectedRequest.itemId?.DESCRIPTION || 'N/A'}</li>
-            <li><strong>Date Found:</strong> {selectedRequest.itemId?.DATE_FOUND || 'N/A'}</li>
-       
-            <p><strong>Item Status:</strong>{selectedRequest.itemId?.STATUS}</p>
-            <select
-  value={selectedRequest.itemId?.STATUS || 'N/A'}
-  onChange={(e) => handleStatusUpdate('item', selectedRequest.itemId?._id, e.target.value)}
->
-  <option value="Unclaimed">Unclaimed</option>
-  <option value="Claimed">Claimed</option>
-</select>
-
-
-            <button onClick={() => setSelectedRequest(null)} className="close-btn-managereq">Close</button>
-          </div>
-        )}
+        <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
       </div>
+
+      {selectedRequest && (
+        <div className="modal-overlay1">
+          <div className="modal5">
+            <h2>Request Details</h2>
+            <p><strong>Item Name:</strong> {selectedRequest.item_name || "N/A"}</p>
+            <p><strong>Description:</strong> {selectedRequest.description || "N/A"}</p>
+            <p><strong>General Location:</strong> {selectedRequest.general_location || "N/A"}</p>
+            <p><strong>Specific Location:</strong> {selectedRequest.specific_location || "N/A"}</p>
+            <p><strong>Status:</strong> {selectedRequest.status || "N/A"}</p>
+            {itemDetails && (
+              <>
+                <p><strong>Item Type:</strong> {itemDetails.ITEM_TYPE || "N/A"}</p>
+                <p><strong>Item Description:</strong> {itemDetails.DESCRIPTION || "N/A"}</p>
+                <p><strong>Contact of the Finder:</strong> {itemDetails.CONTACT_OF_THE_FINDER || "N/A"}</p>
+                <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
+                <p><strong>General Location:</strong> {itemDetails.GENERAL_LOCATION || "N/A"}</p>
+                <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
+              </>
+            )}
+
+            <select value={selectedRequest.status} onChange={(e) => handleStatusUpdate('request', selectedRequest._id, e.target.value)}>
+              <option value="Pending">Pending</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Declined">Declined</option>
+            </select>
+
+            <div className="button-container5">
+              <button onClick={() => setSelectedRequest(null)} className="close-btn-manager5">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
