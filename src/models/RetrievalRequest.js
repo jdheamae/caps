@@ -15,6 +15,7 @@ const RetrievalRequestSchema = new mongoose.Schema({
   specific_location:String,
   date_Lost:String,
   time_Lost:String, 
+  status:String,
   itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Store the userId
  

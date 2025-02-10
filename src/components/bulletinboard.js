@@ -31,6 +31,7 @@ function Bulletin() {
     date_Lost:'',//55
     time_Lost:'',//66
     id: '',
+    status: 'not-found',
   });
 
 
@@ -84,6 +85,7 @@ function Bulletin() {
         id: itemData.id,
         itemId: selectedItem._id, // Assuming you're passing the selected item ID
         userId: userId, // Include userId in the request
+        status:itemData.status,
       });
   
       console.log('Response:', response.data); // Log the response
@@ -106,7 +108,7 @@ function Bulletin() {
         date_Lost:'',
         time_Lost:'',
         id:'',
-       
+        status: 'not-found',
       });
   
       setShowModal(false); // Close the modal after successful submission
@@ -244,18 +246,16 @@ function Bulletin() {
               </div>
               <div className="form-group4">
                 <label htmlFor="general_location">General Location</label>
-                <select
+                <textarea
+                  type="text"
                   id="general_location"
                   name="general_location"
-                  maxlength="200"
-                  placeholder="General Location"
+                  maxLength="500"
+                  placeholder="General location"
                   value={itemData.general_location}
+                  onChange={handleModalChange}
                   required
-                >
-                  option
-                  <option value="Gym">GYM</option>
-                  <option value="mainLibrary">MAIN LIBRARY</option>
-                </select>
+                />
               </div>
               <div className="form-group4">
 

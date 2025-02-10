@@ -106,6 +106,7 @@ app.post("/login", async (req, res) => {
      email: user.email,
      college:user.college,
      contactNumber:user.contactNumber,
+     usertype:user.usertype,
      firstName:user.firstName,
      lastName:user.lastName,
      year_lvl:user.year_lvl, }, SECRET_KEY, {
@@ -647,13 +648,10 @@ app.post('/retrieval-request', async (req, res) => {
 
 app.get('/retrieval-requests', async (req, res) => {
   try {
-    const requests = await RetrievalRequestSchema.find()
-      .populate('itemId', 'ITEM DESCRIPTION DATE_FOUND STATUS') 
-      .populate('userId', 'name email'); 
-    res.status(200).json({ success: true, requests });
+    const requests = await RetrievalRequestSchema.find();
+    res.json(requests);
   } catch (error) {
-    console.error('Error fetching retrieval requests:', error);
-    res.status(500).json({ success: false, error: 'Failed to fetch retrieval requests' });
+    res.status(500).json({ message: "Error fetching requests", error });
   }
 });
 app.get("/retrieval-requests/:id", async (req, res) => {
@@ -671,11 +669,10 @@ app.put('/retrieval-request/:id/status', async (req, res) => {
   const { status } = req.body;
 
   try {
-    // Find the request by ID and update the status
+    // Find the request by _id and update the status
     const updatedRequest = await RetrievalRequestSchema.findOneAndUpdate(
-      { id }, 
+      { _id: id },  // FIXED: Correct query
       { status }, 
-      
       { new: true } // Return the updated document
     );
 
@@ -691,8 +688,8 @@ app.put('/retrieval-request/:id/status', async (req, res) => {
     console.error('Error updating retrieval request status:', error);
     res.status(500).json({ message: 'Failed to update status.' });
   }
-  
 });
+
 
 //----------------------------------update item status of the retrieval request-------------------
 app.put('/found-item/:itemId/status', async (req, res) => {
