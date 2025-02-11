@@ -109,6 +109,10 @@
     transform: translateY(-1px);
   }
   
+  .ttable-container {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling */
+}
 
   
   .ffound-items-table5 {
@@ -520,6 +524,8 @@ transform: translateY(-1px);
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  min-height: 80%;
+  border: 1px solid #000000;
 }
 
 .modal5 h2 {
@@ -653,8 +659,20 @@ font-weight: 500;
     margin-top: 50px;
     width: 110%; /* Ensure the grid takes full width */
   }
+/* table */
+.ttable-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+  width: 152%;
+  margin-left: -45px;
+}
 
+.ffound-items-table5 {
+  width: 100%;
+  min-width: 1200px; /* Ensure table is scrollable */
+}
 
+/* modal */
   .modal5 {
     width: 85%; 
     min-width: 100px ;        /* Extend the modal width */

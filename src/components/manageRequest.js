@@ -42,12 +42,18 @@ function ManageRequest() {
 
   const fetchItemDetails = async (itemId) => {
     try {
+      console.log("Fetching item details for ID:", itemId);  // Debugging log
       const response = await axios.get(`http://10.10.83.224:5000/items/${itemId}`);
-      setItemDetails(response.data);
+      console.log("Fetched Item Details:", response.data);  // See what API returns
+      setItemDetails(response.data || {}); // Set data if available
     } catch (error) {
-      console.error('Error fetching item details:', error);
+      console.error("Error fetching item details:", error.response?.data || error.message);
+      setItemDetails({}); // Ensure UI does not crash
     }
   };
+  
+  
+  
 
   const handleStatusUpdate = async (type, id, updatedStatus) => {
     let endpoint = '';
@@ -70,10 +76,16 @@ function ManageRequest() {
     }
   };
 
-  const handleRequestSelect = (request) => {
+  const handleRequestSelect = async (request) => {
     setSelectedRequest(request);
-    fetchItemDetails(request.itemId); // Fetch item details when a request is selected
+  
+    if (request.itemId) {
+      console.log("Fetching details for itemId:", request.itemId); // Debugging: check if itemId is correct
+      await fetchItemDetails(request.itemId);  // Fetch item details before showing modal
+    }
   };
+  
+  
 
   const filteredRequests = requests.filter((request) =>
     request.item_name?.toLowerCase().includes(filterText.toLowerCase())
@@ -113,6 +125,7 @@ function ManageRequest() {
           ) : displayedRequests.length === 0 ? (
             <p>No matching requests found.</p>
           ) : viewMode === 'table' ? (
+            <div className="ttable-container">
             <table className="ffound-items-table5">
               <thead>
                 <tr>
@@ -145,6 +158,9 @@ function ManageRequest() {
                 ))}
               </tbody>
             </table>
+            </div>
+          
+
           ) : (
             <div className="grid-container5">
               {displayedRequests.map((request) => (
@@ -179,15 +195,17 @@ function ManageRequest() {
             <p><strong>Specific Location:</strong> {selectedRequest.specific_location || "N/A"}</p>
             <p><strong>Status:</strong> {selectedRequest.status || "N/A"}</p>
             {itemDetails && (
-              <>
-                <p><strong>Item Type:</strong> {itemDetails.ITEM_TYPE || "N/A"}</p>
-                <p><strong>Item Description:</strong> {itemDetails.DESCRIPTION || "N/A"}</p>
-                <p><strong>Contact of the Finder:</strong> {itemDetails.CONTACT_OF_THE_FINDER || "N/A"}</p>
-                <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
-                <p><strong>General Location:</strong> {itemDetails.GENERAL_LOCATION || "N/A"}</p>
-                <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
-              </>
-            )}
+                <>
+                  <h2>gayvad Details</h2>
+                  <p><strong>Item Type:</strong> {itemDetails.ITEM_TYPE || "N/A"}</p>
+                  <p><strong>Item Description:</strong> {itemDetails.DESCRIPTION || "N/A"}</p>
+                  <p><strong>Contact of the Finder:</strong> {itemDetails.CONTACT_OF_THE_FINDER || "N/A"}</p>
+                  <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
+                  <p><strong>General Location:</strong> {itemDetails.GENERAL_LOCATION || "N/A"}</p>
+                  <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
+                </>
+              )}
+
 
             <select value={selectedRequest.status} onChange={(e) => handleStatusUpdate('request', selectedRequest._id, e.target.value)}>
               <option value="Pending">Pending</option>

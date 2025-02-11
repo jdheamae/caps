@@ -111,7 +111,10 @@
     transform: translateY(-1px);
   }
   
-
+  .table-container {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling */
+}
   
   .ffound-items-table1 {
     
@@ -667,7 +670,19 @@ font-weight: 500;
   .grid-item1 {
     width: 110%; /* Ensure grid items take full width of their cell */
   }
+/* table */
 
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+  width: 152%;
+  margin:-50px -45px;
+}
+
+.ffound-items-table1 {
+  width: 100%;
+  min-width: 1200px; /* Ensure table is scrollable */
+}
 
   /* modal---- */
   .modal-overlay1 {

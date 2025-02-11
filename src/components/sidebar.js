@@ -80,7 +80,7 @@ const Sidebar = () => {
                 <IoMdAnalytics   className="nav-icon" /> Retrieval Status
               </NavLink>
               <NavLink to="/profile" activeClassName="active">
-              <FaHome className="nav-icon" /> Profile
+              <FaUser className="nav-icon" /> Profile
             </NavLink>
 
 
@@ -102,7 +102,7 @@ const Sidebar = () => {
                 <FaUserCheck className="nav-icon" /> Manage Request
               </NavLink>
               <NavLink to="/profile" activeClassName="active">
-              <FaHome className="nav-icon" /> Profile
+              <FaUser className="nav-icon" /> Profile
             </NavLink>
             </>
           )}

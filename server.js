@@ -395,15 +395,41 @@ app.post('/useritems', async (req, res) => {
 });
 
 //-----------------------------------printing found items for admin user----------------------------------
-app.get('/items', async (req, res) => {
+app.get('/items/:itemId', async (req, res) => {
   try {
-    const items = await Item.find();
-    res.json(items);
+    const { itemId } = req.params;  // Ensure this is fetching the correct ID
+    const item = await Item.findById(itemId);  // MongoDB query to find item by ID
+
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    res.json(item);  // Send the item details as a response
   } catch (error) {
-    console.error('Error fetching items:', error);
-    res.status(500).json({ message: 'Error fetching items', error });
+    console.error('Error fetching item details:', error);
+    res.status(500).json({ message: 'Error fetching item details', error });
   }
 });
+
+
+
+
+
+app.get('/items/:id', async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    res.json(item);
+  } catch (error) {
+    console.error('Error fetching item details:', error);
+    res.status(500).json({ message: 'Error fetching item details', error });
+  }
+});
+
 //-----------------printing found items for student users------------------------------
 app.get('/useritems', async (req, res) => {
   try {
@@ -654,6 +680,7 @@ app.get('/retrieval-requests', async (req, res) => {
     res.status(500).json({ message: "Error fetching requests", error });
   }
 });
+
 app.get("/retrieval-requests/:id", async (req, res) => {
   try {
     const requests= await RetrievalRequestSchema.find({ userId: req.params.id });    
@@ -663,6 +690,8 @@ app.get("/retrieval-requests/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+
 //-------------------------------------update retrieval request for admin---------------------//
 app.put('/retrieval-request/:id/status', async (req, res) => {
   const { id } = req.params;

@@ -5,7 +5,7 @@
   align-items: center;
   padding: 20px;
   margin-left: 200px;
-  background-image: url('msu.jpg');
+  background-image: url('msu.png');
   background-size: cover;
   background-position: center;
   color: #fff;
@@ -285,7 +285,7 @@ li {
   width: 100%; /* Adjust width to fit screen */
   margin-left: 0; /* Remove margin on mobile */
   padding: 10px; /* Adjust padding */
-  background-image: url('msuphone.jpg'); /* Add your background image */
+  background-image: url('msuphone.png'); /* Add your background image */
   background-size: cover; 
   background-position: center; /* Keep the center of the image visible */
   background-repeat: no-repeat; /* Prevent the image from repeating */

@@ -264,6 +264,7 @@ function Additem() {
 
 
           {viewMode === 'table' ? (
+            <div className="table-container">
             <table className="ffound-items-table1">
               <thead>
                 <tr>
@@ -333,6 +334,7 @@ function Additem() {
                 ))}
               </tbody>
             </table>
+            </div>
           ) : (
             <div className="grid-container1">
               {displayedRequests.map((item) => (

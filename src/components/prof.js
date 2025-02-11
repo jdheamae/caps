@@ -4,6 +4,7 @@ import Sidebar from "./sidebar";
 import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
 import { QRCodeCanvas } from "qrcode.react";
 import "../style/prof.css";
+import Header from "./header";
 
 function Profile() {
   const [user, setUser] = useState({
@@ -177,6 +178,7 @@ function Profile() {
   return (
     <div className="home-container1">
       <Sidebar />
+      <Header />  
       <div className="profile-container">
         <div className="profile-sidebar">
           <div className="profile-avatar">

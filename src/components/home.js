@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import Sidebar from "./sidebar";
 import Header from "./header";
 import '../style/home.css'; 
+import { FaFacebook, FaInstagram, FaEnvelope, FaGithub } from "react-icons/fa";
 
 function Home() {
   return (
@@ -66,26 +67,75 @@ function Home() {
         </div>
       </div>
     {/* Developer Team Section */}
-    <div className="developer-team-section">
-          <h2>Meet Our Developer Team</h2>
-          <div className="developer-grid">
-            <div className="developer-card">
-              <img src="1.png" alt="John Doe" className="developer-img" />
-              <h3>John Doe</h3>
-              <p>Front-End Devel oper</p>
-            </div>
-            <div className="developer-card">
-              <img src="2.png" alt="Jane Smith" className="developer-img" />
-              <h3>Jane Smith</h3>
-              <p>Front-End Developer</p>
-            </div>
-            <div className="developer-card">
-              <img src="2.png " alt="Mark Johnson" className="developer-img" />
-              <h3>Mark Johnson</h3>
-              <p>Back-End Developer</p>
+      <div className="developer-team-section">
+        <h2>Meet Our Developer Team</h2>
+        <div className="developer-grid">
+          
+          {/* Jean Dhea Mae P. Ampong */}
+          <div className="developer-card">
+            <img src="de.jpg" alt="Jean Dhea Mae P. Ampong" className="developer-img" />
+            <h3>Jean Dhea Mae P. Ampong</h3>
+            <p>Front-End Developer</p>
+            <div className="social-icons">
+              <a href="https://www.facebook.com/tisoiiy.acu/" target="_blank" rel="noopener noreferrer">
+                <FaFacebook />
+              </a>
+              <a href="https://www.instagram.com/jdheyame/" target="_blank" rel="noopener noreferrer">
+                <FaInstagram />
+              </a>
+              <a href="mailto:jeandheamae.ampong@g.msuiit.edu.ph">
+                <FaEnvelope />
+              </a>
+              <a href="https://github.com/jdheamae" target="_blank" rel="noopener noreferrer">
+                <FaGithub />
+              </a>
             </div>
           </div>
+
+          {/* Christian Albert B. Muaña */}
+          <div className="developer-card">
+            <img src="mo.jpg" alt="Christian Albert B. Muaña" className="developer-img" />
+            <h3>Christian Albert B. Muaña</h3>
+            <p>Front-End Developer</p>
+            <div className="social-icons">
+              <a href="https://www.facebook.com/moshe.muana" target="_blank" rel="noopener noreferrer">
+                <FaFacebook />
+              </a>
+              <a href="https://www.instagram.com/moshe.muana/" target="_blank" rel="noopener noreferrer">
+                <FaInstagram />
+              </a>
+              <a href="mailto:christianalber.muana@g.msuiit.edu.ph.com">
+                <FaEnvelope />
+              </a>
+              <a href="https://github.com/bertotoro" target="_blank" rel="noopener noreferrer">
+                <FaGithub />
+              </a>
+            </div>
+          </div>
+
+          {/* Paul Gary L. Oca */}
+          <div className="developer-card">
+            <img src="po.jpg" alt="Paul Gary L. Oca" className="developer-img" />
+            <h3>Paul Gary L. Oca</h3>
+            <p>Back-End Developer</p>
+            <div className="social-icons">
+              <a href="https://www.facebook.com/colress.gary" target="_blank" rel="noopener noreferrer">
+                <FaFacebook />
+              </a>
+              <a href="https://www.instagram.com/pol.gary/" target="_blank" rel="noopener noreferrer">
+                <FaInstagram />
+              </a>
+              <a href="mailto:paulgary.oca@g.msuiit.edu.ph.com">
+                <FaEnvelope />
+              </a>
+              <a href="https://github.com/vidarr1412" target="_blank" rel="noopener noreferrer">
+                <FaGithub />
+              </a>
+            </div>
+          </div>
+
         </div>
+      </div>
       </div>
   );
 }

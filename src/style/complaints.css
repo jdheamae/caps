@@ -110,7 +110,10 @@
     transform: translateY(-1px);
   }
   
-
+  .ttable-container3 {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling */
+}
   
   .ffound-items-table3 {
     width: 100%; /* Full width of the parent */
@@ -582,6 +585,18 @@ transform: translateY(-1px);
     margin-left: -320px;
     }
 
+
+    .table-container3 {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+      width: 152%;
+      margin-left: -45px;
+    }
+
+    .ffound-items-table3 {
+      width: 100%;
+      min-width: 1200px; /* Ensure table is scrollable */
+    }
     .ffound-items-table3 {
       margin: 50px auto 0px; /* Center the table horizontally */
 

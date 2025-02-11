@@ -307,6 +307,7 @@ function Manage() {
           </div>
 
           {viewMode === 'table' ? (
+            <div className="table-container3">
             <table className="ffound-items-table3">
               <thead>
                 <tr>
@@ -364,6 +365,7 @@ function Manage() {
                 ))}
               </tbody>
             </table>
+            </div>
           ) : (
             <div className="grid-container3">
               {displayedRequests.map((item) => (
