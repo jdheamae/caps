@@ -364,7 +364,7 @@ app.post('/useritems', async (req, res) => {
     // Create a new Item object
     const newItem = new Item({
          FINDER,//based  on their csv
-        FINDER_TYPE,//for data visualization 
+        FINDER_TYPE,//for data visualization y
         ITEM,//item name ,based on their csv
         ITEM_TYPE,//for data visualization
         DESCRIPTION,//item description ,base on their csv
@@ -404,6 +404,49 @@ app.get('/items', async (req, res) => {
     res.status(500).json({ message: 'Error fetching items', error });
   }
 });
+//--------------------------------specific printing for found items in retrieval for admin user---------------------------
+app.get('/items/:itemId', async (req, res) => {
+  try {
+    const { itemId } = req.params;
+
+    // Convert itemId to ObjectId if needed
+    if (!mongoose.Types.ObjectId.isValid(itemId)) {
+      return res.status(400).json({ message: "Invalid item ID format" });
+    }
+
+    const item = await Item.findById(itemId); // Query using `_id`
+
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+//------------------------------------updating status--------------------------------------------------------------------------------
+app.put('/items/:itemId/status', async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { status } = req.body;
+
+    if (!["claimed", "unclaimed"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    const updatedItem = await Item.findByIdAndUpdate(itemId, { STATUS: status }, { new: true });
+
+    if (!updatedItem) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    res.json({ message: "Item status updated", updatedItem });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
 //-----------------printing found items for student users------------------------------
 app.get('/useritems', async (req, res) => {
   try {
@@ -644,8 +687,6 @@ app.post('/retrieval-request', async (req, res) => {
 });
 //-----------------------------admin fetching the retrievals---------------------------------------------------------------------
 
-
-
 app.get('/retrieval-requests', async (req, res) => {
   try {
     const requests = await RetrievalRequestSchema.find();
@@ -654,6 +695,7 @@ app.get('/retrieval-requests', async (req, res) => {
     res.status(500).json({ message: "Error fetching requests", error });
   }
 });
+//--------------------------------User fetching specific retrievals---------------------------------------------
 app.get("/retrieval-requests/:id", async (req, res) => {
   try {
     const requests= await RetrievalRequestSchema.find({ userId: req.params.id });    
@@ -663,6 +705,19 @@ app.get("/retrieval-requests/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+app.get("/user-retrieval-requests", async (req, res) => {
+  try {
+      const { userId } = req.query;
+      if (!userId) return res.status(400).json({ error: "User ID is required" });
+
+      const requests = await RetrievalRequestSchema.find({ userId });
+      res.json(requests);
+  } catch (error) {
+      console.error("Error fetching retrieval requests:", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //-------------------------------------update retrieval request for admin---------------------//
 app.put('/retrieval-request/:id/status', async (req, res) => {
   const { id } = req.params;
@@ -726,11 +781,11 @@ app.put('/found-item/:itemId/status', async (req, res) => {
 //---------------------------UPDATE USER RETRIEVAL REQUEST USER----------------------------
 // Update request (only description and contactNumber)
 app.put('/retrieval-requests/:id', async (req, res) => {
-  const { description, contactNumber } = req.body;
+  const { description, item_name,general_location,specific_location,date_Lost,time_Lost} = req.body;
   try {
     const updatedRequest = await RetrievalRequestSchema.findByIdAndUpdate(
       req.params.id,
-      { description, contactNumber },
+      { description, item_name,general_location,specific_location,date_Lost,time_Lost },
       { new: true }
     );
     res.json(updatedRequest);
