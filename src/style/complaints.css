@@ -25,7 +25,7 @@
   .search-bar3 {
     display: flex;
     align-items: center; /* Vertically center items */
-    margin-top: -100px;
+    margin-top: 0px;
      /*height: 3  00px; Full viewport height to center vertically */
 
     
@@ -85,8 +85,8 @@
 /* Top-Right Buttons Container */
 .top-right-buttons3 {
   display: flex; /* Enable flexbox for alignment */
-  margin-top: 250px;
-  margin-left: -500px;
+  margin-top: 20px;
+  margin-left: 0px;
 
   }
   
@@ -108,61 +108,9 @@
     color: #ffd324;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
+    
   }
   
-
-  
-  .ffound-items-table3 {
-    width: 100%; /* Full width of the parent */
-    max-width: 1200px; /* Set a max width for the table */
-    margin: 70px auto 0px; /* Center the table horizontally */
-    padding: 0; /* Remove any default padding */
-    border-collapse: collapse;
-    font-size: 14px;
-    table-layout: fixed; /* Use fixed table layout to respect column widths */
-}
-
-.ffound-items-table3 th, .ffound-items-table3 td {
-    padding: 10px;
-    border: 1px solid #d5d2d2;
-    text-align: center;
-    overflow: hidden; /* Prevent overflow */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
-    white-space: normal; /* Allow text to wrap */
-    vertical-align: top; /* Align text to the top */
-    overflow-wrap: break-word; /* Allow long words to break */
-}
-
-.ffound-items-table3 th {
-    background-color: #ddd;
-}
-
-.ffound-items-table3 tr {
-    height: auto; /* Allow rows to stretch based on content */
-}
-
-.ffound-items-table3 th.action, .ffound-items-table3 td.action {
-    width: 50px; /* Adjust width as needed */
-    text-align: center; /* Center-align the buttons */
-}
-
-/* Set specific widths for other columns */
-.ffound-items-table3 th:nth-child(1), .ffound-items-table3 td:nth-child(1) { width: 20%; }
-.ffound-items-table3 th:nth-child(2), .ffound-items-table3 td:nth-child(2) { width: 15%; }
-.ffound-items-table3 th:nth-child(3), .ffound-items-table3 td:nth-child(3) { width: 25%; }
-.ffound-items-table3 th:nth-child(4), .ffound-items-table3 td:nth-child(4) { width: 20%; }
-.ffound-items-table3 th:nth-child(5), .ffound-items-table3 td:nth-child(5) { width: 15%; }
-.ffound-items-table3 th:nth-child(6), .ffound-items-table3 td:nth-child(6) { width: 15%; }
-.ffound-items-table3 th:nth-child(7), .ffound-items-table3 td:nth-child(7) { width: 10%; }
-.ffound-items-table3 th:nth-child(8), .ffound-items-table3 td:nth-child(8) { width: 25%; }
-.ffound-items-table3 th:nth-child(9), .ffound-items-table3 td:nth-child(9) { width: 25%; }
-.ffound-items-table3 th:nth-child(10), .ffound-items-table3 td:nth-child(10) { width: 25%; }
-.ffound-items-table3 th:nth-child(11), .ffound-items-table3 td:nth-child(11) { width: 25%; }
-.ffound-items-table3 th:nth-child(12), .ffound-items-table3 td:nth-child(12) { width: 25%; }
-.ffound-items-table3 th:nth-child(13), .ffound-items-table3 td:nth-child(13) { width: 25%; }
-.ffound-items-table3 th:nth-child(14), .ffound-items-table3 td:nth-child(14) { width: 25%; }
-.ffound-items-table3 th:nth-child(15), .ffound-items-table3 td:nth-child(15) { width: 25%; }
-.ffound-items-table3 th:nth-child(16), .ffound-items-table3 td:nth-child(116) { width: 25%; }
 
   
   
@@ -282,140 +230,7 @@
     color: white;
   } */
   
-  .modal-overlay3 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal3 {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: flex-start; /* Align items to the start */
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px; /* Adjusted for a single column layout */
-    max-height: 85vh; /* Limit height to enable scrolling */
-    overflow-y: auto; /* Enable vertical scrolling */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    text-align: left;
-}
-
-.modal3 h3 {
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    color: #222222;
-    text-align: center;
-    font-weight: bold;
-    width: 100%;
-}
-
-.modal3 form {
-    display: flex;
-    flex-direction: column; /* Single column layout */
-    gap: 15px;
-    width: 100%; /* Ensure the form takes full width */
-}
-
-.form-group3 {
-    display: flex;
-    flex-direction: column; /* Stack label above input */
-    width: 100%; /* Ensure full width */
-}
-
-.modal3 label {
-    font-weight: 500;
-    color: #444444;
-    margin-bottom: 5px;
-}
-
-.modal3 select,
-.modal3 textarea,
-.modal3 input {
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
-    width: 100%; /* Adjusted for full width in single column */
-}
-
-.modal3 input:focus,
-.modal3 select:focus,
-.modal3 textarea:focus {
-    border-color: #3c6abe;
-    outline: none;
-    box-shadow: 0 0 5px rgb(60, 106, 190);
-}
-
-.item-pic-input3 {
-    border: 2px dashed #aaaaaa;
-    padding: 20px;
-    text-align: center;
-    border-radius: 6px;
-    background: #f9f9f9;
-    font-size: 1rem;
-    color: #777777;
-    cursor: pointer;
-    width: 100%; /* Ensures the input takes full width */
-}
-
-.item-pic3 input:hover {
-    background: #f1f1f1;
-}
-
-.submit-btn3,
-.cancel-btn3,.delete-btn3 {
-    padding: 15px;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 48%; /* Adjusted for button alignment */
-
-}
-
-.submit-btn3 {
-    background-color: #45a049;
-    color: white;
-}
-
-.cancel-btn3 {
-    background-color: #FF0000;
-    color: white;
-}
-
-.delete-btn3 {
-  background-color: #8B0000;
-  color: white;
-}
-
-.submit-btn3:hover {
-    background-color: #61ce67;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    transform: translateY(-1px);
-}
-
-.cancel-btn3:hover {
-    background-color: #dd1f1f;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    transform: translateY(-1px);
-  }
-
-  .delete-btn3:hover {
-    background-color: #c01515;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    transform: translateY(-1px);
-  }
+ 
 
   
   .button-container3 {
@@ -462,10 +277,12 @@ transform: translateY(-1px);
   height: 14px; /* Maintain square aspect ratio */
 }
 
+/* FEB-10-25--------------------------------------------------------------------------- */
+
 .grid-container3 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-  margin-top: 190px;
+  margin-top: 30px;
   row-gap: 35px; /* Space between grid items */
   column-gap:85px;
   padding: 16px; /* Padding around the grid */
@@ -473,27 +290,7 @@ transform: translateY(-1px);
   justify-items: left; /* Center items within their grid cells */
 }
 
-.grid-item3 {
-  background-color: #f0f0f0; /* Background color for items */
-  padding: 20px; /* Padding inside items */
-  border: 1px solid #ccc; /* Optional: Border for items */
-  border-radius: 4px; /* Rounded corners */
-  text-align: center; /* Center text */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
-  width: 105%; /* Ensure grid items take full width of their cell */
-}
 
-.grid-container3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-  margin-top: 190px;
-  margin-left: -37px;
-  row-gap: 35px; /* Space between grid items */
-  column-gap:85px;
-  padding: 16px; /* Padding around the grid */
-  width: 100%; /* Ensure the grid takes full width */
-  justify-items: left; /* Center items within their grid cells */
-}
 
 .grid-item3 {
   overflow-y: auto;  /* Enable vertical scrolling */
@@ -521,9 +318,12 @@ transform: translateY(-1px);
   text-align: left; /* Align text to the left */
   margin: 5px 0; /* Add some vertical spacing */
   font-weight: normal; /* Normal weight for paragraph text */
+  max-height: 100px; /* Set a maximum height for paragraphs */
+  overflow-y: auto; /* Enable vertical scrolling for paragraphs */
 }
 .grid-item3 span {
   font-weight: bold; /* Normal weight for paragraph text */
+  
 }
 .view-mode-toggle3 {
   background: none; /* No background */
@@ -582,10 +382,7 @@ transform: translateY(-1px);
     margin-left: -320px;
     }
 
-    .ffound-items-table3 {
-      margin: 50px auto 0px; /* Center the table horizontally */
-
-  }
+   
 
   .grid-container3 {
     margin-top: 50px;
@@ -622,4 +419,233 @@ transform: translateY(-1px);
       border-radius: 6px;
       width: 110%; /* Adjusted for full width in single column */
     }
+}
+
+/* FEB_10_25------------------------------------------------------------------------------ */
+
+.table-container3 {
+  width: 100%; /* Full width of the parent */
+  max-width: 1600px; /* Set a max width for the container */
+  margin: 30px auto 0; /* Center the container */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  border: 1px solid #d5d2d2; /* Optional: Add a border around the container */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
+}
+
+
+
+.ffound-items-table3 {
+  width: 100%; /* Full width of the table */
+  border-collapse: collapse; /* Collapse borders */
+  font-size: 14px; /* Font size */
+  table-layout: auto; /* Use auto layout to allow for dynamic widths */
+}
+
+.ffound-items-table3 th, .ffound-items-table3 td {
+  padding: 10px;
+  border: 1px solid #d5d2d2;
+  text-align: center;
+  overflow: hidden; /* Prevent overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  white-space: normal; /* Allow text to wrap */
+  vertical-align: top; /* Align text to the top */
+  
+  word-wrap: break-word; /* Allow long words to break */
+  max-width: 200px; /* Set a max width for cells */
+}
+
+.ffound-items-table3 th {
+  background-color: #ddd;
+}
+
+.ffound-items-table3 tr {
+  height: auto; /* Allow rows to stretch based on content */
+}
+
+.ffound-items-table3 th.action, .ffound-items-table3 td.action {
+  width: 50px; /* Adjust width as needed */
+  text-align: center; /* Center-align the buttons */
+}
+
+
+
+.modal-overlay3 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal3 {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the start */
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px; /* Adjusted for a single column layout */
+  max-height: 85vh; /* Limit height to enable scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.modal3 h3 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #222222;
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
+}
+
+.modal3 form {
+  display: flex;
+  flex-direction: column; /* Single column layout */
+  gap: 15px;
+  width: 100%; /* Ensure the form takes full width */
+}
+
+.form-group3 {
+  display: flex;
+  flex-direction: column; /* Stack label above input */
+  width: 100%; /* Ensure full width */
+}
+
+.modal3 label {
+  font-weight: 500;
+  color: #444444;
+  margin-bottom: 5px;
+}
+
+.modal3 select,
+.modal3 textarea,
+.modal3 input {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  width: 100%; /* Adjusted for full width in single column */
+}
+
+.modal3 input:focus,
+.modal3 select:focus,
+.modal3 textarea:focus {
+  border-color: #3c6abe;
+  outline: none;
+  box-shadow: 0 0 5px rgb(60, 106, 190);
+}
+
+.item-pic-input3 {
+  border: 2px dashed #aaaaaa;
+  padding: 20px;
+  text-align: center;
+  border-radius: 6px;
+  background: #f9f9f9;
+  font-size: 1rem;
+  color: #777777;
+  cursor: pointer;
+  width: 100%; /* Ensures the input takes full width */
+}
+
+.item-pic3 input:hover {
+  background: #f1f1f1;
+}
+
+.submit-btn3,
+.cancel-btn3,.delete-btn3, .edit-btn3 {
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 48%; /* Adjusted for button alignment */
+
+}
+
+.submit-btn3 {
+  background-color: #45a049;
+  color: white;
+}
+
+.cancel-btn3 {
+  background-color: #FF0000;
+  color: white;
+}
+
+.delete-btn3 {
+background-color: #8B0000;
+color: white;
+}
+.edit-btn3 {
+  background-color: #0090ea;
+  color: white;
+  }
+
+.submit-btn3:hover {
+  background-color: #61ce67;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.cancel-btn3:hover {
+  background-color: #dd1f1f;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.delete-btn3:hover {
+  background-color: #c01515;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.edit-btn3:hover {
+  background-color: #1299ed;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+/* -------------------------------------------------- */
+
+.complaint-details3 {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  width: 100%; /* Full width */
+  padding: 10px 0; /* Add some padding to the details container */
+}
+
+.detail-grid3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 10px; /* Space between grid items */
+}
+
+.detail-item3 {
+  display: flex; /* Use flexbox to align items */
+  justify-content: space-between; /* Space between label and value */
+  padding: 8px 0; /* Adjust padding for detail items */
+  max-width: 100%; /* Prevent stretching beyond the container */
+}
+
+.detail-item3 strong {
+  color: #555; /* Label color */
+}
+
+.detail-item3 span {
+  color: #333; /* Value color */
+  text-align: left; /* Align text to the right */
+  white-space: normal; /* Allow text to wrap to the next line */
+  overflow-wrap: break-word; /* Break long words if necessary */
+  flex: 1; /* Allow the span to take available space */
+  max-width: 200px; /* Set a maximum width for the span */
 }

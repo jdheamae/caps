@@ -28,14 +28,14 @@ const Pagination = ({ currentPage, totalPages, handlePageChange }) => {
         First
       </button>
 
-      {/* Previous Button */}
+      {/* Previous Button
       <button
         className="page-nav1"
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
         Previous
-      </button>
+      </button> */}
 
       {/* Numbered Page Buttons */}
       {[...Array(endPage - startPage + 1)].map((_, index) => (
@@ -48,14 +48,14 @@ const Pagination = ({ currentPage, totalPages, handlePageChange }) => {
         </button>
       ))}
 
-      {/* Next Button */}
+      {/* Next Button
       <button
         className="page-nav1"
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
         Next
-      </button>
+      </button> */}
 
       {/* Last Page Button */}
       <button
