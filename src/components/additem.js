@@ -11,6 +11,9 @@ import { storage } from "../firebase"; // Import Firebase storage
 import Pagination from './pagination';
 import { ref, uploadBytesResumable, uploadString, getDownloadURL } from "firebase/storage";
 import Header from './header';
+import Filter from '../filterered/foundFilt'; // Adjust the import path as necessary
+import Modal from './image'; // Import the Modal component
+
 
 
 function Additem() {
@@ -23,6 +26,10 @@ function Additem() {
   const [isEditing, setIsEditing] = useState(false);
   const [isViewMore, setIsViewMore] = useState(false); // New state to track if modal is for viewing more details
   const itemsPerPage = 10;
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [imageModalOpen, setImageModalOpen] = useState(false); // State for image modal
+  const [selectedImage, setSelectedImage] = useState(''); // State for selected image
+  
 
   const [itemData, setItemData] = useState({
     // ITEM: '',
@@ -62,7 +69,11 @@ function Additem() {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+    if (showModal) {
+      startCamera(); // Start camera when modal is shown
+    }
+  }, [showModal]);
+
 
   const fetchItems = async () => {
     try {
@@ -74,7 +85,7 @@ function Additem() {
         const dateB = new Date(`${b.DATE_FOUND}T${b.TIME_RETURNED}`);
         return dateB - dateA; // Sort in descending order
       });
-
+      setCurrentPage(1); // Set current page to 1 when data is fetched
       setRequests(sortedRequests);
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -145,14 +156,14 @@ function Additem() {
     setItemData(
       item || {
         FINDER: '',//based  on their csv
-        FINDER_TYPE: '',//for data visualization 
+        FINDER_TYPE: 'STUDENT',//for data visualization 
         ITEM: '',//item name ,based on their csv
-        ITEM_TYPE: '',//for data visualization
+        ITEM_TYPE: 'Electronics',//for data visualization
         DESCRIPTION: '',//item description ,base on their csv
         IMAGE_URL: '',//change to item image later
         CONTACT_OF_THE_FINDER: '',//based on their csv
         DATE_FOUND: '',//based on their csv
-        GENERAL_LOCATION: '',//for data visualization
+        GENERAL_LOCATION: 'Gym',//for data visualization
         FOUND_LOCATION: '',//based on their csv
         TIME_RETURNED: '',  //time received
         OWNER: '',
@@ -165,28 +176,69 @@ function Additem() {
       }
     );
     setImage(null); // Reset the captured image when opening the modal
-  setShowModal(true);
-  
-  // Reset the view mode and editing state when opening the "Add Found Item" modal
-  setIsViewMore(false); // Ensure we are not in view mode
-  setIsEditing(false); // Ensure we are not in editing mode
-  startCamera();
+    setShowModal(true);
+
+    // Reset the view mode and editing state when opening the "Add Found Item" modal
+    setIsViewMore(false); // Ensure we are not in view mode
+    setIsEditing(false); // Ensure we are not in editing mode
+    startCamera();
   };
 
-  const filteredRequests = requests.filter((item) => {
-    return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
-  });
+  const applyFilters = (filters) => {
+    let filtered = [...requests]; // Use a copy of the original requests state
+    
+    if (filters.finderType) {
+      filtered = filtered.filter(item => item.FINDER_TYPE === filters.finderType);
+  }
+    
 
+    if (filters.itemType) {
+      filtered = filtered.filter(item => item.ITEM_TYPE === filters.itemType);
+    }
+
+    if (filters.dateFound) {
+      filtered = filtered.filter(item => item.DATE_FOUND === filters.dateFound);
+    }
+
+    if (filters.generalLocation) {
+      filtered = filtered.filter(item => item. GENERAL_LOCATION.toLowerCase().includes(filters.generalLocation.toLowerCase()));
+    }
+
+    if (filters.status) {
+      filtered = filtered.filter(item => item.STATUS === filters.status);//FIXED
+    }
+//FIXING..............
+    // Apply sorting
+    if (filters.sortByDate === 'ascending') {
+      filtered.sort((a, b) => new Date(a.DATE_FOUND) - new Date(b.DATE_FOUND));
+  } else if (filters.sortByDate === 'descending') {
+      filtered.sort((a, b) => new Date(b.DATE_FOUND) - new Date(a.DATE_FOUND));
+  }
+
+    setFilteredRequests(filtered);
+    // Calculate total pages
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+    // Only reset to the first page if the current page exceeds total pages
+    if (currentPage > totalPages) {
+        setCurrentPage(totalPages); // Adjust current page if it exceeds total pages
+    }
+  };
+
+  
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const displayedRequests = filteredRequests.slice(
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+        setCurrentPage(pageNumber);
+    }
+};
+const displayedRequests = filteredRequests.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
-  );
+);
+
+ 
 
   const handleStatusChange = async (item) => {
     const newStatus = item.STATUS === 'unclaimed' ? 'claimed' : 'unclaimed'; // Toggle status
@@ -216,12 +268,18 @@ function Additem() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true })
         .then((stream) => {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            videoRef.current.play();
+          } else {
+            console.error('Video reference is null');
+          }
         })
         .catch((err) => {
           console.error('Error accessing the camera', err);
         });
+    } else {
+      console.error('getUser  Media is not supported in this browser.');
     }
   };
 
@@ -245,6 +303,24 @@ function Additem() {
     setIsEditing(false); // Ensure we are in view mode
     setIsViewMore(true); // Set to view more mode
     setShowModal(true); // Open modal for viewing more details
+    // Start the camera when viewing more details
+    startCamera();
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true); // Switch to edit mode
+    startCamera(); // Start the camera when editing
+  };
+
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setImageModalOpen(true); // Open the image modal
+  };
+
+  const handleCloseImageModal = () => {
+    setImageModalOpen(false);
+    setSelectedImage('');
   };
 
   return (
@@ -262,7 +338,7 @@ function Additem() {
           <div className="search-bar1">
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search Item Name"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
               className="search-input1"
@@ -271,12 +347,15 @@ function Additem() {
               {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
             </button>
 
-            <div className="top-right-buttons1">
+            
+          </div>
+
+          <div className="top-right-buttons1">
               <button className="add-item-btn1" onClick={() => openModal()}>+ Add Found Item</button>
               {/* <button className="register-qr-btn1">Register QR Code</button> */}
             </div>
-          </div>
-
+            
+          <Filter onApplyFilters={applyFilters} />
 
           {viewMode === 'table' ? (
             <div className="table-container1">
@@ -313,12 +392,12 @@ function Additem() {
                       <td>{item.ITEM}</td>
                       <td>{item.ITEM_TYPE}</td>
                       <td>{item.DESCRIPTION}</td>
-                      <td> <img
-                        src={item.IMAGE_URL || "default-image-url"}
-                        alt="Product"
-                        className="default-image-url1"
-
-                      /></td>
+                      <td><img
+                          src={item.IMAGE_URL || "default-image-url1"}
+                          alt="Product"
+                          className="default-image-url11"
+                          onClick={() => handleImageClick(item.IMAGE_URL || "default-image-url1")} // Add click handler
+                        /></td>
                       <td>{item.CONTACT_OF_THE_FINDER}</td>
                       <td>{item.DATE_FOUND}</td>
                       <td>{item.GENERAL_LOCATION}</td>
@@ -356,15 +435,16 @@ function Additem() {
                 <div className="grid-item1" key={item._id}>
                   <h2>{item.ITEM}</h2>
                   <img
-                    src={item.IMAGE_URL || "default-image-url"}
+                    src={item.IMAGE_URL || "default-image-url1"}
                     alt="Product"
                     className="default-image-url11"
-
+                    onClick={() => handleImageClick(item.IMAGE_URL || "default-image-url1")} // Add click handler
                   />
                   <p><span>Description: </span>{item.DESCRIPTION}</p>
                   <p><span>Finder: </span> {item.FINDER}</p>
                   <p><span>Contact: </span> {item.CONTACT_OF_THE_FINDER}</p>
                   <p><span>Date Found: </span> {item.DATE_FOUND}</p>
+                  <p><span>General Location: </span> {item.GENERAL_LOCATION}</p>
                   <p><span>Location: </span> {item.FOUND_LOCATION}</p>
                   <p><span>Time: </span> {item.TIME_RETURNED}</p>
                   <p><span>Owner: </span> {item.OWNER}</p>
@@ -390,6 +470,8 @@ function Additem() {
           handlePageChange={handlePageChange}
         />
       </div>
+
+      <Modal isOpen={imageModalOpen} onClose={handleCloseImageModal} imageUrl={selectedImage} />
 
       {showModal && (
         <div className="modal-overlay1">
@@ -451,7 +533,7 @@ function Additem() {
                       <label htmlFor="itemType">ITEM TYPE</label>  {/* ADD DROP DOWN */}
                       <select
 
-                        id="itemType"
+                        id="item_Type"
                         name="ITEM_TYPE"
                         placeholder="Item TYPE"
                         value={itemData.ITEM_TYPE}
@@ -679,7 +761,7 @@ function Additem() {
 
                 </div>
               ) : (
-                <div className="complaint-details1">
+                <div className="found-details1">
                   <div className="detail-grid1">
                     <div className="detail-item1">
                       <strong>Finder:</strong>
@@ -704,9 +786,9 @@ function Additem() {
                     <div className="detail-item1">
                       <strong>Item image:</strong>
                       {/* Show the saved image only when updating an existing item */}
-                      {selectedItem && itemData.IMAGE_URL && !image && (
+                      {
                         <img src={itemData.IMAGE_URL} alt="Saved" className="captured-image" />
-                      )}
+                      }
                     </div>
                     <div className="detail-item1">
                       <strong>Finder Contact:</strong>
@@ -758,7 +840,7 @@ function Additem() {
                     </div>
                   </div>
                   <div className="button-container1">
-                    <button className="edit-btn1" onClick={() => setIsEditing(true)}>Edit</button>
+                    <button className="edit-btn1" onClick={handleEdit}>Edit</button>
                     <button className="cancel-btn1" onClick={() => setShowModal(false)}>Cancel</button>
                   </div>
                 </div>
@@ -930,7 +1012,7 @@ function Additem() {
                       id="owner"
                       name="OWNER"
                       maxLength="50"
-                      placeholder="May skip if owner is not yet identified"
+                      placeholder="May skip if OWNER is not yet identified"
                       value={itemData.OWNER}
                       onChange={handleInputChange}
                     />
@@ -1018,29 +1100,29 @@ function Additem() {
                   <div className="button-container1">
                     <button type="submit" className="submit-btn1">Submit</button>
                     {/* delete modal */}
-                   
+
                     <button type="button" className="cancel-btn1" onClick={() => setShowModal(false)}> Cancel </button>
                   </div>
                 </form>
 
 
-                 {/* Camera Section on the Right */}
-                  <div className="camera-section">
-                    <video ref={videoRef} width="320" height="240" autoPlay />
-                    <canvas ref={canvasRef} style={{ display: 'none' }} />
-                    <div className="camera-buttons">
-                      <button type="button" onClick={captureImage}>Capture Image</button>
-                    </div>
-                    {/* Show the saved image only when updating an existing item */}
-                    {selectedItem && itemData.IMAGE_URL && !image && (
-                      <img src={itemData.IMAGE_URL} alt="Saved" className="captured-image" />
-                    )}
-
-                    {/* Show the captured image if available */}
-                    {image && (
-                      <img src={image} alt="Captured" className="captured-image" />
-                    )}
+                {/* Camera Section on the Right */}
+                <div className="camera-section">
+                  <video ref={videoRef} width="320" height="240" autoPlay />
+                  <canvas ref={canvasRef} style={{ display: 'none' }} />
+                  <div className="camera-buttons">
+                    <button type="button" onClick={captureImage}>Capture Image</button>
                   </div>
+                  {/* Show the saved image only when updating an existing item */}
+                  {selectedItem && itemData.IMAGE_URL && !image && (
+                    <img src={itemData.IMAGE_URL} alt="Saved" className="captured-image" />
+                  )}
+
+                  {/* Show the captured image if available */}
+                  {image && (
+                    <img src={image} alt="Captured" className="captured-image" />
+                  )}
+                </div>
 
               </div>
             )}

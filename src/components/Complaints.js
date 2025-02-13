@@ -49,7 +49,8 @@ function Manage() {
         const response = await fetch("http://10.10.83.224:5000/complaints");
         const data = await response.json();
         setRequests(data);
-        setFilteredRequests(data); 
+        setFilteredRequests(data);
+        setCurrentPage(1); // Set current page to 1 when data is fetched 
       } catch (error) {
         console.error("Error fetching requests:", error);
       }
@@ -222,8 +223,9 @@ function Manage() {
 
 
   const applyFilters = (filters) => {
-    let filtered = requests; // Use the original requests state
+    let filtered = [...requests]; // Use a copy of the original requests state
 
+    // Apply filters
     if (filters.itemType) {
         filtered = filtered.filter(item => item.type === filters.itemType);
     }
@@ -240,14 +242,23 @@ function Manage() {
         filtered = filtered.filter(item => item.status === filters.status);
     }
 
+    // Apply sorting
     if (filters.sortByDate === 'ascending') {
-        filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+        filtered.sort((a, b) => new Date(a.date_complained) - new Date(b.date_complained));
     } else if (filters.sortByDate === 'descending') {
-        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        filtered.sort((a, b) => new Date(b.date_complained) - new Date(a.date_complained));
     }
 
+    // Update state with filtered results
     setFilteredRequests(filtered);
-    setCurrentPage(1); // Reset to the first page after applying filters
+    // Calculate total pages
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+    // Only reset to the first page if the current page exceeds total pages
+    if (currentPage > totalPages) {
+        setCurrentPage(totalPages); // Adjust current page if it exceeds total pages
+    }
+
 };
 
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
@@ -257,8 +268,10 @@ function Manage() {
   );
   
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+        setCurrentPage(pageNumber);
+    }
+};
 
   const [viewMode, setViewMode] = useState('table'); // Default to 'table' mode
   const toggleViewMode = () => {

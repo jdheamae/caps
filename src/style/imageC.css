@@ -1,0 +1,43 @@
+/* Modal.css */
+.modelo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+  
+  .modelo-content {
+    position: relative;
+  }
+  
+  .enlarged-image {
+    width: 1200px;
+    height: 700px;
+  }
+
+  /* -------------------------------------------- */
+
+.default-image-url1 {
+    width: 100%;
+    height: auto;
+    
+    border-Radius: 5px; 
+  }
+  .default-image-url11 {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border-Radius: 5px; 
+  }
+
+  .default-image-url11:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+  }
+  
