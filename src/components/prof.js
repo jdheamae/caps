@@ -62,7 +62,7 @@ function Profile() {
     }
 
     const fileName = `${userId}-${selectedFile.name}`;
-    const storageRef = ref(storage, `profileImages/${fileName}`);
+    const storageRef = ref(storage, `FIRI/prof/${fileName}`);
 
     const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 

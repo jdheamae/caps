@@ -108,7 +108,7 @@ function Additem() {
     }
     // Step 1: Upload the image to Firebase Storage if available
     if (image) {
-      const imageRef = ref(storage, `images/${Date.now()}.png`);
+      const imageRef = ref(storage, `FIRI/${Date.now()}.png`);
       try {
         await uploadString(imageRef, image, 'data_url');
         const downloadURL = await getDownloadURL(imageRef);
@@ -270,18 +270,26 @@ const displayedRequests = filteredRequests.slice(
         .then((stream) => {
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
-            videoRef.current.play();
+  
+            // Wait for the stream to be ready before calling play
+            videoRef.current.onloadeddata = () => {
+              videoRef.current.play()
+                .catch((err) => {
+                  console.error('Error playing the video stream:', err);
+                });
+            };
           } else {
             console.error('Video reference is null');
           }
         })
         .catch((err) => {
-          console.error('Error accessing the camera', err);
+          console.error('Error accessing the camera:', err);
         });
     } else {
-      console.error('getUser  Media is not supported in this browser.');
+      console.error('getUserMedia is not supported in this browser.');
     }
   };
+  
 
   const captureImage = () => {
     const canvas = canvasRef.current;

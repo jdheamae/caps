@@ -19,7 +19,7 @@ const itemSchema = new mongoose.Schema({
   DATE_CLAIMED: String,
   TIME_CLAIMED:String,
   STATUS: String,
-
+  
 });
 
 const Item = mongoose.model('Item', itemSchema);

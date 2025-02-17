@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import '../style/userBulletin.css';
+
+import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
 import Sidebar from "./sidebar";
 import axios from 'axios';
 import { FaTable } from "react-icons/fa6";
@@ -20,6 +22,8 @@ function Bulletin() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [uploading, setUploading] = useState(false);
+
 
 
   //for Request
@@ -30,6 +34,7 @@ function Bulletin() {
     general_location:'',//44
     date_Lost:'',//55
     time_Lost:'',//66
+    owner_image:'',
     id: '',
     status:'pending',
   });
@@ -82,6 +87,7 @@ function Bulletin() {
         specific_location:itemData.specific_location,//44
         date_Lost:itemData.date_Lost,//55
         time_Lost:itemData.time_Lost,//66
+        owner_image:itemData.owner_image,
         id: itemData.id,
         itemId: selectedItem._id, // Assuming you're passing the selected item ID
         userId: userId, // Include userId in the request
@@ -108,6 +114,7 @@ function Bulletin() {
         date_Lost:'',
         time_Lost:'',
         id:'',
+        owner_image:'',
        status: 'pending',
       });
   
@@ -117,7 +124,34 @@ function Bulletin() {
       alert('Error submitting the form. Please try again.'); // Alert on error
     }
   };
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    if (!file) return;
 
+    setUploading(true); // Show upload progress
+
+    const storageRef = ref(storage, `FIRI/requests/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Optional: Track upload progress
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload Progress: ${progress}%`);
+      },
+      (error) => {
+        console.error("Upload failed", error);
+        setUploading(false);
+      },
+      async () => {
+        // Get the download URL after successful upload
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        setItemData((prev) => ({ ...prev, owner_image: downloadURL }));
+        setUploading(false);
+      }
+    );
+  };
   const handleAddComplaint = () => {
     setSelectedRequest(null); // Clear selected request for new complaint
     setItemData({
@@ -249,12 +283,15 @@ function Bulletin() {
                 <select
                   id="general_location"
                   name="general_location"
-                  maxlength="200"
                   placeholder="General Location"
                   value={itemData.general_location}
+                  onChange={(e) =>
+                    setItemData({ ...itemData, general_location: e.target.value })
+                  }
                   required
                 >
-                  option
+                  <option value="" disabled>Select a location</option>
+              
                   <option value="Gym">GYM</option>
                   <option value="mainLibrary">MAIN LIBRARY</option>
                 </select>
@@ -300,6 +337,17 @@ function Bulletin() {
                   required
                 />
               </div>
+
+              <div className="form-group4">
+        <label htmlFor="owner_image">Image</label>
+        <input
+          type="file"
+          id="owner_image"
+          name="owner_image"
+          accept="image/*"
+          onChange={handleImageUpload}
+        />
+      </div>
             
 
 

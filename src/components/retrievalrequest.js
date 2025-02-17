@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaTable } from 'react-icons/fa';
+import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
+
 import { IoGridOutline } from 'react-icons/io5';
 import axios from 'axios';
 import Sidebar from './sidebar';
@@ -15,6 +17,7 @@ function UserRetrievalRequests() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+   const [uploading, setUploading] = useState(false);
   const [viewMode, setViewMode] = useState('table');
     const [itemDetails, setItemDetails] = useState(null); // State to hold item details
   const [modalType, setModalType] = useState(null); // 'show', 'update', or 'delete'
@@ -25,6 +28,7 @@ function UserRetrievalRequests() {
     specific_location: '',
     date_Lost: '',
     time_Lost: '',
+    owner_image:'',
     status: '',
   });
 
@@ -99,6 +103,7 @@ function UserRetrievalRequests() {
         specific_location: request.specific_location || '',
         date_Lost: request.date_Lost || '',
         time_Lost: request.time_Lost || '',
+        owner_image: request.owner_image || '',        
         status: request.status || '',
       });
     }
@@ -120,7 +125,34 @@ function UserRetrievalRequests() {
     setModalType(null);
     setSelectedRequest(null);
   };
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    if (!file) return;
 
+    setUploading(true); // Show upload progress
+
+    const storageRef = ref(storage, `FIRI/requests/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Optional: Track upload progress
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload Progress: ${progress}%`);
+      },
+      (error) => {
+        console.error("Upload failed", error);
+        setUploading(false);
+      },
+      async () => {
+        // Get the download URL after successful upload
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        setFormData((prev) => ({ ...prev, owner_image: downloadURL }));
+        setUploading(false);
+      }
+    );
+  };
   const filteredRequests = requests.filter((request) =>
     request.item_name?.toLowerCase().includes(filterText.toLowerCase())
   );
@@ -156,6 +188,7 @@ function UserRetrievalRequests() {
                   <th>Description</th>
                   <th>General Location</th>
                   <th>Specific Location</th>
+              
                   <th>Date Lost</th>
                   <th>Time Lost</th>
                   <th>Item Status</th>
@@ -169,6 +202,7 @@ function UserRetrievalRequests() {
                     <td>{request.description || "N/A"}</td>
                     <td>{request.general_location || "N/A"}</td>
                     <td>{request.specific_location || "N/A"}</td>
+             
                     <td>{request.date_Lost || "N/A"}</td>
                     <td>{request.time_Lost || "N/A"}</td>
                     <td>{request.status || "N/A"}</td>
@@ -202,8 +236,16 @@ function UserRetrievalRequests() {
             value={formData.specific_location} onChange={handleInputChange} placeholder="Specific Location" /></p>
              <p><strong>Date Lost</strong><input type="date" name="date_Lost" 
             value={formData.date_Lost} onChange={handleInputChange} /></p>
+            
             <p><strong>Time Lost</strong> <input type="time" name="time_Lost" 
             value={formData.time_Lost} onChange={handleInputChange} /></p>
+            <p><strong>Image</strong> </p> <input
+          type="file"
+          id="owner_image"
+          name="owner_image"
+          accept="image/*"
+          onChange={handleImageUpload}
+        />
             <div className="button-container5">
               <button onClick={handleUpdateRequest} className="update-btn5">Save Changes</button>
               <button onClick={closeModal} className="close-btn-manager5">Cancel</button>
@@ -221,11 +263,22 @@ function UserRetrievalRequests() {
       <p><strong>Finder Contact:</strong> {itemDetails.CONTACT_OF_THE_FINDER || "N/A"}</p>
       <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
       <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
+      <p><strong>IMAGE :</strong> </p>
+      <img 
+  src={itemDetails.IMAGE_URL} 
+  alt="Item Image" 
+  className="avatar-image" 
+  style={{ filter: 'blur(5px)' }} 
+/>
+
+
       <h3>Requests Details</h3>
       <p><strong>Item Name:</strong> {selectedRequest.item_name || "N/A"}</p>
   <p><strong>Description:</strong> {selectedRequest.description || "N/A"}</p>
   <p><strong>General Location:</strong> {selectedRequest.general_location || "N/A"}</p>
   <p><strong>Specific Location:</strong> {selectedRequest.specific_location || "N/A"}</p>
+
+  <img src={selectedRequest.owner_image} alt="Request Item Image" className="avatar-image" />
   <p><strong>Request Status:</strong> {selectedRequest.status || "N/A"}</p>
       <div className="button-container5">
         <button onClick={closeModal} className="close-btn-manager5">Close</button>

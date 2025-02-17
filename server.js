@@ -648,9 +648,10 @@ app.post('/retrieval-request', async (req, res) => {
     date_Lost,
     time_Lost, 
     id, 
+    owner_image,
     itemId, 
-    userId,
-    status } = req.body;
+    userId,status,
+  } = req.body;
 
   try {
     // Create a new retrieval request with the userId included
@@ -668,9 +669,10 @@ app.post('/retrieval-request', async (req, res) => {
       date_Lost,
       time_Lost,
       id,
+      owner_image,
       itemId,
       userId,
-      status,
+      status:"pending",
     });
 
     await newRequest.save();
@@ -781,11 +783,11 @@ app.put('/found-item/:itemId/status', async (req, res) => {
 //---------------------------UPDATE USER RETRIEVAL REQUEST USER----------------------------
 // Update request (only description and contactNumber)
 app.put('/retrieval-requests/:id', async (req, res) => {
-  const { description, item_name,general_location,specific_location,date_Lost,time_Lost} = req.body;
+  const { description, item_name,general_location,specific_location,date_Lost,time_Lost,owner_image} = req.body;
   try {
     const updatedRequest = await RetrievalRequestSchema.findByIdAndUpdate(
       req.params.id,
-      { description, item_name,general_location,specific_location,date_Lost,time_Lost },
+      { description, item_name,general_location,specific_location,date_Lost,time_Lost ,owner_image},
       { new: true }
     );
     res.json(updatedRequest);

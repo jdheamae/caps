@@ -188,8 +188,8 @@ function ManageRequest() {
                   <p><strong>Specific Location:</strong> {request.specific_location}</p>
                   <p><strong>Date Lost:</strong> {request.date_Lost}</p>
                   <p><strong>Time Lost:</strong> {request.time_Lost}</p>
-                  <p><strong>Status:</strong> {request.status}</p>
-
+                       <p><strong>Status:</strong> {request.status}</p>
+                 
                   <button className="view-btn5" onClick={() => handleRequestSelect(request)}>
                     Show
                   </button>
@@ -213,6 +213,17 @@ function ManageRequest() {
           <p><strong>General Location:</strong> {selectedRequest.general_location || "N/A"}</p>
           <p><strong>Specific Location:</strong> {selectedRequest.specific_location || "N/A"}</p>
           <p><strong>Status:</strong> {selectedRequest.status || "N/A"}</p>
+          <p><strong>Image:</strong></p>
+                  <img 
+  src={selectedRequest.owner_image} 
+  alt="Item Image" 
+  className="avatar-image" 
+  style={{ 
+     width: '200px',  
+    height: '200px'
+   }} 
+/>
+        
         </div>
         {itemDetails && (
           <div className="modal-detail5">
@@ -223,6 +234,16 @@ function ManageRequest() {
             <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
             <p><strong>General Location:</strong> {itemDetails.GENERAL_LOCATION || "N/A"}</p>
             <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
+            <p><strong>Image:</strong></p>
+                  <img 
+  src={itemDetails.IMAGE_URL} 
+  alt="Item Image" 
+  className="avatar-image" 
+  style={{ 
+     width: '200px',  
+    height: '200px'
+   }} 
+/>
           </div>
         )}
       </div>
