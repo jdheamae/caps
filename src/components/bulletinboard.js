@@ -31,7 +31,7 @@ function Bulletin() {
     date_Lost:'',//55
     time_Lost:'',//66
     id: '',
-    status: 'not-found',
+    status: 'pending',
   });
 
 
@@ -108,7 +108,7 @@ function Bulletin() {
         date_Lost:'',
         time_Lost:'',
         id:'',
-        status: 'not-found',
+        status: 'Pending',
       });
   
       setShowModal(false); // Close the modal after successful submission
@@ -128,7 +128,7 @@ function Bulletin() {
       date_Lost:'',
       time_Lost:'',
      
-      status: 'not-found',
+      status: 'Pending',
     });
     setShowModal(true); // Open modal for adding a complaint
   };

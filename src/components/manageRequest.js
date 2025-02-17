@@ -48,26 +48,7 @@ function ManageRequest() {
       console.error('Error fetching item details:', error);
     }
   };
-  const handleItemStatusUpdate = async () => {
-    if (!itemDetails || !itemDetails._id) {
-      console.error("Error: Item ID is undefined.");
-      return;
-    }
-  
-    try {
-      await axios.put(`http://10.10.83.224:5000/items/${itemDetails._id}/status`, {
-        status: itemDetails.STATUS,
-      });
-  
-      console.log(`Item ${itemDetails._id} status updated to ${itemDetails.STATUS}`);
-      alert("Item status updated successfully!");
-    } catch (error) {
-      console.error("Error updating item status:", error);
-      alert("Failed to update item status.");
-    }
-  };
-  
-  
+
   const handleStatusUpdate = async (type, id, updatedStatus) => {
     let endpoint = '';
 
@@ -90,18 +71,9 @@ function ManageRequest() {
   };
 
   const handleRequestSelect = (request) => {
-    console.log("Fetching item details for itemId:", request.itemId); // Debugging
     setSelectedRequest(request);
-  
-    if (request.itemId) {
-      fetchItemDetails(request.itemId);
-    } else {
-      console.error("Error: Missing itemId in request.");
-      setItemDetails(null);
-    }
+    fetchItemDetails(request.itemId); // Fetch item details when a request is selected
   };
-  
-  
 
   const filteredRequests = requests.filter((request) =>
     request.item_name?.toLowerCase().includes(filterText.toLowerCase())
@@ -150,7 +122,7 @@ function ManageRequest() {
                   <th>Specific Location</th>
                   <th>Date Lost</th>
                   <th>Time Lost</th>
-                  <th>Request Status</th>
+                  <th>Item Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -183,7 +155,7 @@ function ManageRequest() {
                   <p><strong>Specific Location:</strong> {request.specific_location}</p>
                   <p><strong>Date Lost:</strong> {request.date_Lost}</p>
                   <p><strong>Time Lost:</strong> {request.time_Lost}</p>
-                  <p><strong>Request Status:</strong> {request.status}</p>
+                  <p><strong>Status:</strong> {request.status}</p>
 
                   <button className="view-btn5" onClick={() => handleRequestSelect(request)}>
                     Show
@@ -198,59 +170,37 @@ function ManageRequest() {
       </div>
 
       {selectedRequest && (
-  <div className="modal-overlay1">
-   <div className="modal5">
-  <h2>Request Details</h2>
-  <p><strong>Item Name:</strong> {selectedRequest.item_name || "N/A"}</p>
-  <p><strong>Description:</strong> {selectedRequest.description || "N/A"}</p>
-  <p><strong>General Location:</strong> {selectedRequest.general_location || "N/A"}</p>
-  <p><strong>Specific Location:</strong> {selectedRequest.specific_location || "N/A"}</p>
-  <p><strong>Request Status:</strong> {selectedRequest.status || "N/A"}</p>
+        <div className="modal-overlay1">
+          <div className="modal5">
+            <h2>Request Details</h2>
+            <p><strong>Item Name:</strong> {selectedRequest.item_name || "N/A"}</p>
+            <p><strong>Description:</strong> {selectedRequest.description || "N/A"}</p>
+            <p><strong>General Location:</strong> {selectedRequest.general_location || "N/A"}</p>
+            <p><strong>Specific Location:</strong> {selectedRequest.specific_location || "N/A"}</p>
+            <p><strong>Status:</strong> {selectedRequest.status || "N/A"}</p>
+            {itemDetails && (
+              <> <h2>Item Requested Details</h2>
+                <p><strong>Item Type:</strong> {itemDetails.ITEM_TYPE || "N/A"}</p>
+                <p><strong>Item Description:</strong> {itemDetails.DESCRIPTION || "N/A"}</p>
+                <p><strong>Contact of the Finder:</strong> {itemDetails.CONTACT_OF_THE_FINDER || "N/A"}</p>
+                <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
+                <p><strong>General Location:</strong> {itemDetails.GENERAL_LOCATION || "N/A"}</p>
+                <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
+              </>
+            )}
 
-  {/* Original Dropdown for Request Status Update */}
-  <select
-    value={selectedRequest.status}
-    onChange={(e) => handleStatusUpdate('request', selectedRequest._id, e.target.value)}
-  >
-    <option value="Pending">Pending</option>
-    <option value="Accepted">Accepted</option>
-    <option value="Declined">Declined</option>
-  </select>
+            <select value={selectedRequest.status} onChange={(e) => handleStatusUpdate('request', selectedRequest._id, e.target.value)}>
+              <option value="Pending">Pending</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Declined">Declined</option>
+            </select>
 
-  {/* Item Details Section */}
-  {itemDetails && (
-    <>
-      <h3>Item Details</h3>
-      <p><strong>Item Type:</strong> {itemDetails.ITEM || "N/A"}</p>
-      <p><strong>Description:</strong> {itemDetails.DESCRIPTION || "N/A"}</p>
-      <p><strong>Finder Contact:</strong> {itemDetails.CONTACT_OF_THE_FINDER || "N/A"}</p>
-      <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
-      <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
-
-      {/* Item Status Dropdown & Update Button */}
-      {/* <p><strong>Item Status:</strong>{itemDetails.STATUS || "N/A"}</p>
-      <select 
-        value={itemDetails.STATUS} 
-        onChange={(e) => setItemDetails((prev) => ({ ...prev, STATUS: e.target.value }))}
-      >
-        <option value="unclaimed">Unclaimed</option>
-        <option value="claimed">Claimed</option>
-      </select>
-      <button onClick={handleItemStatusUpdate} className="update-item-status-btn">
-        Update Item Status
-      </button> */}
-    </>
-  )}
-
-  <div className="button-container5">
-    <button onClick={() => setSelectedRequest(null)} className="close-btn-manager5">
-      Close
-    </button>
-  </div>
-</div>
-</div>
-)}
-
+            <div className="button-container5">
+              <button onClick={() => setSelectedRequest(null)} className="close-btn-manager5">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
