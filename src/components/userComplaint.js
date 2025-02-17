@@ -9,6 +9,7 @@ import { FaPlus } from "react-icons/fa6";
 import { jwtDecode } from 'jwt-decode';
 import Pagination from './pagination';
 import axios from 'axios';
+import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
 import moment from 'moment';
 function UserComplaint() {
   const [filterText, setFilterText] = useState("");
@@ -17,11 +18,12 @@ function UserComplaint() {
   //const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [requests, setRequests] = useState([]);
+  
   //const [selectedItem, setSelectedItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-
+  const [uploading, setUploading] = useState(false);
   const [itemData, setItemData] = useState({
     itemname: '',
     type: '',
@@ -31,6 +33,7 @@ function UserComplaint() {
     time: '',
     description: '',
     status: 'Not Found',
+    item_image:'',
   });
 
   // Fetch all data from the database when the component mounts
@@ -101,7 +104,8 @@ function UserComplaint() {
       date:formData.get("date"),
       time :formData.get("time"),
       date_complained :formattedDate,
-      time_complained :formattedTime,
+      time_complained :formattedTime, 
+      item_image: itemData.item_image, // Use the uploaded image URL
       userId: userId, // Include the userId here
     };
 
@@ -125,7 +129,34 @@ function UserComplaint() {
       alert("Error filing complaint. Please try again.");
     }
   };
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    if (!file) return;
 
+    setUploading(true); // Show upload progress
+
+    const storageRef = ref(storage, `FIRI/requests/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Optional: Track upload progress
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload Progress: ${progress}%`);
+      },
+      (error) => {
+        console.error("Upload failed", error);
+        setUploading(false);
+      },
+      async () => {
+        // Get the download URL after successful upload
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        setItemData((prev) => ({ ...prev, item_image: downloadURL }));
+        setUploading(false);
+      }
+    );
+  };
   const handleViewMore = (request) => {
     setSelectedRequest(request); // Set the selected request
     setItemData(request); // Populate itemData with the selected request's data
@@ -212,8 +243,8 @@ function UserComplaint() {
           date:'',
           date_complained:'', 
           time_complained:'', 
-          status: 'not-found'
-    
+          status: 'not-found',
+          item_image:'',
         });
 
       } else {
@@ -304,6 +335,7 @@ function UserComplaint() {
       date_complained:'', 
       time_complained:'', 
       status: 'not-found',
+      item_image:'',
     });
     setShowModal(true); // Open modal for adding a complaint
   };
@@ -363,7 +395,7 @@ function UserComplaint() {
                   <th>Time Complained</th> */}
                   <th>Status</th>
 
-                  <th>Finder</th>
+                  <th>Image</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -384,7 +416,10 @@ function UserComplaint() {
                     {/* <td>{item.date_complained}</td> */}
                     {/* <td>{item.time_complained}</td> */}
                     <td>{item.status}</td>
-                    <td>{item.finder}</td>
+                    <td>   <img src={item.item_image} className="avatar-image" style={{ 
+     width: '100px',  
+    height: '100px'
+   }}  /></td>
                     <td>
 
                       <button className="view-btn2" onClick={() => handleViewMore(item)}>
@@ -409,6 +444,7 @@ function UserComplaint() {
                   <p><span>Time: </span> {item.time}</p>
                   <p><span>Status: </span> {item.status}</p>
                   <p><span>Finder: </span> {item.finder}</p>
+               
                   <button className="view-btn2" onClick={() => setShowModal(item)}>
                     <FaPlus /> View More
                   </button>
@@ -535,13 +571,24 @@ function UserComplaint() {
               </div>
              
 
-          
+              <div className="form-group2">
+                <label htmlFor="item_image">Item Image</label>
+                <input
+          type="file"
+          id="item_image"
+          name="item_image"
+          accept="image/*"
+          onChange={handleImageUpload}
+        />
+       
+              </div>
            
 
 
 
               <div className="button-container2">
                 <button type="submit" className="submit-btn2">
+                  
                   {selectedRequest ? 'Update' : 'Submit'}
                 </button>
                 {selectedRequest && (

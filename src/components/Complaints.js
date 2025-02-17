@@ -376,7 +376,7 @@ function Manage() {
                     <th>Date Complained</th>
                     <th>Time Complained</th>
                     <th>Status</th>
-                    <th>Finder</th>
+                   
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -405,7 +405,7 @@ function Manage() {
                           <IoMdArrowDropdown className='arrow3' />
                         </button>
                       </td>
-                      <td>{item.finder}</td>
+                     
                       <td>
                         <button className="view-btn3" onClick={() => handleViewMore(item)}>
                           <FaPlus /> View More
@@ -728,9 +728,13 @@ function Manage() {
                       <span>{itemData.status}</span>
                     </div>
                     <div className="detail-item3">
-                      <strong>Finder:</strong>
-                      <span>{itemData.finder}</span>
+                      <strong>Image:</strong>
+                      <span> <img src={itemData.item_image||'sad.jpg'} className="avatar-image" style={{ 
+     width: '100px',  
+    height: '100px'
+   }}  /></span>
                     </div>
+                 
                   </div>
                   <div className="button-container3">
                     <button className="edit-btn3" onClick={() => setIsEditing(true)}>Edit</button>

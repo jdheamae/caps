@@ -214,7 +214,7 @@ app.put("/complaints/:id", async (req, res) => {
     date_complained, 
     time_complained, 
     status ,
-    finder } = req.body;
+    finder,item_image } = req.body;
 
   try {
     // Find the complaint by ID
@@ -250,6 +250,7 @@ app.put("/complaints/:id", async (req, res) => {
     complaint.time_complained = time_complained||complaint.time_complained; 
     complaint.status = status||complaint.status ;
     complaint.finder = finder ||complaint.finder ;
+    complaint.item_image = item_image||complaint.item_image;
     // Save the updated complaint
     await complaint.save();
 
@@ -500,7 +501,9 @@ app.post("/usercomplaints", async (req, res) => {
     time ,
     date,
     date_complained, 
-    time_complained,  userId } = req.body;
+    time_complained, 
+     userId,
+    item_image } = req.body;
 
   try {
     const newComplaint = new Complaint({
@@ -531,6 +534,7 @@ app.post("/usercomplaints", async (req, res) => {
       status: "Not Found",
       finder: "N/A",
       userId, // Add userId here
+      item_image,
           });
 
     await newComplaint.save();
@@ -575,7 +579,7 @@ app.put("/usercomplaints/:id", async (req, res) => {
     time ,
     date,
     date_complained, 
-    time_complained, userId } = req.body;
+    time_complained, userId,item_image } = req.body;
 
   try {
     const updatedComplaint = await Complaint.findByIdAndUpdate(
@@ -605,6 +609,7 @@ app.put("/usercomplaints/:id", async (req, res) => {
         userId, // userId is updated as well
         status: "Not Found",  // Default status can be kept or updated based on your logic
         finder: "N/A", // Default finder value, this can also be updated
+        item_image,
       },
       { new: true } // This option ensures the updated document is returned
     );
@@ -651,6 +656,7 @@ app.post('/retrieval-request', async (req, res) => {
     owner_image,
     itemId, 
     userId,status,
+    
   } = req.body;
 
   try {

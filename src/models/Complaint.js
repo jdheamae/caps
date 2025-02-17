@@ -18,6 +18,7 @@ const complaintSchema = new mongoose.Schema({
   status: { type: String, default: "Not Found" },
   finder: { type: String, default: "N/A" },
  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Store the userId
+ item_image: { type: String },
 });
 
 module.exports = mongoose.model("Complaint", complaintSchema);
