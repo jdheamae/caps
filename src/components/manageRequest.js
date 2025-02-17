@@ -15,7 +15,8 @@ function ManageRequest() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [viewMode, setViewMode] = useState('table');
-  const [itemDetails, setItemDetails] = useState(null); // State to hold item details
+  const [itemDetails, setItemDetails] = useState(null);
+  const [selectedTab, setSelectedTab] = useState('all'); // State for selected tab
 
   useEffect(() => {
     fetchRequests();
@@ -32,7 +33,7 @@ function ManageRequest() {
         console.error("Invalid API response:", response.data);
         setRequests([]);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching retrieval requests:', error);
@@ -48,26 +49,7 @@ function ManageRequest() {
       console.error('Error fetching item details:', error);
     }
   };
-  const handleItemStatusUpdate = async () => {
-    if (!itemDetails || !itemDetails._id) {
-      console.error("Error: Item ID is undefined.");
-      return;
-    }
-  
-    try {
-      await axios.put(`http://10.10.83.224:5000/items/${itemDetails._id}/status`, {
-        status: itemDetails.STATUS,
-      });
-  
-      console.log(`Item ${itemDetails._id} status updated to ${itemDetails.STATUS}`);
-      alert("Item status updated successfully!");
-    } catch (error) {
-      console.error("Error updating item status:", error);
-      alert("Failed to update item status.");
-    }
-  };
-  
-  
+
   const handleStatusUpdate = async (type, id, updatedStatus) => {
     let endpoint = '';
 
@@ -83,6 +65,7 @@ function ManageRequest() {
 
     try {
       await axios.put(endpoint, { status: updatedStatus });
+      alert(`Request has been ${updatedStatus.toLowerCase()}. It will be moved to the corresponding tab.`);
       fetchRequests(); // Refresh UI after update
     } catch (error) {
       console.error(`Error updating ${type} status:`, error);
@@ -90,20 +73,27 @@ function ManageRequest() {
   };
 
   const handleRequestSelect = (request) => {
-    console.log("Fetching item details for itemId:", request.itemId); // Debugging
     setSelectedRequest(request);
-  
-    if (request.itemId) {
-      fetchItemDetails(request.itemId);
-    } else {
-      console.error("Error: Missing itemId in request.");
-      setItemDetails(null);
+    fetchItemDetails(request.itemId);
+  };
+
+  // Filter requests based on the selected tab
+  const getFilteredRequests = () => {
+    switch (selectedTab) {
+      case 'declined':
+        return requests.filter(request => request.status === 'declined');
+      case 'pending':
+        return requests.filter(request => request.status === 'pending')
+          .sort((a, b) => new Date(b.date_Lost) - new Date(a.date_Lost)); // Sort by date lost, newest first
+      case 'approved':
+        return requests.filter(request => request.status === 'approved');
+      case 'all':
+      default:
+        return requests;
     }
   };
-  
-  
 
-  const filteredRequests = requests.filter((request) =>
+  const filteredRequests = getFilteredRequests().filter((request) =>
     request.item_name?.toLowerCase().includes(filterText.toLowerCase())
   );
 
@@ -136,11 +126,25 @@ function ManageRequest() {
             </button>
           </div>
 
+          {/* Tabs for filtering requests */}
+          <div className="tabs">
+            {['all', 'pending', 'approved', 'declined'].map(tab => (
+              <button
+                key={tab}
+                className={`tab-button ${selectedTab === tab ? 'active' : ''}`}
+                onClick={() => setSelectedTab(tab)}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
+          </div>
+
           {loading ? (
             <p>Loading requests...</p>
           ) : displayedRequests.length === 0 ? (
             <p>No matching requests found.</p>
           ) : viewMode === 'table' ? (
+            <div className="table-container5">
             <table className="ffound-items-table5">
               <thead>
                 <tr>
@@ -150,7 +154,7 @@ function ManageRequest() {
                   <th>Specific Location</th>
                   <th>Date Lost</th>
                   <th>Time Lost</th>
-                  <th>Request Status</th>
+                  <th>Item Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -173,6 +177,7 @@ function ManageRequest() {
                 ))}
               </tbody>
             </table>
+            </div>
           ) : (
             <div className="grid-container5">
               {displayedRequests.map((request) => (
@@ -183,7 +188,7 @@ function ManageRequest() {
                   <p><strong>Specific Location:</strong> {request.specific_location}</p>
                   <p><strong>Date Lost:</strong> {request.date_Lost}</p>
                   <p><strong>Time Lost:</strong> {request.time_Lost}</p>
-                  <p><strong>Request Status:</strong> {request.status}</p>
+                  <p><strong>Status:</strong> {request.status}</p>
 
                   <button className="view-btn5" onClick={() => handleRequestSelect(request)}>
                     Show
@@ -198,59 +203,48 @@ function ManageRequest() {
       </div>
 
       {selectedRequest && (
-  <div className="modal-overlay1">
-   <div className="modal5">
-  <h2>Request Details</h2>
-  <p><strong>Item Name:</strong> {selectedRequest.item_name || "N/A"}</p>
-  <p><strong>Description:</strong> {selectedRequest.description || "N/A"}</p>
-  <p><strong>General Location:</strong> {selectedRequest.general_location || "N/A"}</p>
-  <p><strong>Specific Location:</strong> {selectedRequest.specific_location || "N/A"}</p>
-  <p><strong>Request Status:</strong> {selectedRequest.status || "N/A"}</p>
-
-  {/* Original Dropdown for Request Status Update */}
-  <select
-    value={selectedRequest.status}
-    onChange={(e) => handleStatusUpdate('request', selectedRequest._id, e.target.value)}
-  >
-    <option value="Pending">Pending</option>
-    <option value="Accepted">Accepted</option>
-    <option value="Declined">Declined</option>
-  </select>
-
-  {/* Item Details Section */}
-  {itemDetails && (
-    <>
-      <h3>Item Details</h3>
-      <p><strong>Item Type:</strong> {itemDetails.ITEM || "N/A"}</p>
-      <p><strong>Description:</strong> {itemDetails.DESCRIPTION || "N/A"}</p>
-      <p><strong>Finder Contact:</strong> {itemDetails.CONTACT_OF_THE_FINDER || "N/A"}</p>
-      <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
-      <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
-
-      {/* Item Status Dropdown & Update Button */}
-      {/* <p><strong>Item Status:</strong>{itemDetails.STATUS || "N/A"}</p>
-      <select 
-        value={itemDetails.STATUS} 
-        onChange={(e) => setItemDetails((prev) => ({ ...prev, STATUS: e.target.value }))}
-      >
-        <option value="unclaimed">Unclaimed</option>
-        <option value="claimed">Claimed</option>
-      </select>
-      <button onClick={handleItemStatusUpdate} className="update-item-status-btn">
-        Update Item Status
-      </button> */}
-    </>
-  )}
-
-  <div className="button-container5">
-    <button onClick={() => setSelectedRequest(null)} className="close-btn-manager5">
-      Close
-    </button>
+  <div className="modal-overlay5">
+    <div className="modal5">
+      <div className="modal-details5">
+        <div className="modal-detail5">
+          <h2>Request Details</h2>
+          <p><strong>Item Name:</strong> {selectedRequest.item_name || "N/A"}</p>
+          <p><strong>Description:</strong> {selectedRequest.description || "N/A"}</p>
+          <p><strong>General Location:</strong> {selectedRequest.general_location || "N/A"}</p>
+          <p><strong>Specific Location:</strong> {selectedRequest.specific_location || "N/A"}</p>
+          <p><strong>Status:</strong> {selectedRequest.status || "N/A"}</p>
+        </div>
+        {itemDetails && (
+          <div className="modal-detail5">
+            <h2>Item Requested Details</h2>
+            <p><strong>Item Type:</strong> {itemDetails.ITEM_TYPE || "N/A"}</p>
+            <p><strong>Item Description:</strong> {itemDetails.DESCRIPTION || "N/A"}</p>
+            <p><strong>Contact of the Finder:</strong> {itemDetails.CONTACT_OF_THE_FINDER || "N/A"}</p>
+            <p><strong>Date Found:</strong> {itemDetails.DATE_FOUND || "N/A"}</p>
+            <p><strong>General Location:</strong> {itemDetails.GENERAL_LOCATION || "N/A"}</p>
+            <p><strong>Found Location:</strong> {itemDetails.FOUND_LOCATION || "N/A"}</p>
+          </div>
+        )}
+      </div>
+      
+      <div className="button-container5">
+        {/* Conditional rendering of action buttons based on status */}
+        {selectedRequest.status === 'declined' && (
+          <button onClick={() => handleStatusUpdate('request', selectedRequest._id, 'pending')} className="reAccept-btn5">Re-Accept</button>
+        )}
+        
+        {selectedRequest.status === 'pending' && (
+          <div className="button-container-secondary5">
+            <button onClick={() => handleStatusUpdate('request', selectedRequest._id, 'approved')} className="approved-btn5">Approve</button>
+            <button onClick={() => handleStatusUpdate('request', selectedRequest._id, 'declined')} className="decline-btn5">Decline</button>
+          </div>
+        )}
+        
+        <button onClick={() => setSelectedRequest(null)} className="close-btn5">Close</button>
+      </div>
+    </div>
   </div>
-</div>
-</div>
 )}
-
     </div>
   );
 }

@@ -110,18 +110,6 @@
   }
   
 
-  
-  .ffound-items-table5 {
-    
-    width: 100%; /* Full width of the parent */
-    max-width: 1200px; /* Set a max width for the table */
-    margin: 100px auto 0px; /* Center the table horizontally */
-    padding: 0; /* Remove any default padding */
-    border-collapse: collapse;
-    font-size: 14px;
-    table-layout: fixed; /* Use fixed table layout to respect column widths */
-}
-
 .ffound-items-table5 th, .ffound-items-table5 td {
     padding: 10px;
     border: 1px solid #d5d2d2;
@@ -295,7 +283,8 @@
 }
 
 .submit-btn5,
-.cancel-btn5,.delete-btn5, .close-btn-manager5  {
+.cancel-btn5,.delete-btn5, .close-btn5,
+.approved-btn5,.decline-btn5,.reAccept-btn5  {
     padding: 15px;
     font-size: 1rem;
     font-weight: bold;
@@ -304,6 +293,10 @@
     cursor: pointer;
     width: 48%; /* Adjusted for button alignment */
 
+}
+
+.button-container-secondary5{
+ width:100%;
 }
 
 .submit-btn5 {
@@ -321,7 +314,7 @@
   color: white;
 }
 
-.close-btn-manager5{
+.close-btn5{
   background-color: #FF0000;
   color: white;
 }
@@ -344,7 +337,7 @@
     transform: translateY(-1px);
   }
 
-  .close-btn-manager5:hover {
+  .close-btn5:hover {
     background-color: #dd1f1f;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
@@ -354,7 +347,6 @@
   .button-container5 {
     margin-top: 20px;
     display: flex;
-    gap: 10px;
     justify-content: center;
     
   }
@@ -514,7 +506,7 @@ transform: translateY(-1px);
 }
 
 .modal5 {
-  width: 800px;         /* Extend the modal width */
+  width: 700px;         /* Extend the modal width */
   margin: 50px auto;    /* Center modal on the screen */
   padding: 20px;
   background: #fff;
@@ -664,3 +656,113 @@ font-weight: 500;
       width: 100%;
     }
 }
+
+/* ----------------------------------------------------------- */
+
+.tabs {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.tab-button {
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  margin-right:10px;
+}
+
+.tab-button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.tab-button:hover {
+  background-color: #e0e0e0;
+}
+
+
+/* --------------------------------------------------- */
+
+
+.approved-btn5 {
+    background-color: #45a049;
+    color: white;
+}
+
+.decline-btn5 {
+    background-color: #FF0000;
+    color: white;
+    margin-left:10px
+}
+
+.reAccept-btn5 {
+  background-color:#45a049;
+  color: white;
+  margin-right:10px
+}
+
+.approved-btn5:hover {
+    background-color: #61ce67;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.decline-btn5:hover {
+    background-color: #dd1f1f;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .reAccept-btn5:hover {
+    background-color: #61ce67;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+  }
+  .table-container5 {
+    width: 100%; /* Full width of the parent */
+    max-width: 1200px; /* Set a max width for the container */
+    margin: 30px auto 0; /* Center the container */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    border: 1px solid #d5d2d2; /* Optional: Add a border around the container */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
+  }
+
+  .ffound-items-table5 {
+    
+    width: 100%; /* Full width of the parent */
+    border-collapse: collapse; /* Collapse borders */
+    font-size: 14px;
+    table-layout: auto; /* Use fixed table layout to respect column widths */
+}
+
+
+.modal-details5 {
+  display: grid; /* Use grid layout */
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 20px; /* Space between columns */
+  margin-top: 20px; /* Space above the details */
+}
+
+.modal-detail5 {
+  padding: 10px; /* Add padding for better spacing */
+}
+
+.modal-detail5  h2{
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.modal-detail5:not(:last-child) {
+  border-right: 1px solid #ccc; /* Add a vertical line between the two columns */
+}
+
+  
+  
