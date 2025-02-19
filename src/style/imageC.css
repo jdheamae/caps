@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it appears above other content */
+    z-index: 1001; /* Ensure it appears above other content */
   }
   
   .modelo-content {
@@ -21,23 +21,5 @@
     height: 700px;
   }
 
-  /* -------------------------------------------- */
-
-.default-image-url1 {
-    width: 100%;
-    height: auto;
-    
-    border-Radius: 5px; 
-  }
-  .default-image-url11 {
-    width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-    border-Radius: 5px; 
-  }
-
-  .default-image-url11:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  transform: translateY(-1px);
-  }
+ 
   

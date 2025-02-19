@@ -64,6 +64,18 @@ function Manage() {
     setItemData({ ...itemData, [name]: value });
   };
 
+  // Function to filter requests based on search text
+  const filterRequests = () => {
+    if (!filterText) {
+      return filteredRequests; // If no filter text, return all filtered requests
+    }
+
+    return filteredRequests.filter(request =>
+      request.complainer.toLowerCase().includes(filterText.toLowerCase())
+    );
+  };
+
+
 
   const handleComplaintSubmit = async (e) => {
     e.preventDefault();
@@ -249,20 +261,20 @@ function Manage() {
         filtered.sort((a, b) => new Date(b.date_complained) - new Date(a.date_complained));
     }
 
-    // Update state with filtered results
-    setFilteredRequests(filtered);
-    // Calculate total pages
-    const totalPages = Math.ceil(filtered.length / itemsPerPage);
-
-    // Only reset to the first page if the current page exceeds total pages
-    if (currentPage > totalPages) {
-        setCurrentPage(totalPages); // Adjust current page if it exceeds total pages
+    // Only update filteredRequests if it has changed
+    if (JSON.stringify(filtered) !== JSON.stringify(filteredRequests)) {
+      setFilteredRequests(filtered);
     }
+  
+    
+    
+   
+  };
 
-};
-
+  //UPDATE PAGINATIOn
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
-  const displayedRequests = filteredRequests.slice(
+
+  const displayedRequests = filterRequests().slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -320,6 +332,7 @@ function Manage() {
 
 
 
+  
   return (
     <div className="home-container">
       <Sidebar />
@@ -362,7 +375,7 @@ function Manage() {
               <table className="ffound-items-table3">
                 <thead>
                   <tr>
-                    <th>Complainer</th>
+                    <th>COMPLAINER</th>
                     <th>College</th>
                     <th>Year Level</th>
                     <th>Item Name</th>

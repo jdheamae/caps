@@ -74,6 +74,17 @@ function Additem() {
     }
   }, [showModal]);
 
+  // Function to filter requests based on search text
+  const filterRequests = () => {
+    if (!filterText) {
+      return filteredRequests; // If no filter text, return all filtered requests
+    }
+
+    return filteredRequests.filter(request =>
+      request.ITEM.toLowerCase().includes(filterText.toLowerCase())
+    );
+  };
+
 
   const fetchItems = async () => {
     try {
@@ -186,57 +197,57 @@ function Additem() {
 
   const applyFilters = (filters) => {
     let filtered = [...requests]; // Use a copy of the original requests state
-    
+  
+    // Apply filters
     if (filters.finderType) {
       filtered = filtered.filter(item => item.FINDER_TYPE === filters.finderType);
-  }
-    
-
+    }
+  
     if (filters.itemType) {
       filtered = filtered.filter(item => item.ITEM_TYPE === filters.itemType);
     }
-
+  
     if (filters.dateFound) {
       filtered = filtered.filter(item => item.DATE_FOUND === filters.dateFound);
     }
-
+  
     if (filters.generalLocation) {
-      filtered = filtered.filter(item => item. GENERAL_LOCATION.toLowerCase().includes(filters.generalLocation.toLowerCase()));
+      filtered = filtered.filter(item => item.GENERAL_LOCATION.toLowerCase().includes(filters.generalLocation.toLowerCase()));
     }
-
+  
     if (filters.status) {
-      filtered = filtered.filter(item => item.STATUS === filters.status);//FIXED
+      filtered = filtered.filter(item => item.STATUS === filters.status);
     }
-//FIXING..............
+  
     // Apply sorting
     if (filters.sortByDate === 'ascending') {
       filtered.sort((a, b) => new Date(a.DATE_FOUND) - new Date(b.DATE_FOUND));
-  } else if (filters.sortByDate === 'descending') {
+    } else if (filters.sortByDate === 'descending') {
       filtered.sort((a, b) => new Date(b.DATE_FOUND) - new Date(a.DATE_FOUND));
-  }
-
-    setFilteredRequests(filtered);
-    // Calculate total pages
-    const totalPages = Math.ceil(filtered.length / itemsPerPage);
-
-    // Only reset to the first page if the current page exceeds total pages
-    if (currentPage > totalPages) {
-        setCurrentPage(totalPages); // Adjust current page if it exceeds total pages
     }
-  };
-
   
+    // Only update filteredRequests if it has changed
+    if (JSON.stringify(filtered) !== JSON.stringify(filteredRequests)) {
+      setFilteredRequests(filtered);
+    }
+  
+    
+  };
+  
+  
+  //UPDATE PAGINATIOn
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
 
+  const displayedRequests = filterRequests().slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
         setCurrentPage(pageNumber);
     }
 };
-const displayedRequests = filteredRequests.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-);
 
  
 
@@ -370,9 +381,9 @@ const displayedRequests = filteredRequests.slice(
               <table className="ffound-items-table1">
                 <thead>
                   <tr>
+                  <th>ITEM NAME</th>
                     <th>Finder</th>
                     <th>Finder Type</th>{/* for visualization */}
-                    <th>Item Name</th>
                     <th>Item Type</th>{/* for visualization */}
                     <th>Item Description</th>
                     <th>Item Image</th>
@@ -395,9 +406,9 @@ const displayedRequests = filteredRequests.slice(
                 <tbody>
                   {displayedRequests.map((item) => (
                     <tr key={item._id}>
+                      <td>{item.ITEM}</td>
                       <td>{item.FINDER}</td>
                       <td>{item.FINDER_TYPE}</td>
-                      <td>{item.ITEM}</td>
                       <td>{item.ITEM_TYPE}</td>
                       <td>{item.DESCRIPTION}</td>
                       <td><img

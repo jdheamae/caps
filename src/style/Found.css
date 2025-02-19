@@ -125,12 +125,12 @@
     color: white;
     padding: 5px 12px;
     font-size: 15px;
-    margin: 0 2px; /* Adds horizontal spacing between buttons */
+    margin: 0 10px; /* Adds horizontal spacing between buttons */
     border: none;
     width:115px;
     cursor: pointer;
     border-radius: 3px;
-    margin-left: 10px;
+    
     border-radius: 6px;
   }
 
@@ -141,52 +141,7 @@
   transform: translateY(-1px);
   }
   
-  .ppagination1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 0px; /* Adjust margin to avoid covering the table */
-    margin-left: 200px;
-    margin-bottom: 50px; /* Add some space below the pagination */
-    
-}
-
-.page-nav1 {
-    padding: 8px 12px;
-    margin: 0 10px; /* Adjust margin for better spacing */
-    height: 50px;
-    font-weight: bold;
-    font-size: 20px;
-    border: 1px solid #8B0000;
-    background-color: #fff;
-    cursor: pointer;
-    color: #8B0000;
-    width: 70px;
-    border-radius:  10px;
-}
-
-.page-nav1.active {
-    background-color: #8B0000; /* Highlight the active page */
-    color: white; /* Change text color for active page */
-}
-
-.page-nav1:disabled {
-    background-color: #f0f0f0;
-    color: #ccc;
-    cursor: not-allowed;
-}
-.page-nav1:disabled:hover {
-  background-color: #dbd9d9;
-  color: #ccc;
-  cursor: not-allowed;
-}
-
-.page-nav1:hover {
-  background-color: #f7d953;
-  color: #8B0000;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-  transform: translateY(-1px);
-}
+  
   
   /* modal
   .modal-overlay1 {
@@ -811,4 +766,26 @@ font-weight: 500;
   color: #a50303; /* Change color on hover */
 
 
+}
+
+/* --------------------------------------------------------- */
+
+ /* -------------------------------------------- */
+
+ .default-image-url1 {
+  width: 100%;
+  height: auto;
+  
+  border-Radius: 5px; 
+}
+.default-image-url11 {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-Radius: 5px; 
+}
+
+.default-image-url11:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
 }

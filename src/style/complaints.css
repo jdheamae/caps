@@ -137,52 +137,7 @@
   transform: translateY(-1px);
   }
   
-  .ppagination3 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 0px; /* Adjust margin to avoid covering the table */
-    margin-left: 200px;
-    margin-bottom: 50px; /* Add some space below the pagination */
-    
-}
-
-.page-nav3 {
-    padding: 8px 12px;
-    margin: 0 10px; /* Adjust margin for better spacing */
-    height: 50px;
-    font-weight: bold;
-    font-size: 17px;
-    border: 1px solid #8B0000;
-    background-color: #fff;
-    cursor: pointer;
-    color: #8B0000;
-    width: 120px;
-    border-radius:  10px;
-}
-
-.page-nav3.active {
-    background-color: #8B0000; /* Highlight the active page */
-    color: white; /* Change text color for active page */
-}
-
-.page-nav3:disabled {
-    background-color: #f0f0f0;
-    color: #ccc;
-    cursor: not-allowed;
-}
-.page-nav3:disabled:hover {
-  background-color: #dbd9d9;
-  color: #ccc;
-  cursor: not-allowed;
-}
-
-.page-nav3:hover {
-  background-color: #f7d953;
-  color: #8B0000;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-  transform: translateY(-1px);
-}
+  
   
   /* modal
   .modal-overlay1 {
@@ -283,6 +238,7 @@ transform: translateY(-1px);
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
   margin-top: 30px;
+  margin-left: -37px;
   row-gap: 35px; /* Space between grid items */
   column-gap:85px;
   padding: 16px; /* Padding around the grid */

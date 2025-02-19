@@ -155,7 +155,7 @@
     color: white;
     padding: 5px 12px;
     font-size: 15px;
-    margin: 5px 2px; /* Adds horizontal spacing between buttons */
+    margin: 7px 2px; /* Adds horizontal spacing between buttons */
     border: none;
     width:115px;
     cursor: pointer;
@@ -171,52 +171,10 @@
   transform: translateY(-1px);
   }
   
-  .ppagination5 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 0px; /* Adjust margin to avoid covering the table */
-    margin-left: 200px;
-    margin-bottom: 50px; /* Add some space below the pagination */
-    
-}
+  
 
-.page-nav5 {
-    padding: 8px 12px;
-    margin: 0 10px; /* Adjust margin for better spacing */
-    height: 50px;
-    font-weight: bold;
-    font-size: 17px;
-    border: 1px solid #8B0000;
-    background-color: #fff;
-    cursor: pointer;
-    color: #8B0000;
-    width: 120px;
-    border-radius:  10px;
-}
 
-.page-nav5.active {
-    background-color: #8B0000; /* Highlight the active page */
-    color: white; /* Change text color for active page */
-}
 
-.page-nav5:disabled {
-    background-color: #f0f0f0;
-    color: #ccc;
-    cursor: not-allowed;
-}
-.page-nav5:disabled:hover {
-  background-color: #dbd9d9;
-  color: #ccc;
-  cursor: not-allowed;
-}
-
-.page-nav5:hover {
-  background-color: #f7d953;
-  color: #8B0000;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-  transform: translateY(-1px);
-}
   
   /* modal
   .modal-overlay1 {
@@ -351,66 +309,14 @@
     
   }
 
-.status-btn5{
-  color: white;
-  padding: 5px 12px;
-  font-size: 12px;
-  margin: 0 2px; /* Adds horizontal spacing between buttons */
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  width: 115px;
-  border-radius: 20px;
-  margin-left: 0px;
-  
-}
 
-.status-btn5.unclaimed {
-  background-color: red; /* Red for unclaimed */
-}
-
-.status-btn5.claimed {
-  background-color: #4CAF50; /* Green for claimed */
-}
-
-.status-btn5.Unclaimed {
-  background-color: red; /* Red for unclaimed */
-}
-
-.status-btn5.Claimed {
-  background-color: #4CAF50; /* Green for claimed */
-}
-
-.status-btn5:hover{
-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-transform: translateY(-1px);
-}
 
 .arrow5 {
   width: 14px; /* Adjust icon size for better proportion with the input */
   height: 14px; /* Maintain square aspect ratio */
 }
 
-.grid-container5 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-  margin-top: 190px;
-  row-gap: 35px; /* Space between grid items */
-  column-gap:85px;
-  padding: 16px; /* Padding around the grid */
-  width: 100%; /* Ensure the grid takes full width */
-  justify-items: left; /* Center items within their grid cells */
-}
 
-.grid-item5 {
-  background-color: #f0f0f0; /* Background color for items */
-  padding: 20px; /* Padding inside items */
-  border: 1px solid #ccc; /* Optional: Border for items */
-  border-radius: 4px; /* Rounded corners */
-  text-align: center; /* Center text */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
-  width: 105%; /* Ensure grid items take full width of their cell */
-}
 
 .grid-container5 {
   display: grid;
@@ -450,10 +356,23 @@ transform: translateY(-1px);
   text-align: left; /* Align text to the left */
   margin: 10px 0; /* Add some vertical spacing */
   font-weight: normal; /* Normal weight for paragraph text */
+  
 }
-.grid-item5 span {
-  font-weight: bold; /* Normal weight for paragraph text */
+
+.description5 {
+  display: block; /* Ensure it takes up space */
+  max-height: 120px; /* Limit height */
+  overflow-y: auto; /* Enable scrolling if content exceeds */
 }
+
+.location5 {
+  display: block; /* Ensure it takes up space */
+  max-height: 120px; /* Limit height */
+  overflow-y: auto; /* Enable scrolling if content exceeds */
+}
+
+
+
 .view-mode-toggle5 {
   background: none; /* No background */
   border: none; /* No border */
@@ -509,9 +428,9 @@ transform: translateY(-1px);
   width: 700px;         /* Extend the modal width */
   margin: 50px auto;    /* Center modal on the screen */
   padding: 20px;
-  background: #fff;
+  background: rgba(0, 0, 0, 0);
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+ 
 }
 
 .modal5 h2 {
@@ -521,6 +440,27 @@ transform: translateY(-1px);
   text-align: center;
   font-weight: bold;
 }
+.card5 {
+  background: #f9f9f9; /* Light background for the card */
+  border-radius: 25px; /* Rounded corners */
+  padding: 20px; /* Padding inside the card */
+  margin-bottom: 20px; /* Space between cards */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+
+
+
+.card5 h2 {
+  margin-bottom: 15px; /* Space below the heading */
+  font-size: 1.5rem; /* Font size for the heading */
+  color: #333; /* Darker color for the heading */
+  text-align: center; /* Center the heading */
+}
+
+
 
 .modal5 form {
   display: grid;
@@ -659,33 +599,48 @@ font-weight: 500;
 
 /* ----------------------------------------------------------- */
 
-.tabs {
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
+.tabs5 {
+  margin: 0 0 10px   100px;
   padding: 5px;
-  border-radius: 10px;
-  margin-top: 10px;
+  border-radius: 0px;
+  margin-top: 20px;
+  border-bottom: 2px solid #a51d21; /* Permanent line below the tabs */
+  
 }
 
-.tab-button {
-  background-color: #f1f1f1;
-  border: 1px solid #ccc;
-  padding: 10px 15px;
+.tab-button5 {
+  background-color: #ffffff;
+  border: 0px solid #ccc;
+  padding: 10px 100px;
   margin-right: 5px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 15px;
   transition: background-color 0.3s;
   margin-right:10px;
+  font-weight: bold; /* Make text bold */
+  font-size: 17px;
 }
 
-.tab-button.active {
-  background-color: #007bff;
+
+.tab-button5.active {
+  background-color: #a51d21;
   color: white;
 }
 
-.tab-button:hover {
-  background-color: #e0e0e0;
+.tab-button5.active:hover {
+  color: #a51d21;
+  border: 0px solid #ccc;
+  background-color: white;
+  text-shadow: -3px 3px 4px rgba(0, 0, 0, 0); /* Add text shadow */
 }
+
+.tab-button5:hover {
+  background-color: #ffffff;
+  color:#000000;
+  transform: translateY(-3px);
+  text-shadow: -3px 3px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
+}
+
 
 
 /* --------------------------------------------------- */
@@ -766,3 +721,82 @@ font-weight: 500;
 
   
   
+
+
+/* -------------------------------------------- */
+
+.default-image-url2 {
+  width: 100%;
+  height: auto;
+  
+  
+  border-Radius: 5px; 
+}
+.default-image-url12 {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-Radius: 25px;
+   
+}
+
+.default-image-url12:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
+cursor: pointer;
+}
+
+.default-image-url13 {
+  width:100%;
+  height:39%;
+  margin-bottom: 10px;
+  border-Radius: 25px; 
+  
+}
+.default-image-url13:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
+cursor: pointer;
+}
+
+/* ----------------------------------------------------------------------------- */
+
+.status-btn5{
+  color: white;
+  padding: 5px 12px;
+  font-size: 12px;
+  margin: 0 2px; /* Adds horizontal spacing between buttons */
+  border: none;
+  font-size: 15px;
+  border-radius: 20px;
+  margin-left: 0px;
+  
+}
+
+.status-btn5.declined {
+   background-color: red; /* Red for unclaimed */ 
+  }
+
+.status-btn5.approved {
+   background-color: #4CAF50; /* Green for claimed */
+   }
+
+.status-btn5.pending { 
+  background-color: #FFC107 ; /* Green for claimed */ 
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+.description5 {
+  display:inline-flex; /* Ensure it takes up space */
+  max-height: 120px; /* Limit height */
+  overflow-y: auto; /* Enable scrolling if content exceeds */
+}
+
+.location5 {
+  display:inline-flex; /* Ensure it takes up space */
+  max-height: 120px; /* Limit height */
+  overflow-y: auto; /* Enable scrolling if content exceeds */
+}
+
