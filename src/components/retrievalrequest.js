@@ -75,6 +75,7 @@ function UserRetrievalRequests() {
     try {
       await axios.put(`http://10.10.83.224:5000/retrieval-requests/${selectedRequest._id}`, formData);
       fetchRequests();
+      //add js notification
       closeModal();
     } catch (error) {
       console.error('Error updating request:', error);
@@ -86,6 +87,7 @@ function UserRetrievalRequests() {
     try {
       await axios.delete(`http://10.10.83.224:5000/retrieval-requests/${selectedRequest._id}`);
       fetchRequests();
+      //add js notification
       closeModal();
     } catch (error) {
       console.error('Error deleting request:', error);
@@ -140,6 +142,7 @@ function UserRetrievalRequests() {
         // Optional: Track upload progress
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload Progress: ${progress}%`);
+        //add js notification
       },
       (error) => {
         console.error("Upload failed", error);

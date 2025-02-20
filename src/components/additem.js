@@ -113,6 +113,7 @@ function Additem() {
         await uploadString(imageRef, image, 'data_url');
         const downloadURL = await getDownloadURL(imageRef);
         imageUrl = downloadURL; // Update the URL
+        //add js notification
       } catch (error) {
         console.error('Error uploading image:', error);
       }
@@ -125,10 +126,12 @@ function Additem() {
       if (selectedItem) {
         await axios.put(`http://10.10.83.224:5000/items/${selectedItem._id}`, updatedData);
         alert('Item updated successfully!');
+        //add js notification
       } else {
         const response = await axios.post('http://10.10.83.224:5000/items', updatedData);
         setRequests([...requests, response.data]);
         alert('Item updated successfully!');
+        //add js notification
       }
       setShowModal(false);
       fetchItems();
@@ -144,6 +147,7 @@ function Additem() {
         await axios.delete(`http://10.10.83.224:5000/items/${id}`);
         fetchItems();
         alert('Item deleted successfully!'); // Alert on successful deletion
+        //add js notification
       } catch (error) {
         console.error('Error deleting item:', error);
         alert('Error deleting item. Please try again.'); // Alert on error
@@ -250,6 +254,7 @@ const displayedRequests = filteredRequests.slice(
         )
       );
       alert(`Status updated to ${newStatus}!`);
+      //add js notification
     } catch (error) {
       console.error('Error updating status:', error);
       alert('Error updating status. Please try again.');

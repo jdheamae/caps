@@ -27,6 +27,7 @@ function ManageRequest() {
       const response = await axios.get('http://10.10.83.224:5000/retrieval-requests');
       console.log("API Response Data:", response.data);
 
+
       if (Array.isArray(response.data) && response.data.length > 0) {
         setRequests(response.data);
       } else {
@@ -55,6 +56,7 @@ function ManageRequest() {
 
     if (type === 'request') {
       endpoint = `http://10.10.83.224:5000/retrieval-request/${id}/status`;
+      //add js notification
     } else if (type === 'item') {
       if (!id) {
         console.error("Error: Item ID is undefined.");
@@ -66,6 +68,7 @@ function ManageRequest() {
     try {
       await axios.put(endpoint, { status: updatedStatus });
       alert(`Request has been ${updatedStatus.toLowerCase()}. It will be moved to the corresponding tab.`);
+      //add js notification
       fetchRequests(); // Refresh UI after update
     } catch (error) {
       console.error(`Error updating ${type} status:`, error);
@@ -82,11 +85,14 @@ function ManageRequest() {
     switch (selectedTab) {
       case 'declined':
         return requests.filter(request => request.status === 'declined');
+        //add js notification
       case 'pending':
         return requests.filter(request => request.status === 'pending')
           .sort((a, b) => new Date(b.date_Lost) - new Date(a.date_Lost)); // Sort by date lost, newest first
+          //add js notification
       case 'approved':
         return requests.filter(request => request.status === 'approved');
+        //add js notification
       case 'all':
       default:
         return requests;

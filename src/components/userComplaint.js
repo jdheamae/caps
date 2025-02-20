@@ -119,7 +119,9 @@ function UserComplaint() {
       if (response.ok) {
         const result = await response.json();
         alert(result.message);
+        //add js notification
         setRequests([...requests, { ...newComplaint, status: "Not Found", finder: "N/A" }]);
+        fetchRequests(); 
         setShowModal(false);
       } else {
         alert("Error filing complaint. Please try again.");
@@ -178,6 +180,7 @@ function UserComplaint() {
         if (response.ok) {
           const result = await response.json();
           alert(result.message || "Complaint successfully deleted.");
+          //add js notification
           setShowViewMoreModal(false); // Close modal after successful deletion
         } else {
           // Roll back the change in case of failure
@@ -212,7 +215,8 @@ function UserComplaint() {
       if (response.ok) {
         const result = await response.json();
         alert(result.message);
-
+        //add js notification
+        fetchRequests();
         setRequests(
           requests.map((req) =>
             req._id === selectedRequest._id ? updatedRequest : req
@@ -338,6 +342,7 @@ function UserComplaint() {
       item_image:'',
     });
     setShowModal(true); // Open modal for adding a complaint
+    
   };
 
 
@@ -445,9 +450,9 @@ function UserComplaint() {
                   <p><span>Status: </span> {item.status}</p>
                   <p><span>Finder: </span> {item.finder}</p>
                
-                  <button className="view-btn2" onClick={() => setShowModal(item)}>
-                    <FaPlus /> View More
-                  </button>
+                  <button className="view-btn2" onClick={() => handleViewMore(item)}>
+                        <FaPlus /> View More
+                      </button>
                 </div>
               ))}
             </div>
@@ -458,7 +463,7 @@ function UserComplaint() {
           currentPage={currentPage}
           totalPages={totalPages}
           handlePageChange={handlePageChange}
-        />
+        />x
       </div>
 
       {/* Modal for filing complaints */}

@@ -96,6 +96,7 @@ function Bulletin() {
   
       console.log('Response:', response.data); // Log the response
       alert('Request submitted successfully!'); // Confirmation alert
+      //add js notification
   
       // Reset itemData to clear the form fields
       setItemData({
@@ -290,10 +291,24 @@ function Bulletin() {
                   }
                   required
                 >
-                  <option value="" disabled>Select a location</option>
-              
-                  <option value="Gym">GYM</option>
-                  <option value="mainLibrary">MAIN LIBRARY</option>
+           
+                    <option value="">Select General Location</option>
+                    <option value="Gym">GYMNASIUM</option>
+                    <option value="adminBuilding">ADMIN BLG</option>
+                    <option value="mph">MPH</option>
+                    <option value="mainLibrary">MAIN LIBRARY</option>
+                    <option value="lawn">LAWN</option>
+                    <option value="ids">IDS</option>
+                    <option value="clinic">CLINIC</option>
+                    <option value="canteen">CANTEEN</option>
+                    <option value="ceba">CEBA</option>
+                    <option value="ccs">CCS</option>
+                    <option value="cass">CASS</option>
+                    <option value="csm">CSM</option>
+                    <option value="coe">COE</option>
+                    <option value="ced">CED</option>
+                    <option value="chs">CHS</option>
+                    <option value="outsideIit">OUTSIDE IIT</option>
                 </select>
               </div>
               <div className="form-group4">

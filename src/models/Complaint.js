@@ -15,7 +15,7 @@ const complaintSchema = new mongoose.Schema({
   time: { type: String, required: true },//time lost
   date_complained:{ type: String, required: true }, 
   time_complained:{ type: String, required: true }, 
-  status: { type: String, default: "Not Found" },
+  status: { type: String, default: "not-found" },
   finder: { type: String, default: "N/A" },
  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Store the userId
  item_image: { type: String },

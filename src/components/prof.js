@@ -58,6 +58,7 @@ function Profile() {
   const handleUpload = async () => {
     if (!selectedFile || !userId) {
       alert("Please select an image first.");
+      //add js notification
       return;
     }
 
@@ -71,6 +72,7 @@ function Profile() {
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
+        //add js notification
       },
       (error) => {
         console.error("Upload error:", error);
@@ -82,7 +84,7 @@ function Profile() {
           console.log("File available at", downloadURL);
 
           alert("Avatar uploaded successfully!");
-
+          //add js notification
           setUser((prev) => ({ ...prev, image_Url: downloadURL }));
 
           const userRef = doc(db, "users", userId);
@@ -104,6 +106,7 @@ function Profile() {
 
     if (user.password && user.password !== user.confirmPassword) {
       alert("Passwords do not match!");
+      //add js notification
       return;
     }
 
@@ -129,6 +132,7 @@ function Profile() {
       const result = await response.json();
       if (response.ok) {
         alert("Profile updated successfully!");
+        //add js notification
       } else {
         alert(result.message || "Error updating profile.");
       }

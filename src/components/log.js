@@ -32,9 +32,11 @@ function Auth() {
 
       if (response.ok) {
         alert("Sign up successful! Please log in.");
+        //add js notification
         setIsLogin(true); // Switch to login form after successful sign up
       } else {
         alert(data.message || "Sign up failed.");
+        //add js notification
       }
     } catch (err) {
       console.error(err);
@@ -63,11 +65,12 @@ function Auth() {
         localStorage.setItem("token", data.token);  // Store token in localStorage
 
         alert("Login successful!");
-
+//add js notification
         // Redirect to home page
         window.location.href = "/"; // Redirect to the home page after login
       } else {
         alert(data.message || "Login failed.");
+        //add js notification
       }
     } catch (err) {
       console.error(err);
