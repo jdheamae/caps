@@ -11,19 +11,23 @@ import Pagination from './pagination';
 import axios from 'axios';
 import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
 import moment from 'moment';
+import Filter from '../filterered/userCompFilt'; // Adjust the import path as necessary
+import Modal from './image'; // Import the Modal component
+
 function UserComplaint() {
+  const [filteredRequests, setFilteredRequests] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showViewMoreModal, setShowViewMoreModal] = useState(false);
-  //const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [requests, setRequests] = useState([]);
-  
-  //const [selectedItem, setSelectedItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
   const [uploading, setUploading] = useState(false);
+  const [imageModalOpen, setImageModalOpen] = useState(false); // State for image modal
+  const [selectedImage, setSelectedImage] = useState(''); // State for selected image
+
+
   const [itemData, setItemData] = useState({
     itemname: '',
     type: '',
@@ -33,7 +37,7 @@ function UserComplaint() {
     time: '',
     description: '',
     status: 'Not Found',
-    item_image:'',
+    item_image: '',
   });
 
   // Fetch all data from the database when the component mounts
@@ -42,24 +46,40 @@ function UserComplaint() {
     if (token) {
       const decodedToken = jwtDecode(token);
       console.log("Updated Token:", decodedToken); // Debugging
-  
+
       setItemData(prevData => ({
         ...prevData,
         college: decodedToken.college || '' // Should now be present
       }));
     }
- 
+
 
     fetchRequests();
 
     const handleResize = () => {
       setViewMode(window.innerWidth <= 768 ? 'grid' : 'table');
     };
-  
+
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-    
+
   }, []);
+
+
+
+
+  // Function to filter requests based on search text
+  const filterRequests = () => {
+    if (!filterText) {
+      return filteredRequests; // If no filter text, return all filtered requests
+    }
+
+    return filteredRequests.filter(request =>
+      request.itemname.toLowerCase().includes(filterText.toLowerCase())
+    );
+  };
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,13 +95,13 @@ function UserComplaint() {
     const decodedToken = jwtDecode(token);
     console.log("Decoded Token:", decodedToken); // Check if 'college' exists
     const userId = decodedToken.id;
-    const userCollege = decodedToken.college; 
+    const userCollege = decodedToken.college;
     const userName = `${decodedToken.firstName || ''} ${decodedToken.lastName || ''}`.trim();
     const userContact = decodedToken.contactNumber;
     const now = new Date();
     const formattedDate = now.toISOString().split("T")[0]; // YYYY-MM-DD
     const formattedTime = now.toTimeString().split(" ")[0]; // HH:MM:SS
-    const year_lvl=decodedToken.year_lvl;
+    const year_lvl = decodedToken.year_lvl;
     const newComplaint = {
       // complainer: formData.get("complainer"),
       // itemname: formData.get("itemname"),
@@ -92,19 +112,19 @@ function UserComplaint() {
       // time: formData.get("time"),
       // description: formData.get("description"),
       // userId: userId, // Include the userId here
-      complainer :userName,
+      complainer: userName,
       college: userCollege, // Automatically set the college from the token
-      year_lvl :year_lvl,
-     itemname :formData.get("itemname"),
-      type :formData.get("type"),
-      description :formData.get("description"),
-      contact :userContact,
-      general_location :formData.get("general_location"),
-      location :formData.get("location"),
-      date:formData.get("date"),
-      time :formData.get("time"),
-      date_complained :formattedDate,
-      time_complained :formattedTime, 
+      year_lvl: year_lvl,
+      itemname: formData.get("itemname"),
+      type: formData.get("type"),
+      description: formData.get("description"),
+      contact: userContact,
+      general_location: formData.get("general_location"),
+      location: formData.get("location"),
+      date: formData.get("date"),
+      time: formData.get("time"),
+      date_complained: formattedDate,
+      time_complained: formattedTime,
       item_image: itemData.item_image, // Use the uploaded image URL
       userId: userId, // Include the userId here
     };
@@ -197,7 +217,7 @@ function UserComplaint() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const updatedRequest ={
+    const updatedRequest = {
       ...selectedRequest,
       ...itemData,
     };
@@ -221,7 +241,7 @@ function UserComplaint() {
 
         setShowModal(false); // Close the modal after successful update
         setSelectedRequest(null);// Clear selected request
-        setItemData ({ // Reset itemData after update
+        setItemData({ // Reset itemData after update
           // itemname: '',
           // type: '',
           // contact: '',
@@ -232,19 +252,19 @@ function UserComplaint() {
           // status: 'Not Found'
           complainer: '',
           college: '',
-          year_lvl:'',
-         itemname: '',
+          year_lvl: '',
+          itemname: '',
           type: '',
           description: '',
           contact: '',
           general_location: '',
           location: '',
           time: '',
-          date:'',
-          date_complained:'', 
-          time_complained:'', 
+          date: '',
+          date_complained: '',
+          time_complained: '',
           status: 'not-found',
-          item_image:'',
+          item_image: '',
         });
 
       } else {
@@ -277,37 +297,17 @@ function UserComplaint() {
     fetchRequests(); // Call fetchRequests on component mount
   }, []);
 
-  const filteredRequests = requests.filter((item) => {
-    return item.itemname && item.itemname.toLowerCase().includes(filterText.toLowerCase());
-  });
-  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+  // const filteredRequests = requests.filter((item) => {
+  //   return item.itemname && item.itemname.toLowerCase().includes(filterText.toLowerCase());
+  // });
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
-  const displayedRequests = filteredRequests.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
-  // const handleStatusChange = async (item) => {
-  //   const newStatus = item.STATUS === 'unclaimed' ? 'claimed' : 'unclaimed'; // Toggle status
-  //   try {
-  //     await axios.put(`http://10.10.83.224:5000/items/${item._id}`, { ...item, STATUS: newStatus });
-  //     setRequests((prevRequests) =>
-  //       prevRequests.map((req) =>
-  //         req._id === item._id ? { ...req, STATUS: newStatus } : req
-  //       )
-  //     );
-  //   } catch (error) {
-  //     console.error('Error updating status:', error);
-  //   }
-  // };
 
-  const [viewMode, setViewMode] = useState('table'); // Default to 'table' mode
+
+  const [viewMode, setViewMode] = useState('grid'); // Default to 'table' mode
   const toggleViewMode = () => {
-    setViewMode((prevMode) => (prevMode === 'table' ? 'grid' : 'table'));
+    setViewMode((prevMode) => (prevMode === 'grid' ? 'table' : 'grid'));
   };
 
   const handleAddComplaint = () => {
@@ -323,23 +323,84 @@ function UserComplaint() {
       // status: 'Not Found',
       complainer: '',
       college: '',
-      year_lvl:'',
-     itemname: '',
+      year_lvl: '',
+      itemname: '',
       type: '',
       description: '',
       contact: '',
       general_location: '',
       location: '',
       time: '',
-      date:'',
-      date_complained:'', 
-      time_complained:'', 
+      date: '',
+      date_complained: '',
+      time_complained: '',
       status: 'not-found',
-      item_image:'',
+      item_image: '',
     });
     setShowModal(true); // Open modal for adding a complaint
   };
 
+
+  const applyFilters = (filters) => {
+    let filtered = [...requests]; // Use a copy of the original requests state
+
+
+
+    if (filters.itemType) {
+      filtered = filtered.filter(item => item.type === filters.itemType);
+    }
+
+    if (filters.dateLost) {
+      filtered = filtered.filter(item => item.date === filters.dateLost);
+    }
+
+    if (filters.generalLocation) {
+      filtered = filtered.filter(item => item.general_location.toLowerCase().includes(filters.generalLocation.toLowerCase()));
+    }
+
+    if (filters.status) {
+      filtered = filtered.filter(item => item.status === filters.status);
+    }
+
+    // Apply sorting
+    if (filters.sortByDate === 'ascending') {
+      filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+    } else if (filters.sortByDate === 'descending') {
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    // Only update filteredRequests if it has changed
+    if (JSON.stringify(filtered) !== JSON.stringify(filteredRequests)) {
+      setFilteredRequests(filtered);
+    }
+
+
+  };
+
+  //UPDATE PAGINATIOn
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+
+  const displayedRequests = filterRequests().slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setImageModalOpen(true); // Open the image modal
+  };
+
+  const handleCloseImageModal = () => {
+    setImageModalOpen(false);
+    setSelectedImage('');
+  };
 
   return (
     <div className="home-container">
@@ -349,7 +410,7 @@ function UserComplaint() {
       <div className="content">
         <div className="manage-bulletin2">
           <div className="breadcrumb2">
-            MANAGE LOST AND FOUND {'>'} Manage Reports and Complaints
+            Lost and Found {'>'} File Report
           </div>
 
 
@@ -357,85 +418,95 @@ function UserComplaint() {
           <div className="search-bar2">
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search Item Name"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
               className="search-input3"
             />
             <button onClick={toggleViewMode} className="view-mode-toggle2">
-              {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
+              {viewMode === 'grid' ? <IoGridOutline /> : <FaTable />}
             </button>
 
 
 
-            <div className="top-right-buttons2">
-              <button className="add-item-btn2" onClick={handleAddComplaint}>+ File Complaint</button>
-              <button className="register-qr-btn2">Register QR Code</button>
-            </div>
+
+          </div>
+          <div className="top-right-buttons2">
+            <button className="add-item-btn2" onClick={handleAddComplaint}>+ File Report</button>
+
           </div>
 
+          <Filter onApplyFilters={applyFilters} />
 
 
           {viewMode === 'table' ? (
-            <table className="ffound-items-table2">
-              <thead>
-                <tr>
-                {/* <th>Complainer</th> */}
-                  {/* <th>College</th>
+            <div className="table-container1">
+              <table className="ffound-items-table2">
+                <thead>
+                  <tr>
+                    {/* <th>Complainer</th> */}
+                    {/* <th>College</th>
                   <th>Year Level</th> */}
-                  <th>Item Name</th>
-                  <th>Item Type</th>
-                  <th>Item Description</th>
-                  {/* <th>Contact of the Complainer</th> */}
-                  <th>General Location</th>
-                  <th>Specific Location</th>
-                  <th>Date Lost</th>
-                  <th>Time Lost</th>
-                  {/* <th>Date Complained</th>
+                    <th>ITEM NAME</th>
+                    <th>Item Type</th>
+                    <th>Item Description</th>
+                    {/* <th>Contact of the Complainer</th> */}
+                    <th>General Location</th>
+                    <th>Specific Location</th>
+                    <th>Date Lost</th>
+                    <th>Time Lost</th>
+                    {/* <th>Date Complained</th>
                   <th>Time Complained</th> */}
-                  <th>Status</th>
+                    <th>Status</th>
 
-                  <th>Image</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {displayedRequests.map((item) => (
-                  <tr key={item._id}>
-                     {/* <td>{item.complainer}</td> */}
-                    {/* <td>{item.college}</td>for visualization */}
-                    {/* <td>{item.year_lvl}</td>for visualization */}
-                    <td>{item.itemname}</td>
-                    <td>{item.type}</td>{/* for visualization */}
-                    <td>{item.description}</td>
-                    {/* <td>{item.contact}</td> */}
-                    <td>{item.general_location}</td>{/* for visualization */}
-                    <td>{item.location}</td>
-                    <td>{item.date}</td>{/* for visualization */}
-                    <td>{item.time}</td>{/* for visualization */}
-                    {/* <td>{item.date_complained}</td> */}
-                    {/* <td>{item.time_complained}</td> */}
-                    <td>{item.status}</td>
-                    <td>   <img src={item.item_image} className="avatar-image" style={{ 
-     width: '100px',  
-    height: '100px'
-   }}  /></td>
-                    <td>
-
-                      <button className="view-btn2" onClick={() => handleViewMore(item)}>
-                        <FaPlus /> View More
-                      </button>
-                    </td>
+                    <th>Image</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {displayedRequests.map((item) => (
+                    <tr key={item._id}>
+                      {/* <td>{item.complainer}</td> */}
+                      {/* <td>{item.college}</td>for visualization */}
+                      {/* <td>{item.year_lvl}</td>for visualization */}
+                      <td>{item.itemname}</td>
+                      <td>{item.type}</td>{/* for visualization */}
+                      <td>{item.description}</td>
+                      {/* <td>{item.contact}</td> */}
+                      <td>{item.general_location}</td>{/* for visualization */}
+                      <td>{item.location}</td>
+                      <td>{item.date}</td>{/* for visualization */}
+                      <td>{item.time}</td>{/* for visualization */}
+                      {/* <td>{item.date_complained}</td> */}
+                      {/* <td>{item.time_complained}</td> */}
+                      <td>{item.status}</td>
+                      <td>   <img src={item.item_image} className="avatar-image" style={{
+                        width: '100px',
+                        height: '100px'
+                      }} /></td>
+                      <td>
+
+                        <button className="view-btn2" onClick={() => handleViewMore(item)}>
+                          <FaPlus /> View More
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
 
             <div className="grid-container2">
               {displayedRequests.map((item) => (
                 <div className="grid-item2" key={item._id}>
                   <h2>{item.itemname}</h2>
+                  <img
+                    src={item.item_image || "default-image-url3"}
+                    alt="Product"
+                    className="default-image-url13"
+                    onClick={() => handleImageClick(item.item_image || "default-image-url3")} // Add click handler
+                  />
                   <p><span>Complainer: </span>{item.complainer}</p>
                   <p><span>Item Type: </span> {item.type}</p>
                   <p><span>Contact of the Complainer: </span> {item.contact}</p>
@@ -444,7 +515,7 @@ function UserComplaint() {
                   <p><span>Time: </span> {item.time}</p>
                   <p><span>Status: </span> {item.status}</p>
                   <p><span>Finder: </span> {item.finder}</p>
-               
+
                   <button className="view-btn2" onClick={() => setShowModal(item)}>
                     <FaPlus /> View More
                   </button>
@@ -461,24 +532,26 @@ function UserComplaint() {
         />
       </div>
 
+      <Modal isOpen={imageModalOpen} onClose={handleCloseImageModal} imageUrl={selectedImage} />
+
       {/* Modal for filing complaints */}
 
       {showModal && (
         <div className="modal-overlay2">
           <div className="modal2">
-            <h2>{selectedRequest ? 'Update Complaint' : 'File a Complaint'}</h2>
+            <h2>{selectedRequest ? 'Update Report' : 'File a Report'}</h2>
             <form onSubmit={selectedRequest ? handleUpdate : handleComplaintSubmit}>
-        
-           
 
-             
+
+
+
               <div className="form-group2">
                 <label htmlFor="itemName">Item Name</label>
                 <input
                   type="text"
                   id="itemName"
                   name="itemname"
-                  maxlength="100"
+                  maxLength="100"
                   placeholder="Item Name"
                   value={itemData.itemname}
                   onChange={handleInputChange}
@@ -492,7 +565,7 @@ function UserComplaint() {
                   type="text"
                   id="description"
                   name="description"
-                  maxlength="500"
+                  maxLength="500"
                   placeholder="Description"
                   value={itemData.description}
                   onChange={handleInputChange}
@@ -503,44 +576,61 @@ function UserComplaint() {
               <div className="form-group2">
                 <label htmlFor="itemType">Item Type</label>
                 <select
-                id="itemType"
-                name="type"
-                maxlength="100"
-                placeholder="Item Type"
-                value={itemData.type}
-                onChange={handleInputChange}
+                  id="itemType"
+                  name="type"
+                  maxLength="100"
+                  placeholder="Item Type"
+                  value={itemData.type}
+                  onChange={handleInputChange}
                 >
-                  option
                   <option value="Electronics">Electronics</option>
-                  <option value="Personal">Personal</option>
+                  <option value="Personal-Items">Personal Items</option>
+                  <option value="Clothing_Accessories">Clothing & Accessories</option>
+                  <option value="Bags_Stationery">Bags & stationary</option>
+                  <option value="Documents">Documents</option>
+                  <option value="Sports_Miscellaneous">Sports & Miscellaneous</option>
                 </select>
               </div>
 
 
 
-      
+
               <div className="form-group2">
                 <label htmlFor="general_location">General Location</label>
-                 <select
+                <select
                   id="general_location"
                   name="general_location"
-                  maxlength="200"
+                  maxLength="200"
                   placeholder="General Location"
                   value={itemData.general_location}
                   onChange={handleInputChange}
                 >
-                  option
-                  <option value="Gym">GYM</option>
+
+                  <option value="Gym">GYMNASIUM</option>
+                  <option value="adminBuilding">ADMIN BLG</option>
+                  <option value="mph">MPH</option>
                   <option value="mainLibrary">MAIN LIBRARY</option>
+                  <option value="lawn">LAWN</option>
+                  <option value="ids">IDS</option>
+                  <option value="clinic">CLINIC</option>
+                  <option value="canteen">CANTEEN</option>
+                  <option value="ceba">CEBA</option>
+                  <option value="ccs">CCS</option>
+                  <option value="cass">CASS</option>
+                  <option value="csm">CSM</option>
+                  <option value="coe">COE</option>
+                  <option value="ced">CED</option>
+                  <option value="chs">CHS</option>
+                  <option value="outsideIit">OUTSIDE IIT</option>
                 </select>
               </div>
               <div className="form-group2">
-                <label htmlFor="location">Location</label>
+                <label htmlFor="Slocation">Specific Location</label>
                 <input
                   type="text"
                   id="location"
                   name="location"
-                  maxlength="200"
+                  maxLength="200"
                   placeholder="Location"
                   value={itemData.location}
                   onChange={handleInputChange}
@@ -569,26 +659,26 @@ function UserComplaint() {
                   required={!selectedRequest}
                 />
               </div>
-             
+
 
               <div className="form-group2">
                 <label htmlFor="item_image">Item Image</label>
                 <input
-          type="file"
-          id="item_image"
-          name="item_image"
-          accept="image/*"
-          onChange={handleImageUpload}
-        />
-       
+                  type="file"
+                  id="item_image"
+                  name="item_image"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                />
+
               </div>
-           
+
 
 
 
               <div className="button-container2">
                 <button type="submit" className="submit-btn2">
-                  
+
                   {selectedRequest ? 'Update' : 'Submit'}
                 </button>
                 {selectedRequest && (

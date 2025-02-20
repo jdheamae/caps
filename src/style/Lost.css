@@ -21,222 +21,8 @@
   /* ----------------------------------------------------------------------------- */
   
   
-  
-  .search-bar2 {
-    display: flex; /* Enable flexbox for alignment */
-    align-items: center; /* Vertically center items */
-    left: -20px;
-    top: 50px;
-    
-     /*height: 300px; Full viewport height to center vertically */
-    /* gap: 10px; Add spacing between the input and icons */
-    
-  }
-
-  .search-bar2 input:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    
-  }
-  
-  .search-bar2 input {
-    width: 435px;
-    height: 35px; /* Increased height for better visual balance with icons */
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 15px;
-    border: 1px solid #6d6c6c;
-    border-radius: 35px;
-  }
-
-  .search-bar2 select:focus, .search-bar2 input:focus {
-    border-color: #3c6abe;
-    outline: none;
-    box-shadow: 0 0 5px rgb(60, 106, 190);
-
-  }
-
-  .search-bar2 input::placeholder {
-    font-weight: bold;
-    font-size:17px;
-    color: #888;
-
-  }
-  
-  .search-icon2, .filter-icon2 {
-    color: #a92525;
-    cursor: pointer;
-    width: 30px; /* Adjust icon size for better proportion with the input */
-    height: 30px; /* Maintain square aspect ratio */
-  }
-
-  .search-icon2:hover, .filter-icon2:hover{
-    transform: translateY(-3px);
-  }
-
-  .search-input2 {
-    padding: 10px 40px 10px 40px; /* Add padding to the input */
-    width: 100%; /* Full width */
-    border: 1px solid #ccc; /* Border style */
-    border-radius: 4px; /* Rounded corners */
-    background: url('search.1024x1024.png') no-repeat 400px center; /* Background image */
-    background-size: 30px; /* Size of the icon */
-  }
-  
-
-/* Top-Right Buttons Container */
-.top-right-buttons2 {
-  display: flex; /* Enable flexbox for alignment */
-  margin-top: 180px;
-  margin-left: -500px;
-  gap: 10px; /* Add spacing between the input and icons */
-
-  }
-  
-  /* Button Styling */
-  .add-item-btn2, .register-qr-btn2 {
-    background-color: #800000; /* Dark red color for buttons */
-    color: white;
-    padding: 10px 10px; /* Adjusted padding for better button sizing */
-    font-size: 20px;
-    height: 60px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 10px; /* Space between buttons */
-  }
-  
-  .add-item-btn2:hover, .register-qr-btn2:hover {
-    background-color: #660000; /* Darker red on hover */
-    color: #ffd324;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    transform: translateY(-1px);
-  }
-  
-
-  
-  .ffound-items-table2 {
-    
-    width: 100%; /* Full width of the parent */
-    max-width: 1200px; /* Set a max width for the table */
-    margin: 50px auto 0px; /* Center the table horizontally */
-    padding: 0; /* Remove any default padding */
-    border-collapse: collapse;
-    font-size: 14px;
-    table-layout: fixed; /* Use fixed table layout to respect column widths */
-}
-
-.ffound-items-table2 th, .ffound-items-table2 td {
-    padding: 10px;
-    border: 1px solid #d5d2d2;
-    text-align: center;
-    overflow: hidden; /* Prevent overflow */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
-    white-space: normal; /* Allow text to wrap */
-    vertical-align: top; /* Align text to the top */
-    overflow-wrap: break-word; /* Allow long words to break */
-}
-
-.ffound-items-table2 th {
-    background-color: #ddd;
-}
-
-.ffound-items-table2 tr {
-    height: auto; /* Allow rows to stretch based on content */
-}
-
-.ffound-items-table2 th.action, .ffound-items-table2 td.action {
-    width: 50px; /* Adjust width as needed */
-    text-align: center; /* Center-align the buttons */
-}
-
-/* Set specific widths for other columns */
-.ffound-items-table2 th:nth-child(1), .ffound-items-table2 td:nth-child(1) { width: 20%; }
-.ffound-items-table2 th:nth-child(2), .ffound-items-table2 td:nth-child(2) { width: 15%; }
-.ffound-items-table2 th:nth-child(3), .ffound-items-table2 td:nth-child(3) { width: 25%; }
-.ffound-items-table2 th:nth-child(4), .ffound-items-table2 td:nth-child(4) { width: 20%; }
-.ffound-items-table2 th:nth-child(5), .ffound-items-table2 td:nth-child(5) { width: 15%; }
-.ffound-items-table2 th:nth-child(6), .ffound-items-table2 td:nth-child(6) { width: 15%; }
-.ffound-items-table2 th:nth-child(7), .ffound-items-table2 td:nth-child(7) { width: 10%; }
-.ffound-items-table2 th:nth-child(8), .ffound-items-table2 td:nth-child(8) { width: 20%; }
-.ffound-items-table2 th:nth-child(9), .ffound-items-table2 td:nth-child(9) { width: 25%; }
-.ffound-items-table2 th:nth-child(10), .ffound-items-table2 td:nth-child(10) { width: 25%; }
-.ffound-items-table2 th:nth-child(11), .ffound-items-table2 td:nth-child(11) { width: 25%; }
-.ffound-items-table2 th:nth-child(12), .ffound-items-table2 td:nth-child(12) { width: 25%; }
-.ffound-items-table2 th:nth-child(13), .ffound-items-table2 td:nth-child(13) { width: 25%; }
-.ffound-items-table2 th:nth-child(14), .ffound-items-table2 td:nth-child(14) { width: 25%; }
-.ffound-items-table2 th:nth-child(15), .ffound-items-table2 td:nth-child(15) { width: 25%; }
-.ffound-items-table2 th:nth-child(16), .ffound-items-table2 td:nth-child(16) { width: 25%; }.ffound-items-table2 th:nth-child(13), .ffound-items-table2 td:nth-child(13) { width: 25%; }
-.ffound-items-table2 th:nth-child(17), .ffound-items-table2 td:nth-child(17) { width: 25%; }
-  
-
-  
-  .view-btn2 {
-    background-color: #4CAF50;
-    color: white;
-    padding: 5px 12px;
-    font-size: 15px;
-    margin: 15px 2px; /* Adds horizontal spacing between buttons */
-    border: none;
-    width:115px;
-    cursor: pointer;
-    border-radius: 3px;
-    margin-left: 0px;
-    border-radius: 6px;
-  }
 
 
-  .view-btn2:hover{
-    background-color: #55cf59;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  transform: translateY(-1px);
-  }
-  
-  .ppagination2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 0px; /* Adjust margin to avoid covering the table */
-    margin-left: 200px;
-    margin-bottom: 50px; /* Add some space below the pagination */
-    
-}
-
-.page-nav2 {
-    padding: 8px 12px;
-    margin: 0 10px; /* Adjust margin for better spacing */
-    height: 50px;
-    font-weight: bold;
-    font-size: 17px;
-    border: 1px solid #8B0000;
-    background-color: #fff;
-    cursor: pointer;
-    color: #8B0000;
-    width: 120px;
-    border-radius:  10px;
-}
-
-.page-nav2.active {
-    background-color: #8B0000; /* Highlight the active page */
-    color: white; /* Change text color for active page */
-}
-
-.page-nav2:disabled {
-    background-color: #f0f0f0;
-    color: #ccc;
-    cursor: not-allowed;
-}
-.page-nav2:disabled:hover {
-  background-color: #dbd9d9;
-  color: #ccc;
-  cursor: not-allowed;
-}
-
-.page-nav2:hover {
-  background-color: #f7d953;
-  color: #8B0000;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-  transform: translateY(-1px);
-}
  
   .modal-overlay2 {
     position: fixed;
@@ -433,87 +219,8 @@ transform: translateY(-1px);
   height: 14px; /* Maintain square aspect ratio */
 }
 
-.grid-container2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-  margin-top: 190px;
-  row-gap: 35px; /* Space between grid items */
-  column-gap:85px;
-  padding: 16px; /* Padding around the grid */
-  width: 100%; /* Ensure the grid takes full width */
-  justify-items: left; /* Center items within their grid cells */
-}
-
-.grid-item2 {
-  background-color: #f0f0f0; /* Background color for items */
-  padding: 20px; /* Padding inside items */
-  border: 1px solid #ccc; /* Optional: Border for items */
-  border-radius: 4px; /* Rounded corners */
-  text-align: center; /* Center text */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
-  width: 105%; /* Ensure grid items take full width of their cell */
-}
-
-.grid-container2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-  margin-top: 190px;
-  margin-left: -37px;
-  row-gap: 35px; /* Space between grid items */
-  column-gap:85px;
-  padding: 16px; /* Padding around the grid */
-  width: 100%; /* Ensure the grid takes full width */
-  justify-items: left; /* Center items within their grid cells */
-}
-
-.grid-item2 {
-  overflow-y: auto;  /* Enable vertical scrolling */
-  word-wrap: break-word;
-  background-color: #f0f0f0; /* Background color for items */
-  padding: 20px; /* Padding inside items */
-  border: 1px solid #ccc; /* Optional: Border for items */
-  border-radius: 4px; /* Rounded corners */
-  text-align: center; /* Center text */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
-  width: 105%; /* Ensure grid items take full width of their cell */
-}
 
 
-.grid-item2 h2 {
-  overflow: hidden; /* Hide overflowing content */
-  color: #8B0000;
-  text-align: center; /* Align text to the left */
-  font-weight: bold; /* Make the text bold */
-  margin-bottom:20px ; /* Remove default margin */
-}
-
-.grid-item2 p {
-  margin-top: 20px;
-  text-align: left; /* Align text to the left */
-  margin: 5px 0; /* Add some vertical spacing */
-  font-weight: normal; /* Normal weight for paragraph text */
-}
-.grid-item2 span {
-  font-weight: bold; /* Normal weight for paragraph text */
-}
-.view-mode-toggle2 {
-  background: none; /* No background */
-  border: none; /* No border */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-size: 38px; /* Adjust size of the icon */
-  color: #8B0000; /* Change color as needed */
-  padding: 5px; /* Add some padding */
-  margin-top: 5px;
-  margin-left: 05px;
-  
-}
-
-
-.view-mode-toggle2:hover {
-  
-  transform: translateY(-2px);
-  color: #a50303; /* Change color on hover */
-}
 
 
 
@@ -634,4 +341,264 @@ transform: translateY(-1px);
     margin-left: 10px; /* Space between buttons */
     width: 150px;
   }
+}
+
+
+/*FEB-19-25 ------------------------------------------------------ */
+
+
+.table-container2 {
+  width: 100%; /* Full width of the parent */
+  max-width: 1600px; /* Set a max width for the container */
+  margin: 30px auto 0; /* Center the container */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  border: 1px solid #d5d2d2; /* Optional: Add a border around the container */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
+}
+
+.ffound-items-table2 {
+  width: 100%; /* Full width of the table */
+  border-collapse: collapse; /* Collapse borders */
+  font-size: 14px; /* Font size */
+  table-layout: auto; /* Use auto layout to allow for dynamic widths */
+}
+
+.ffound-items-table2 th, .ffound-items-table2 td {
+  padding: 10px;
+  border: 1px solid #d5d2d2;
+  text-align: center;
+  overflow: hidden; /* Prevent overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  white-space: normal; /* Allow text to wrap */
+  vertical-align: top; /* Align text to the top */
+  
+  word-wrap: break-word; /* Allow long words to break */
+  max-width: 200px; /* Set a max width for cells */
+}
+
+.ffound-items-table2 th {
+  background-color: #ddd;
+}
+
+.ffound-items-table2 tr {
+  height: auto; /* Allow rows to stretch based on content */
+}
+
+.ffound-items-table2 th.action, .ffound-items-table2 td.action {
+  width: 50px; /* Adjust width as needed */
+  text-align: center; /* Center-align the buttons */
+}
+
+/* --------------------------------------------------------- */
+
+
+  
+.search-bar2 {
+  display: flex;
+  align-items: center; /* Vertically center items */
+  margin-top: 0px;
+   /*height: 3  00px; Full viewport height to center vertically */
+
+  
+}
+
+.search-bar2 input:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  
+}
+
+.search-bar2 input {
+  width: 435px;
+  height: 35px; /* Increased height for better visual balance with icons */
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 15px;
+  border: 1px solid #6d6c6c;
+  border-radius: 35px;
+  margin-top: 50px
+}
+
+.search-bar2 select:focus, .search-bar2 input:focus {
+  border-color: #3c6abe;
+  outline: none;
+  box-shadow: 0 0 5px rgb(60, 106, 190);
+
+}
+
+.search-bar2 input::placeholder {
+  font-weight: bold;
+  font-size:17px;
+  color: #888;
+
+}
+
+.search-icon2, .filter-icon2 {
+  color: #a92525;
+  cursor: pointer;
+  width: 30px; /* Adjust icon size for better proportion with the input */
+  height: 30px; /* Maintain square aspect ratio */
+}
+
+.search-icon2:hover, .filter-icon2:hover{
+  transform: translateY(-3px);
+}
+
+.search-input2 {
+  padding: 10px 40px 10px 40px; /* Add padding to the input */
+  width: 100%; /* Full width */
+  border: 1px solid #ccc; /* Border style */
+  border-radius: 4px; /* Rounded corners */
+  background: url('search.1024x1024.png') no-repeat 400px center; /* Background image */
+  background-size: 30px; /* Size of the icon */
+}
+
+
+.top-right-buttons2 {
+  display: flex; /* Enable flexbox for alignment */
+  align-items: center; /* Vertically center items */
+  margin-left: 0px;
+  margin-top: 20px;
+  gap: 10px; /* Add spacing between the input and icons */
+
+  }
+
+/* Button Styling */
+.add-item-btn2, .register-qr-btn2 {
+  background-color: #800000; /* Dark red color for buttons */
+  color: white;
+  padding: 10px 10px; /* Adjusted padding for better button sizing */
+  font-size: 20px;
+  height: 60px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px; /* Space between buttons */
+}
+
+.add-item-btn2:hover, .register-qr-btn2:hover {
+  background-color: #660000; /* Darker red on hover */
+  color: #ffd324;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+
+
+
+
+.view-btn2 {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 12px;
+  font-size: 15px;
+  margin: 15px 2px; /* Adds horizontal spacing between buttons */
+  border: none;
+  width:115px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-left: 0px;
+  border-radius: 6px;
+}
+
+
+.view-btn2:hover{
+  background-color: #55cf59;
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
+}
+
+/* ---------------------------------------------------- */
+.view-mode-toggle2 {
+  background: none; /* No background */
+  border: none; /* No border */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 38px; /* Adjust size of the icon */
+  color: #8B0000; /* Change color as needed */
+  padding: 5px; /* Add some padding */
+  
+  margin-top: 50px;
+  
+}
+
+
+.view-mode-toggle2:hover {
+  
+  transform: translateY(-2px);
+  color: #a50303; /* Change color on hover */
+}
+
+/* -------------------------------------------------------- */
+.grid-container2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+  margin-top: 30px;
+  row-gap: 35px; /* Space between grid items */
+  column-gap:85px;
+  padding: 16px; /* Padding around the grid */
+  width: 95%; /* Ensure the grid takes full width */
+  justify-items: left; /* Center items within their grid cells */
+
+}
+
+
+
+
+.grid-item2 {
+  overflow-y: auto;  /* Enable vertical scrolling */
+  word-wrap: break-word;
+  background-color: #f0f0f0; /* Background color for items */
+  padding: 20px; /* Padding inside items */
+  border: 1px solid #ccc; /* Optional: Border for items */
+  border-radius: 4px; /* Rounded corners */
+  text-align: center; /* Center text */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
+  width: 105%; /* Ensure grid items take full width of their cell */
+  max-height: 550px;
+}
+
+
+.grid-item2 h2 {
+  overflow: hidden; /* Hide overflowing content */
+  color: #8B0000;
+  text-align: center; /* Align text to the left */
+  font-weight: bold; /* Make the text bold */
+  margin-bottom:20px ; /* Remove default margin */
+
+  overflow-y: auto; /* Enable vertical scrolling for paragraphs */
+}
+
+.grid-item2 p {
+  margin-top: 20px;
+  text-align: left; /* Align text to the left */
+  margin: 5px 0; /* Add some vertical spacing */
+  font-weight: normal; /* Normal weight for paragraph text */
+  max-height: 100px; /* Set a maximum height for paragraphs */
+  overflow-y: auto; /* Enable vertical scrolling for paragraphs */
+
+}
+.grid-item2 span {
+  font-weight: bold; /* Normal weight for paragraph text */
+}
+
+/* -------------------------------------------------------------------------------- */
+
+ /* -------------------------------------------- */
+
+ .default-image-url3 {
+  width: 100%;
+  height: auto;
+  
+  border-Radius: 5px; 
+}
+.default-image-url13 {
+  width: 100%;
+  height: 30%;
+  margin-bottom: 10px;
+  border-Radius: 5px; 
+}
+
+.default-image-url13:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
 }

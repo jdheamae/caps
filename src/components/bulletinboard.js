@@ -12,6 +12,7 @@ import { FaPlus } from "react-icons/fa6"
 import Pagination from './pagination';
 import { jwtDecode } from 'jwt-decode';
 import Header from './header';
+import Filter from '../filterered/bulletinBoardFilt'; // Adjust the import path as necessary
 
 
 function Bulletin() {
@@ -23,6 +24,7 @@ function Bulletin() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [uploading, setUploading] = useState(false);
+  const [filteredRequests, setFilteredRequests] = useState([]);
 
 
 
@@ -44,6 +46,17 @@ function Bulletin() {
   useEffect(() => {
     fetchItems();
   }, []);
+
+   // Function to filter requests based on search text
+   const filterRequests = () => {
+    if (!filterText) {
+      return filteredRequests; // If no filter text, return all filtered requests
+    }
+
+    return filteredRequests.filter(request =>
+      request.ITEM.toLowerCase().includes(filterText.toLowerCase())
+    );
+  };
 
   const fetchItems = async () => {
     try {
@@ -167,21 +180,52 @@ function Bulletin() {
     setShowModal(true); // Open modal for adding a complaint
   };
 
-  // Filtered requests based on the filterText
-  const filteredRequests = requests.filter((item) => {
-    return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
-  });
+  // // Filtered requests based on the filterText
+  // const filteredRequests = requests.filter((item) => {
+  //   return item.ITEM && item.ITEM.toLowerCase().includes(filterText.toLowerCase());
+  // });
 
-  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+  const applyFilters = (filters) => {
+    let filtered = [...requests]; // Use a copy of the original requests state
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+
+    if (filters.dateFound) {
+      filtered = filtered.filter(item => item.DATE_FOUND === filters.dateFound);
+    }
+
+    if (filters.generalLocation) {
+      filtered = filtered.filter(item => item.GENERAL_LOCATION.toLowerCase().includes(filters.generalLocation.toLowerCase()));
+    }
+
+
+    // Apply sorting
+    if (filters.sortByDate === 'ascending') {
+      filtered.sort((a, b) => new Date(a.DATE_FOUND) - new Date(b.DATE_FOUND));
+    } else if (filters.sortByDate === 'descending') {
+      filtered.sort((a, b) => new Date(b.DATE_FOUND) - new Date(a.DATE_FOUND));
+    }
+
+    // Only update filteredRequests if it has changed
+    if (JSON.stringify(filtered) !== JSON.stringify(filteredRequests)) {
+      setFilteredRequests(filtered);
+    }
+
+
   };
 
-  const displayedRequests = filteredRequests.slice(
+  //UPDATE PAGINATIOn
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+
+  const displayedRequests = filterRequests().slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
 
 
@@ -195,7 +239,7 @@ function Bulletin() {
 
       <div className="content">
         <div className="manage-bulletin4">
-          <div className="breadcrumb4">Manage Lost and Found {'>'} Manage Found Items</div>
+          <div className="breadcrumb4">Lost and Found {'>'} Bulletin</div>
 
 
 
@@ -204,16 +248,15 @@ function Bulletin() {
           <div className="search-bar4">
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search Item Name"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
               className="search-input4"
             />
 
-
-
-
           </div>
+
+          <Filter onApplyFilters={applyFilters} />
 
 
           <div className="grid-container4">
@@ -224,7 +267,7 @@ function Bulletin() {
                   <img src={item.IMAGE_URL || "default-image-url"} alt="Product" className="item-image4" />
                 )}
                 <p><span>Date Found: </span> {item.DATE_FOUND}</p>
-                <p><span>Location: </span> {item.FOUND_LOCATION}</p>
+                <p><span>Location: </span> {item.GENERAL_LOCATION}</p>
 
                 <button className="view-btn4" onClick={() => {
                   setSelectedItem(item);

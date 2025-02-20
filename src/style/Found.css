@@ -24,7 +24,7 @@
   .search-bar1 {
     display: flex;
     align-items: center; /* Vertically center items */
-    margin-top: F0px;
+    margin-top: 0px;
      /*height: 3  00px; Full viewport height to center vertically */
 
     
@@ -783,6 +783,7 @@ font-weight: 500;
   height: auto;
   margin-bottom: 10px;
   border-Radius: 5px; 
+  cursor:pointer;
 }
 
 .default-image-url11:hover {
