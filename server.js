@@ -98,7 +98,7 @@ app.post("/login", async (req, res) => {
   // Validate user credentials (replace with your logic)
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ message: "Invalid email or password" });
+    return res.status(400).json({ error: "Email already in use" });
   }
 
   // Generate JWT

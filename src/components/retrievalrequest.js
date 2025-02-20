@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaTable } from 'react-icons/fa';
 import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
-
+import  showAlert from '../utils/alert';
 import { IoGridOutline } from 'react-icons/io5';
 import axios from 'axios';
 import Sidebar from './sidebar';
@@ -75,6 +75,7 @@ function UserRetrievalRequests() {
     try {
       await axios.put(`http://10.10.83.224:5000/retrieval-requests/${selectedRequest._id}`, formData);
       fetchRequests();
+      showAlert('Complaint Updated!', 'complaint_success');
       //add js notification
       closeModal();
     } catch (error) {
@@ -87,6 +88,8 @@ function UserRetrievalRequests() {
     try {
       await axios.delete(`http://10.10.83.224:5000/retrieval-requests/${selectedRequest._id}`);
       fetchRequests();
+      showAlert('Complaint Deleted!', 'complaint_error');
+      //add js notification
       //add js notification
       closeModal();
     } catch (error) {

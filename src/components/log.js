@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "..//style/log.css";
-
+import  showAlert from '../utils/alert';
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -31,11 +31,14 @@ function Auth() {
       setLoading(false); // Hide loading animation
 
       if (response.ok) {
-        alert("Sign up successful! Please log in.");
+           showAlert('Log in Success!', 'signup_success');
+       
         //add js notification
         setIsLogin(true); // Switch to login form after successful sign up
       } else {
-        alert(data.message || "Sign up failed.");
+        showAlert('Sign up failed.', 'signup_error');
+        
+
         //add js notification
       }
     } catch (err) {
@@ -58,18 +61,31 @@ function Auth() {
       });
 
       const data = await response.json();
-      setLoading(false); // Hide loading animation
+   
 
       if (response.ok) {
         // Store JWT in localStorage
-        localStorage.setItem("token", data.token);  // Store token in localStorage
-
-        alert("Login successful!");
-//add js notification
-        // Redirect to home page
-        window.location.href = "/"; // Redirect to the home page after login
+        localStorage.setItem("token", data.token);  
+        
+   
+        // Delay alert and redirect by 3 seconds
+        setTimeout(() => {
+          
+          setLoading(false); // Hide loading animation
+            
+          
+        }, 3000);
+        setTimeout(() => {
+          showAlert('Log in Success!', 'login_success');
+          setLoading(false); // Hide loading animation
+            
+            // Redirect to home page
+            window.location.href = "/";  
+        }, 2000);
       } else {
-        alert(data.message || "Login failed.");
+        setLoading(false); // Hide loading animation
+        showAlert('Login Failed, Incorrect Credentials', 'login_error');
+    
         //add js notification
       }
     } catch (err) {

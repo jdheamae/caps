@@ -4,7 +4,7 @@ import Sidebar from "./sidebar";
 import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
 import { QRCodeCanvas } from "qrcode.react";
 import "../style/prof.css";
-
+import  showAlert from '../utils/alert';
 function Profile() {
   const [user, setUser] = useState({
   
@@ -73,6 +73,8 @@ function Profile() {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
         //add js notification
+             //showAlert('Image Uploaded!', 'complaint_success');
+              //add js notification
       },
       (error) => {
         console.error("Upload error:", error);
@@ -81,9 +83,10 @@ function Profile() {
       async () => {
         try {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          showAlert('Image Uploaded!', 'complaint_success');
+                //add js notification
           console.log("File available at", downloadURL);
 
-          alert("Avatar uploaded successfully!");
           //add js notification
           setUser((prev) => ({ ...prev, image_Url: downloadURL }));
 
@@ -131,7 +134,7 @@ function Profile() {
 
       const result = await response.json();
       if (response.ok) {
-        alert("Profile updated successfully!");
+        showAlert('Profile Updated', 'complaint_success');
         //add js notification
       } else {
         alert(result.message || "Error updating profile.");

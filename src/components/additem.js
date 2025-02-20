@@ -91,7 +91,7 @@ function Additem() {
       console.error('Error fetching items:', error);
     }
   };
-
+//
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setItemData({ ...itemData, [name]: value });

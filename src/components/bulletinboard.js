@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import '../style/userBulletin.css';
+import  showAlert from '../utils/alert';
 
 import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
 import Sidebar from "./sidebar";
@@ -95,7 +96,10 @@ function Bulletin() {
       });
   
       console.log('Response:', response.data); // Log the response
-      alert('Request submitted successfully!'); // Confirmation alert
+      console.log("showAlert:", showAlert);
+
+      showAlert('Request Submitted!', 'complaint_success');
+
       //add js notification
   
       // Reset itemData to clear the form fields

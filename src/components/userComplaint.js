@@ -11,6 +11,7 @@ import Pagination from './pagination';
 import axios from 'axios';
 import { storage, db, uploadBytesResumable, getDownloadURL, ref, doc, updateDoc } from "../firebase";
 import moment from 'moment';
+import  showAlert from '../utils/alert';
 function UserComplaint() {
   const [filterText, setFilterText] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -118,7 +119,8 @@ function UserComplaint() {
 
       if (response.ok) {
         const result = await response.json();
-        alert(result.message);
+           showAlert('Complaint Sent', 'complaint_success');
+        //alert(result.message);
         //add js notification
         setRequests([...requests, { ...newComplaint, status: "Not Found", finder: "N/A" }]);
         fetchRequests(); 
@@ -146,6 +148,7 @@ function UserComplaint() {
         // Optional: Track upload progress
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload Progress: ${progress}%`);
+      
       },
       (error) => {
         console.error("Upload failed", error);
@@ -154,6 +157,7 @@ function UserComplaint() {
       async () => {
         // Get the download URL after successful upload
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        showAlert('Upload Success', 'complaint_success');
         setItemData((prev) => ({ ...prev, item_image: downloadURL }));
         setUploading(false);
       }
@@ -179,7 +183,8 @@ function UserComplaint() {
 
         if (response.ok) {
           const result = await response.json();
-          alert(result.message || "Complaint successfully deleted.");
+          // alert(result.message || "Complaint successfully deleted.");
+          showAlert('Complaint Deleted', 'complaint_error');
           //add js notification
           setShowViewMoreModal(false); // Close modal after successful deletion
         } else {
@@ -214,7 +219,8 @@ function UserComplaint() {
 
       if (response.ok) {
         const result = await response.json();
-        alert(result.message);
+        // alert(result.message);
+        showAlert('Complaint Updated', 'complaint_success');
         //add js notification
         fetchRequests();
         setRequests(
