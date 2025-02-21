@@ -26,7 +26,7 @@ function UserComplaint() {
   const [uploading, setUploading] = useState(false);
   const [imageModalOpen, setImageModalOpen] = useState(false); // State for image modal
   const [selectedImage, setSelectedImage] = useState(''); // State for selected image
-
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [itemData, setItemData] = useState({
     itemname: '',
@@ -36,7 +36,7 @@ function UserComplaint() {
     location: '',
     time: '',
     description: '',
-    status: 'Not Found',
+    status: 'not-found',
     item_image: '',
   });
 
@@ -79,6 +79,12 @@ function UserComplaint() {
     );
   };
 
+
+  // Function to handle canceling the image upload
+const handleCancelUpload = () => {
+  setImagePreview(null); // Reset image preview
+  setItemData((prev) => ({ ...prev, item_image: '' })); // Reset item_image in itemData
+};
 
 
   const handleInputChange = (e) => {
@@ -139,8 +145,9 @@ function UserComplaint() {
       if (response.ok) {
         const result = await response.json();
         alert(result.message);
-        setRequests([...requests, { ...newComplaint, status: "Not Found", finder: "N/A" }]);
+        setRequests([...requests, { ...newComplaint, status: "not-found", finder: "N/A" }]);
         setShowModal(false);
+        setImagePreview(null); // Reset image preview
       } else {
         alert("Error filing complaint. Please try again.");
       }
@@ -149,15 +156,16 @@ function UserComplaint() {
       alert("Error filing complaint. Please try again.");
     }
   };
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0]; // Get the selected file
     if (!file) return;
-
+  
     setUploading(true); // Show upload progress
-
+  
     const storageRef = ref(storage, `FIRI/requests/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
-
+  
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -173,13 +181,17 @@ function UserComplaint() {
         // Get the download URL after successful upload
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         setItemData((prev) => ({ ...prev, item_image: downloadURL }));
+        setImagePreview(downloadURL); // Set the image preview URL to the new image
         setUploading(false);
       }
     );
   };
+  
+
   const handleViewMore = (request) => {
     setSelectedRequest(request); // Set the selected request
     setItemData(request); // Populate itemData with the selected request's data
+    setImagePreview(request.item_image); // Set the image preview to the current image
     setShowModal(true); // Open modal for viewing more details
   };
 
@@ -221,52 +233,38 @@ function UserComplaint() {
       ...selectedRequest,
       ...itemData,
     };
-
+  
     try {
       const response = await fetch(`http://10.10.83.224:5000/usercomplaints/${selectedRequest._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedRequest),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
         alert(result.message);
-
-        setRequests(
-          requests.map((req) =>
-            req._id === selectedRequest._id ? updatedRequest : req
-          )
+  
+        // Update the requests state with the updated request
+        setRequests((prevRequests) =>
+          prevRequests.map((req) => (req._id === selectedRequest._id ? updatedRequest : req))
         );
-
-        setShowModal(false); // Close the modal after successful update
-        setSelectedRequest(null);// Clear selected request
-        setItemData({ // Reset itemData after update
-          // itemname: '',
-          // type: '',
-          // contact: '',
-          // date: '',
-          // location: '',
-          // description: '',
-          // time: '',
-          // status: 'Not Found'
-          complainer: '',
-          college: '',
-          year_lvl: '',
+  
+        // Reset the image preview and modal state
+        setImagePreview(null);
+        setShowModal(false);
+        setSelectedRequest(null);
+        setItemData({
           itemname: '',
           type: '',
-          description: '',
           contact: '',
-          general_location: '',
+          date: '',
           location: '',
           time: '',
-          date: '',
-          date_complained: '',
-          time_complained: '',
+          description: '',
           status: 'not-found',
           item_image: '',
         });
-
       } else {
         alert("Error updating complaint. Please try again.");
       }
@@ -313,14 +311,6 @@ function UserComplaint() {
   const handleAddComplaint = () => {
     setSelectedRequest(null); // Clear selected request for new complaint
     setItemData({
-      // itemname: '',
-      // type: '',
-      // contact: '',
-      // date: '',
-      // location: '',
-      // description: '',
-      // time: '',
-      // status: 'Not Found',
       complainer: '',
       college: '',
       year_lvl: '',
@@ -337,6 +327,7 @@ function UserComplaint() {
       status: 'not-found',
       item_image: '',
     });
+    setImagePreview(null); // Reset image preview
     setShowModal(true); // Open modal for adding a complaint
   };
 
@@ -440,7 +431,7 @@ function UserComplaint() {
 
 
           {viewMode === 'table' ? (
-            <div className="table-container1">
+            <div className="table-container2">
               <table className="ffound-items-table2">
                 <thead>
                   <tr>
@@ -479,11 +470,15 @@ function UserComplaint() {
                       <td>{item.time}</td>{/* for visualization */}
                       {/* <td>{item.date_complained}</td> */}
                       {/* <td>{item.time_complained}</td> */}
-                      <td>{item.status}</td>
-                      <td>   <img src={item.item_image} className="avatar-image" style={{
-                        width: '100px',
-                        height: '100px'
-                      }} /></td>
+                      <td><span className={`status-btn2 ${item.status}`}>
+                        {item.status || "N/A"}
+                      </span></td>
+                      <td>    <img
+                    src={item.item_image || "default-table-url3"}
+                    alt="Product"
+                    className="default-table-url13"
+                    onClick={() => handleImageClick(item.item_image || "default-table-url3")} // Add click handler
+                  /> </td>
                       <td>
 
                         <button className="view-btn2" onClick={() => handleViewMore(item)}>
@@ -502,21 +497,21 @@ function UserComplaint() {
                 <div className="grid-item2" key={item._id}>
                   <h2>{item.itemname}</h2>
                   <img
-                    src={item.item_image || "default-image-url3"}
+                    src={item.item_image || "default-grid-url3"}
                     alt="Product"
-                    className="default-image-url13"
-                    onClick={() => handleImageClick(item.item_image || "default-image-url3")} // Add click handler
+                    className="default-grid-url13"
+                    onClick={() => handleImageClick(item.item_image || "default-grid-url3")} // Add click handler
                   />
-                  <p><span>Complainer: </span>{item.complainer}</p>
-                  <p><span>Item Type: </span> {item.type}</p>
-                  <p><span>Contact of the Complainer: </span> {item.contact}</p>
-                  <p><span>Date: </span> {item.date}</p>
-                  <p><span>Location: </span> {item.location}</p>
-                  <p><span>Time: </span> {item.time}</p>
-                  <p><span>Status: </span> {item.status}</p>
-                  <p><span>Finder: </span> {item.finder}</p>
+                  <p><strong>Complainer:</strong><span>{item.complainer}</span></p>
+                  <p><strong>Item Type:</strong><span>{item.type} </span> </p>
+                  <p><strong>Contact of the Complainer:</strong><span>  {item.contact}</span></p>
+                  <p><strong>Date:</strong><span>{item.date} </span> </p>
+                  <p><strong>Location:</strong><span> {item.location}</span> </p>
+                  <p><strong>Time:</strong><span>{item.time} </span> </p>
+                  <p><strong>Status:</strong><span className={`status-btn2 ${item.status}`}>{item.status} </span> </p>
+                  <p><strong>Finder:</strong><span>{item.finder} </span> </p>
 
-                  <button className="view-btn2" onClick={() => setShowModal(item)}>
+                  <button className="view-btn2" onClick={() => handleViewMore(item)}>
                     <FaPlus /> View More
                   </button>
                 </div>
@@ -540,171 +535,195 @@ function UserComplaint() {
         <div className="modal-overlay2">
           <div className="modal2">
             <h2>{selectedRequest ? 'Update Report' : 'File a Report'}</h2>
-            <form onSubmit={selectedRequest ? handleUpdate : handleComplaintSubmit}>
+            <div className="form-and-camera2">
+              <form onSubmit={selectedRequest ? handleUpdate : handleComplaintSubmit} className="form-fields2">
 
 
 
 
-              <div className="form-group2">
-                <label htmlFor="itemName">Item Name</label>
-                <input
-                  type="text"
-                  id="itemName"
-                  name="itemname"
-                  maxLength="100"
-                  placeholder="Item Name"
-                  value={itemData.itemname}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
+                <div className="form-group2">
+                  <label htmlFor="itemName">Item Name</label>
+                  <input
+                    type="text"
+                    id="itemName"
+                    name="itemname"
+                    maxLength="100"
+                    placeholder="Item Name"
+                    value={itemData.itemname}
+                    onChange={handleInputChange}
+                    required={!selectedRequest}
+                  />
+                </div>
 
-              <div className="form-group2">
-                <label htmlFor="description">Description</label>
-                <textarea
-                  type="text"
-                  id="description"
-                  name="description"
-                  maxLength="500"
-                  placeholder="Description"
-                  value={itemData.description}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
+                <div className="form-group2">
+                  <label htmlFor="description">Description</label>
+                  <textarea
+                    type="text"
+                    id="description"
+                    name="description"
+                    maxLength="500"
+                    placeholder="Description"
+                    value={itemData.description}
+                    onChange={handleInputChange}
+                    required={!selectedRequest}
+                  />
+                </div>
 
-              <div className="form-group2">
-                <label htmlFor="itemType">Item Type</label>
-                <select
-                  id="itemType"
-                  name="type"
-                  maxLength="100"
-                  placeholder="Item Type"
-                  value={itemData.type}
-                  onChange={handleInputChange}
-                >
-                  <option value="Electronics">Electronics</option>
-                  <option value="Personal-Items">Personal Items</option>
-                  <option value="Clothing_Accessories">Clothing & Accessories</option>
-                  <option value="Bags_Stationery">Bags & stationary</option>
-                  <option value="Documents">Documents</option>
-                  <option value="Sports_Miscellaneous">Sports & Miscellaneous</option>
-                </select>
-              </div>
-
-
-
-
-              <div className="form-group2">
-                <label htmlFor="general_location">General Location</label>
-                <select
-                  id="general_location"
-                  name="general_location"
-                  maxLength="200"
-                  placeholder="General Location"
-                  value={itemData.general_location}
-                  onChange={handleInputChange}
-                >
-
-                  <option value="Gym">GYMNASIUM</option>
-                  <option value="adminBuilding">ADMIN BLG</option>
-                  <option value="mph">MPH</option>
-                  <option value="mainLibrary">MAIN LIBRARY</option>
-                  <option value="lawn">LAWN</option>
-                  <option value="ids">IDS</option>
-                  <option value="clinic">CLINIC</option>
-                  <option value="canteen">CANTEEN</option>
-                  <option value="ceba">CEBA</option>
-                  <option value="ccs">CCS</option>
-                  <option value="cass">CASS</option>
-                  <option value="csm">CSM</option>
-                  <option value="coe">COE</option>
-                  <option value="ced">CED</option>
-                  <option value="chs">CHS</option>
-                  <option value="outsideIit">OUTSIDE IIT</option>
-                </select>
-              </div>
-              <div className="form-group2">
-                <label htmlFor="Slocation">Specific Location</label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  maxLength="200"
-                  placeholder="Location"
-                  value={itemData.location}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
-              <div className="form-group2">
-                <label htmlFor="date">Date Lost</label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={itemData.date}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
-              <div className="form-group2">
-                <label htmlFor="time">Time Lost</label>
-                <input
-                  type="time"
-                  id="time"
-                  name="time"
-                  value={itemData.time}
-                  onChange={handleInputChange}
-                  required={!selectedRequest}
-                />
-              </div>
-
-
-              <div className="form-group2">
-                <label htmlFor="item_image">Item Image</label>
-                <input
-                  type="file"
-                  id="item_image"
-                  name="item_image"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                />
-
-              </div>
+                <div className="form-group2">
+                  <label htmlFor="itemType">Item Type</label>
+                  <select
+                    id="itemType"
+                    name="type"
+                    maxLength="100"
+                    placeholder="Item Type"
+                    value={itemData.type}
+                    onChange={handleInputChange}
+                  >
+                    <option value="Electronics">Electronics</option>
+                    <option value="Personal-Items">Personal Items</option>
+                    <option value="Clothing_Accessories">Clothing & Accessories</option>
+                    <option value="Bags_Stationery">Bags & stationary</option>
+                    <option value="Documents">Documents</option>
+                    <option value="Sports_Miscellaneous">Sports & Miscellaneous</option>
+                  </select>
+                </div>
 
 
 
 
-              <div className="button-container2">
-                <button type="submit" className="submit-btn2">
+                <div className="form-group2">
+                  <label htmlFor="general_location">General Location</label>
+                  <select
+                    id="general_location"
+                    name="general_location"
+                    maxLength="200"
+                    placeholder="General Location"
+                    value={itemData.general_location}
+                    onChange={handleInputChange}
+                  >
 
-                  {selectedRequest ? 'Update' : 'Submit'}
-                </button>
-                {selectedRequest && (
+                    <option value="Gym">GYMNASIUM</option>
+                    <option value="adminBuilding">ADMIN BLG</option>
+                    <option value="mph">MPH</option>
+                    <option value="mainLibrary">MAIN LIBRARY</option>
+                    <option value="lawn">LAWN</option>
+                    <option value="ids">IDS</option>
+                    <option value="clinic">CLINIC</option>
+                    <option value="canteen">CANTEEN</option>
+                    <option value="ceba">CEBA</option>
+                    <option value="ccs">CCS</option>
+                    <option value="cass">CASS</option>
+                    <option value="csm">CSM</option>
+                    <option value="coe">COE</option>
+                    <option value="ced">CED</option>
+                    <option value="chs">CHS</option>
+                    <option value="outsideIit">OUTSIDE IIT</option>
+                  </select>
+                </div>
+                <div className="form-group2">
+                  <label htmlFor="Slocation">Specific Location</label>
+                  <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    maxLength="200"
+                    placeholder="Location"
+                    value={itemData.location}
+                    onChange={handleInputChange}
+                    required={!selectedRequest}
+                  />
+                </div>
+                <div className="form-group2">
+                  <label htmlFor="date">Date Lost</label>
+                  <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    value={itemData.date}
+                    onChange={handleInputChange}
+                    required={!selectedRequest}
+                  />
+                </div>
+                <div className="form-group2">
+                  <label htmlFor="time">Time Lost</label>
+                  <input
+                    type="time"
+                    id="time"
+                    name="time"
+                    value={itemData.time}
+                    onChange={handleInputChange}
+                    required={!selectedRequest}
+                  />
+                </div>
+
+
+                <div className="form-group2">
+                  <label htmlFor="item_image">Item Image</label>
+                  <input
+                    type="file"
+                    id="item_image"
+                    name="item_image"
+                    accept="image/*"
+                    onChange={(e) => {
+                      handleImageUpload(e);
+                      setImagePreview(null); // Reset preview when a new file is selected
+                    }}
+/>
+                </div>
+
+
+
+
+                <div className="button-container2">
+                  <button type="submit" className="submit-btn2">
+
+                    {selectedRequest ? 'Update' : 'Submit'}
+                  </button>
+                  {selectedRequest && (
+                    <button
+                      type="button"
+                      className="delete-btn1"
+                      onClick={() => {
+                        handleDelete(selectedRequest._id);
+                        setShowModal(false); // Close the modal after deletion
+                      }}
+                    >
+                      Delete
+                    </button>
+                  )}
+
                   <button
                     type="button"
-                    className="delete-btn1"
+                    className="cancel-btn2"
                     onClick={() => {
-                      handleDelete(selectedRequest._id);
-                      setShowModal(false); // Close the modal after deletion
+                      handleCancelUpload(); // Call the cancel upload function
+                      setShowModal(false); // Close the modal
                     }}
                   >
-                    Delete
+                    Cancel
                   </button>
-                )}
+                </div>
 
-                <button
-                  type="button"
-                  className="cancel-btn2"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </button>
+              </form>
+
+              <div className="camera-section2">
+
+
+
+                {/* Image Preview */}
+                <div className="image-preview2">
+                  {imagePreview && (
+                    <>
+
+                      <img src={imagePreview} alt="Uploaded Preview" className="uploaded-image2" />
+                    </>
+                  )}
+                </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
+
       )}
     </div>
   );

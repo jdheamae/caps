@@ -117,7 +117,7 @@
 
   
   .view-btn3 {
-    background-color: #4CAF50;
+    background-color: #4c75af;
     color: white;
     padding: 5px 12px;
     font-size: 15px;
@@ -132,7 +132,7 @@
 
 
   .view-btn3:hover{
-    background-color: #55cf59;
+    background-color: #5b8cd0;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
   }

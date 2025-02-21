@@ -108,7 +108,30 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
   }
-  
+
+  /* --------------------------------------------------------- */
+
+  .table-container5 {
+    width: 100%; /* Full width of the parent */
+    max-width: 1600px; /* Set a max width for the container */
+    margin: 30px auto 0; /* Center the container */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    border: 1px solid #d5d2d2; /* Optional: Add a border around the container */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
+  }
+
+
+
+  .ffound-items-table5 {
+    
+    width: 100%; /* Full width of the parent */
+    border-collapse: collapse; /* Collapse borders */
+    font-size: 14px;
+    table-layout: auto; /* Use fixed table layout to respect column widths */
+}
+
+
 
 .ffound-items-table5 th, .ffound-items-table5 td {
     padding: 10px;
@@ -119,7 +142,9 @@
     white-space: normal; /* Allow text to wrap */
     vertical-align: top; /* Align text to the top */
     overflow-wrap: break-word; /* Allow long words to break */
+    max-width: 200px; /* Set a max width for cells */
 }
+
 
 .ffound-items-table5 th {
     background-color: #ddd;
@@ -134,20 +159,7 @@
     text-align: center; /* Center-align the buttons */
 }
 
-/* Set specific widths for other columns */
-.ffound-items-table5 th:nth-child(1), .ffound-items-table5 td:nth-child(1) { width: 20%; }
-.ffound-items-table5 th:nth-child(2), .ffound-items-table5 td:nth-child(2) { width: 15%; }
-.ffound-items-table5 th:nth-child(3), .ffound-items-table5 td:nth-child(3) { width: 25%; }
-.ffound-items-table5 th:nth-child(4), .ffound-items-table5 td:nth-child(4) { width: 15%; }
-.ffound-items-table5 th:nth-child(5), .ffound-items-table5 td:nth-child(5) { width: 20%; }
-.ffound-items-table5 th:nth-child(6), .ffound-items-table5 td:nth-child(6) { width: 15%; }
-.ffound-items-table5 th:nth-child(7), .ffound-items-table5 td:nth-child(7) { width: 20%; }
-.ffound-items-table5 th:nth-child(8), .ffound-items-table5 td:nth-child(8) { width: 20%; }
-.ffound-items-table5 th:nth-child(9), .ffound-items-table5 td:nth-child(8) { width: 20%; }
-.ffound-items-table5 th:nth-child(10), .ffound-items-table5 td:nth-child(9) { width: 30%; }
-.ffound-items-table5 th:nth-child(11), .ffound-items-table5 td:nth-child(10) { width: 30%; }
-  
-  
+
 
   
   .view-btn5 {
@@ -317,11 +329,11 @@
 }
 
 
-
+/* --------------------------------------------------- */
 .grid-container5 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-  margin-top: 60px;
+  margin-top: 30px;
   margin-left: -37px;
   row-gap: 35px; /* Space between grid items */
   column-gap:85px;
@@ -349,27 +361,36 @@
   text-align: center; /* Align text to the left */
   font-weight: bold; /* Make the text bold */
   margin-bottom:20px ; /* Remove default margin */
+
+  overflow-y: auto; /* Enable vertical scrolling for paragraphs */
 }
 
 .grid-item5 p {
   margin-top: 20px;
   text-align: left; /* Align text to the left */
-  margin: 10px 0; /* Add some vertical spacing */
+  margin: 5px 0; /* Add some vertical spacing */
   font-weight: normal; /* Normal weight for paragraph text */
+  max-height: 200px; /* Set a maximum height for paragraphs */
+  overflow-y: auto; /* Enable vertical scrolling for paragraphs */
   
 }
 
-.description5 {
-  display: block; /* Ensure it takes up space */
-  max-height: 120px; /* Limit height */
-  overflow-y: auto; /* Enable scrolling if content exceeds */
+
+
+
+
+
+/* .description5 {
+  display: block; /* Ensure it takes up space 
+  max-height: 120px;  Limit height 
+  overflow-y: auto;  Enable scrolling if content exceeds 
 }
 
 .location5 {
-  display: block; /* Ensure it takes up space */
-  max-height: 120px; /* Limit height */
-  overflow-y: auto; /* Enable scrolling if content exceeds */
-}
+  display: block;  Ensure it takes up space 
+  max-height: 120px;  Limit height 
+  overflow-y: auto;  Enable scrolling if content exceeds 
+} */
 
 
 
@@ -394,7 +415,7 @@
 
 /* -------------------------------------------- */
 
-.default-image-url5 {
+/* .default-image-url5 {
   width: 100%;
   height: auto;
   
@@ -405,7 +426,7 @@
   height: auto;
   margin-bottom: 10px;
   border-Radius: 5px; 
-}
+} */
 
 
 
@@ -680,23 +701,7 @@ font-weight: 500;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
   }
-  .table-container5 {
-    width: 100%; /* Full width of the parent */
-    max-width: 1200px; /* Set a max width for the container */
-    margin: 30px auto 0; /* Center the container */
-    overflow-x: auto; /* Enable horizontal scrolling */
-    border: 1px solid #d5d2d2; /* Optional: Add a border around the container */
-    border-radius: 5px; /* Optional: Add rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
-  }
-
-  .ffound-items-table5 {
-    
-    width: 100%; /* Full width of the parent */
-    border-collapse: collapse; /* Collapse borders */
-    font-size: 14px;
-    table-layout: auto; /* Use fixed table layout to respect column widths */
-}
+ 
 
 
 .modal-details5 {
@@ -761,17 +766,20 @@ cursor: pointer;
 
 /* ----------------------------------------------------------------------------- */
 
-.status-btn5{
+.status-btn5 {
   color: white;
   padding: 5px 12px;
   font-size: 12px;
-  margin: 0 2px; /* Adds horizontal spacing between buttons */
+  margin: 0px 2px; /* Adds horizontal spacing between buttons */
   border: none;
   font-size: 15px;
   border-radius: 20px;
   margin-left: 0px;
-  
+  display: inline-block; /* Ensure it behaves like a button */
+  max-height: none; /* Remove max-height */
+  overflow: visible; /* Ensure overflow is visible */
 }
+
 
 .status-btn5.declined {
    background-color: red; /* Red for unclaimed */ 
@@ -785,18 +793,4 @@ cursor: pointer;
   background-color: #FFC107 ; /* Green for claimed */ 
 }
 
-
-
-/* -------------------------------------------------------------------------- */
-.description5 {
-  display:inline-flex; /* Ensure it takes up space */
-  max-height: 120px; /* Limit height */
-  overflow-y: auto; /* Enable scrolling if content exceeds */
-}
-
-.location5 {
-  display:inline-flex; /* Ensure it takes up space */
-  max-height: 120px; /* Limit height */
-  overflow-y: auto; /* Enable scrolling if content exceeds */
-}
 

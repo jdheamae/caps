@@ -166,7 +166,7 @@
 
   
   .view-btn4 {
-    background-color: #4CAF50;
+    background-color: #4c75af;
     color: white;
     padding: 5px 12px;
     font-size: 15px;
@@ -181,7 +181,7 @@
 
 
   .view-btn4:hover{
-    background-color: #55cf59;
+    background-color: #5486cd;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
   }
@@ -279,89 +279,7 @@
     color: white;
   } */
   
-  .modal-overlay4 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal4 {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: flex-start; /* Align items to the start */
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 800px; /* Adjusted for more space */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    text-align: left;
-}
-
-.modal4 h3 {
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    color: #222222;
-    text-align: center;
-    font-weight: bold;
-}
-
-.modal4 form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns for labels and inputs */
-    gap: 20px;
-    width: 100%; /* Ensure the form takes full width */
-}
-
-.form-group4 {
-    display: flex;
-    flex-direction: column; /* Stack label above input */
-    width: 100%; /* Ensure full width */
-}
-
-.modal4 label {
-    font-weight: 500;
-    color: #444444;
-    margin-bottom: 5px;
-}
-
-.modal3 select{
-  font-weight: 500;
-    color: #444444;
-    margin-bottom: 5px;
-}
-
-.modal4 textarea{
-  font-weight: 500;
-    color: #444444;
-    margin-bottom: 5px;
-    height: 50px;
-}
-
-.modal4 input,
-.modal4 select,
-.modal4 textarea {
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
-    width: 90%;
-}
-
-.modal4 input:focus,
-.modal4 select:focus,
-.modal4 textarea:focus {
-    border-color: #3c6abe;
-    outline: none;
-    box-shadow: 0 0 5px rgb(60, 106, 190);
-}
+  
 
 .item-pic-input4 {
     border: 2px dashed #aaaaaa;
@@ -693,3 +611,138 @@ transform: translateY(-1px);
       box-shadow: 0 0 5px rgb(60, 106, 190);
   }
   }
+
+  /* -------------------------------------------------------------------------- */
+  
+  .modal-overlay4 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal4 {
+  width: 880px;         /* Extend the modal width */
+  margin: 50px auto;    /* Center modal on the screen */
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-height: 85vh; /* Limit height to enable scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.modal4 h3 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #222222;
+    text-align: center;
+    font-weight: bold;
+}
+
+.modal4 form {
+  display: grid;
+ 
+  gap: 20px;
+  width: 100%; /* Ensure the form takes full width */
+}
+
+.form-group4 {
+  display: flex;
+  flex-direction: column; /* Stack label above input */
+  width: 100%; /* Ensure full width */
+}
+
+
+
+.modal4 label {
+    font-weight: 500;
+    color: #444444;
+    margin-bottom: 5px;
+}
+
+.modal4 select{
+  font-weight: 500;
+    color: #444444;
+    margin-bottom: 5px;
+}
+
+.modal4 textarea{
+  font-weight: 500;
+    color: #444444;
+    margin-bottom: 5px;
+    height: 50px;
+}
+
+.modal4 input,
+.modal4 select,
+.modal4 textarea {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    width: 90%;
+}
+
+.modal4 input:focus,
+.modal4 select:focus,
+.modal4 textarea:focus {
+    border-color: #3c6abe;
+    outline: none;
+    box-shadow: 0 0 5px rgb(60, 106, 190);
+}
+
+.form-and-camera4 {
+  display: flex;
+  gap: 20px;            /* Space between form and camera */
+  align-items: flex-start; /* Align items at the top; adjust if needed */
+}
+
+.form-fields4 {
+  flex: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* Two columns for fields */
+  gap: 15px;
+}
+
+.form-group4 {
+  display: flex;
+  flex-direction: column;
+}
+
+/* If any input needs to span full width, you can use: */
+.form-group4.full-width {
+  grid-column: 1 / -1;
+}
+
+.camera-section4 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  /* Fix the height to roughly match the form fields height */
+  height: 100%;
+  padding-top: 10px;
+}
+
+/* Image preview in the third column */
+.image-preview4 {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center align the image */
+}
+  
+.uploaded-image4 {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-top: 10px; /* Add some space above the image */
+}

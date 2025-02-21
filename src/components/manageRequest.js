@@ -125,7 +125,7 @@ function ManageRequest() {
   };
 
   const filteredRequests = getFilteredRequests().filter((request) =>
-    request.item_name?.toLowerCase().includes(filterText.toLowerCase())
+    request.item_name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
@@ -168,7 +168,7 @@ function ManageRequest() {
               onChange={(e) => setFilterText(e.target.value)}
             />
             <button onClick={toggleViewMode} className="view-mode-toggle5">
-              {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
+              {viewMode === 'table' ? <FaTable />: <IoGridOutline />}
             </button>
           </div>
 

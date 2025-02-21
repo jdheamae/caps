@@ -15,6 +15,7 @@ import Header from './header';
 import Filter from '../filterered/bulletinBoardFilt'; // Adjust the import path as necessary
 
 
+
 function Bulletin() {
   const [filterText, setFilterText] = useState('');
   const [requests, setRequests] = useState([]);
@@ -25,6 +26,7 @@ function Bulletin() {
   const itemsPerPage = 10;
   const [uploading, setUploading] = useState(false);
   const [filteredRequests, setFilteredRequests] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
 
 
 
@@ -32,13 +34,13 @@ function Bulletin() {
   const [itemData, setItemData] = useState({
     item_name: '',//11
     description: '',//22
-    specific_location:'',//33
-    general_location:'',//44
-    date_Lost:'',//55
-    time_Lost:'',//66
-    owner_image:'',
+    specific_location: '',//33
+    general_location: '',//44
+    date_Lost: '',//55
+    time_Lost: '',//66
+    owner_image: '',
     id: '',
-    status:'pending',
+    status: 'pending',
   });
 
 
@@ -47,8 +49,8 @@ function Bulletin() {
     fetchItems();
   }, []);
 
-   // Function to filter requests based on search text
-   const filterRequests = () => {
+  // Function to filter requests based on search text
+  const filterRequests = () => {
     if (!filterText) {
       return filteredRequests; // If no filter text, return all filtered requests
     }
@@ -74,42 +76,42 @@ function Bulletin() {
   };
   const handleModalSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
-  
+
     try {
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id; // Get userId from the token
       const claimer_name = `${decodedToken.firstName || ''} ${decodedToken.lastName || ''}`.trim();//user based,
-      const contactNumber=decodedToken.contactNumber;//2 user based
-      const claimer_college=decodedToken.college;//3 user based
-      const claimer_lvl=decodedToken.year_lvl;//4user based
+      const contactNumber = decodedToken.contactNumber;//2 user based
+      const claimer_college = decodedToken.college;//3 user based
+      const claimer_lvl = decodedToken.year_lvl;//4user based
       const now = new Date();
       const formattedDate = now.toISOString().split("T")[0]; // YYYY-MM-DD //5 user based
       const formattedTime = now.toTimeString().split(" ")[0]; // HH:MM:SS //6 user based
       const response = await axios.post('http://10.10.83.224:5000/retrieval-request', {
         claimer_name: claimer_name,//1
-        claimer_college:claimer_college,//2
-        claimer_lvl:claimer_lvl,//3
-        contactNumber:contactNumber,//4
-        date_complained:formattedDate,//5
-        time_complained:formattedTime,//6
+        claimer_college: claimer_college,//2
+        claimer_lvl: claimer_lvl,//3
+        contactNumber: contactNumber,//4
+        date_complained: formattedDate,//5
+        time_complained: formattedTime,//6
 
-        item_name:itemData.item_name,//11
+        item_name: itemData.item_name,//11
         description: itemData.description,//22
-        general_location:itemData.general_location,//33
-        specific_location:itemData.specific_location,//44
-        date_Lost:itemData.date_Lost,//55
-        time_Lost:itemData.time_Lost,//66
-        owner_image:itemData.owner_image,
+        general_location: itemData.general_location,//33
+        specific_location: itemData.specific_location,//44
+        date_Lost: itemData.date_Lost,//55
+        time_Lost: itemData.time_Lost,//66
+        owner_image: itemData.owner_image,
         id: itemData.id,
         itemId: selectedItem._id, // Assuming you're passing the selected item ID
         userId: userId, // Include userId in the request
-        status:itemData.status,
+        status: itemData.status,
       });
-  
+
       console.log('Response:', response.data); // Log the response
       alert('Request submitted successfully!'); // Confirmation alert
-  
+
       // Reset itemData to clear the form fields
       setItemData({
         // item_name: '',//11
@@ -119,24 +121,55 @@ function Bulletin() {
         // date_Lost:'',//55
         // time_Lost:'',//66
         // id: '',
-      
-        item_name:'',
-        description:'',
-        general_location:'',
-        specific_location:'',
-        date_Lost:'',
-        time_Lost:'',
-        id:'',
-        owner_image:'',
-       status: 'pending',
+
+        item_name: '',
+        description: '',
+        general_location: '',
+        specific_location: '',
+        date_Lost: '',
+        time_Lost: '',
+        id: '',
+        owner_image: '',
+        status: 'pending',
       });
-  
+
       setShowModal(false); // Close the modal after successful submission
     } catch (error) {
       console.error('Error submitting the form:', error); // Log any errors
       alert('Error submitting the form. Please try again.'); // Alert on error
     }
   };
+
+
+  // const handleImageUpload = (e) => {
+  //   const file = e.target.files[0]; // Get the selected file
+  //   if (!file) return;
+
+  //   setUploading(true); // Show upload progress
+
+  //   const storageRef = ref(storage, `FIRI/requests/${file.name}`);
+  //   const uploadTask = uploadBytesResumable(storageRef, file);
+
+  //   uploadTask.on(
+  //     "state_changed",
+  //     (snapshot) => {
+  //       // Optional: Track upload progress
+  //       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //       console.log(`Upload Progress: ${progress}%`);
+  //     },
+  //     (error) => {
+  //       console.error("Upload failed", error);
+  //       setUploading(false);
+  //     },
+  //     async () => {
+  //       // Get the download URL after successful upload
+  //       const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+  //       setItemData((prev) => ({ ...prev, owner_image: downloadURL }));
+  //       setUploading(false);
+  //     }
+  //   );
+  // };
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0]; // Get the selected file
     if (!file) return;
@@ -161,22 +194,25 @@ function Bulletin() {
         // Get the download URL after successful upload
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         setItemData((prev) => ({ ...prev, owner_image: downloadURL }));
+        setImagePreview(downloadURL); // Set the image preview URL
         setUploading(false);
       }
     );
   };
+
   const handleAddComplaint = () => {
     setSelectedRequest(null); // Clear selected request for new complaint
     setItemData({
-      item_name:'',
-      description:'',
-      general_location:'',
-      specific_location:'',
-      date_Lost:'',
-      time_Lost:'',
-     
+      item_name: '',
+      description: '',
+      general_location: '',
+      specific_location: '',
+      date_Lost: '',
+      time_Lost: '',
+
       status: 'pending',
     });
+    setImagePreview(null); // Reset image preview
     setShowModal(true); // Open modal for adding a complaint
   };
 
@@ -227,7 +263,12 @@ function Bulletin() {
     }
   };
 
-
+  // When closing the modal, reset the image preview and item data
+  const closeModal = () => {
+    setShowModal(false);
+    setImagePreview(null); // Reset image preview
+    setItemData((prev) => ({ ...prev, owner_image: '' })); // Reset owner_image in itemData
+  };
 
 
 
@@ -293,141 +334,141 @@ function Bulletin() {
         <div className="modal-overlay4">
           <div className="modal4">
             <h2>File a Request</h2>
-            <form onSubmit={handleModalSubmit}>
-            <div className="form-group4">
-                <label htmlFor="item_name">Item Name:</label>
-                <input
-                  type="text"
-                  id="item_name"
-                  name="item_name"
-                  maxLength="50"
-                  placeholder="Item Name"
-                  value={itemData.item_name}
-                  onChange={handleModalChange}
-                  required
-                />
-              </div>
+            <div className="form-and-camera4">
+              <form onSubmit={handleModalSubmit} className="form-fields4">
+                {/* Form fields */}
+                <div className="form-group4">
+                  <label htmlFor="item_name">Item Name:</label>
+                  <input
+                    type="text"
+                    id="item_name"
+                    name="item_name"
+                    maxLength="50"
+                    placeholder="Item Name"
+                    value={itemData.item_name}
+                    onChange={handleModalChange}
+                    required
+                  />
+                </div>
 
-              <div className="form-group4">
-                <label htmlFor="description">Description</label>
-                <textarea
-                  type="text"
-                  id="description"
-                  name="description"
-                  maxLength="500"
-                  placeholder="Description"
-                  value={itemData.description}
-                  onChange={handleModalChange}
-                  required
-                />
-              </div>
-              <div className="form-group4">
-                <label htmlFor="general_location">General Location</label>
-                <select
-                  id="general_location"
-                  name="general_location"
-                  placeholder="General Location"
-                  value={itemData.general_location}
-                  onChange={(e) =>
-                    setItemData({ ...itemData, general_location: e.target.value })
-                  }
-                  required
-                >
-                  <option value="" disabled>Select a location</option>
-              
-                  <option value="Gym">GYM</option>
-                  <option value="mainLibrary">MAIN LIBRARY</option>
-                </select>
-              </div>
-              <div className="form-group4">
+                <div className="form-group4">
+                  <label htmlFor="description">Description</label>
+                  <textarea
+                    type="text"
+                    id="description"
+                    name="description"
+                    maxLength="500"
+                    placeholder="Description"
+                    value={itemData.description}
+                    onChange={handleModalChange}
+                    required
+                  />
+                </div>
 
-                <label htmlFor="specific_location">Specific Location</label>
-                <textarea
-                  type="text"
-                  id="specific_location"
-                  name="specific_location"
-                  maxLength="500"
-                  placeholder="Specific location"
-                  value={itemData.specific_location}
-                  onChange={handleModalChange}
-                  required
-                />
-              </div>
-              <div className="form-group4">
-                <label htmlFor="date_Lost">Date Lost</label>
-                <input
-                  type="date"
-                  id="date_Lost"
-                  name="date_Lost"
-                  maxLength="500"
-                  placeholder="Date Lost"
-                  value={itemData.date_Lost}
-                  onChange={handleModalChange}
-                  required
-                />
-              </div>
-             
-              <div className="form-group4">
-                <label htmlFor="time_Lost">Time Lost</label>
-                <input
-                  type="time"
-                  id="time_Lost"
-                  name="time_Lost"
-                  maxLength="500"
-                  placeholder="Time Lost"
-                  value={itemData.time_Lost}
-                  onChange={handleModalChange}
-                  required
-                />
-              </div>
-
-              <div className="form-group4">
-        <label htmlFor="owner_image">Image</label>
-        <input
-          type="file"
-          id="owner_image"
-          name="owner_image"
-          accept="image/*"
-          onChange={handleImageUpload}
-        />
-      </div>
-            
-
-
-
-              <div className="button-container4">
-                <button type="submit" className="submit-btn4">
-                  Submit
-                </button>
-
-                {/* {selectedItem && (
-                  <button
-                    type="button"
-                    className="delete-btn1"
-                    onClick={() => {
-                      handleDelete(selectedItem._id);
-                      setShowModal(false); // Close the modal after deletion
-                    }}
+                <div className="form-group4">
+                  <label htmlFor="general_location">General Location</label>
+                  <select
+                    id="general_location"
+                    name="general_location"
+                    placeholder="General Location"
+                    value={itemData.general_location}
+                    onChange={(e) =>
+                      setItemData({ ...itemData, general_location: e.target.value })
+                    }
+                    required
                   >
-                    Delete
+                    <option value="" disabled>Select a location</option>
+                    <option value="Gym">GYM</option>
+                    <option value="mainLibrary">MAIN LIBRARY</option>
+                  </select>
+                </div>
+
+                <div className="form-group4">
+                  <label htmlFor="specific_location">Specific Location</label>
+                  <textarea
+                    type="text"
+                    id="specific_location"
+                    name="specific_location"
+                    maxLength="500"
+                    placeholder="Specific location"
+                    value={itemData.specific_location}
+                    onChange={handleModalChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group4">
+                  <label htmlFor="date_Lost">Date Lost</label>
+                  <input
+                    type="date"
+                    id="date_Lost"
+                    name="date_Lost"
+                    maxLength="500"
+                    placeholder="Date Lost"
+                    value={itemData.date_Lost}
+                    onChange={handleModalChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group4">
+                  <label htmlFor="time_Lost">Time Lost</label>
+                  <input
+                    type="time"
+                    id="time_Lost"
+                    name="time_Lost"
+                    maxLength="500"
+                    placeholder="Time Lost"
+                    value={itemData.time_Lost}
+                    onChange={handleModalChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group4">
+                  <label htmlFor="owner_image">Image Upload</label>
+                  <input
+                    type="file"
+                    id="owner_image"
+                    name="owner_image"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                  />
+                </div>
+
+                <div className="button-container4">
+                  <button type="submit" className="submit-btn4">
+                    Submit
                   </button>
-                )} */}
-                <button
-                  type="button"
-                  className="cancel-btn4"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </button>
+                  < button
+                    type="button"
+                    className="cancel-btn4"
+                    onClick={closeModal} // Use the closeModal function
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+
+              <div className="camera-section4">
+
+
+
+                {/* Image Preview */}
+                <div className="image-preview4">
+                  {imagePreview && (
+                    <>
+
+                      <img src={imagePreview} alt="Uploaded Preview" className="uploaded-image4" />
+                    </>
+                  )}
+                </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}
     </div>
-
-
-
   );
 }
 

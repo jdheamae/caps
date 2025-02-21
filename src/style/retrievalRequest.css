@@ -115,54 +115,7 @@
   
 
   
-  .ffound-items-table6 {
-    
-    width: 100%; /* Full width of the parent */
-    max-width: 1200px; /* Set a max width for the table */
-    margin: 100px auto 0px; /* Center the table horizontally */
-    padding: 0; /* Remove any default padding */
-    border-collapse: collapse;
-    font-size: 14px;
-    table-layout: fixed; /* Use fixed table layout to respect column widths */
-}
-
-.ffound-items-table6 th, .ffound-items-table6 td {
-    padding: 10px;
-    border: 1px solid #d5d2d2;
-    text-align: center;
-    overflow: hidden; /* Prevent overflow */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
-    white-space: normal; /* Allow text to wrap */
-    vertical-align: top; /* Align text to the top */
-    overflow-wrap: break-word; /* Allow long words to break */
-}
-
-.ffound-items-table6 th {
-    background-color: #ddd;
-}
-
-.ffound-items-table6 tr {
-    height: auto; /* Allow rows to stretch based on content */
-}
-
-.ffound-items-table6 th.action, .ffound-items-table6 td.action {
-    width: 50px; /* Adjust width as needed */
-    text-align: center; /* Center-align the buttons */
-}
-
-/* Set specific widths for other columns */
-.ffound-items-table6 th:nth-child(1), .ffound-items-table6 td:nth-child(1) { width: 20%; }
-.ffound-items-table6 th:nth-child(2), .ffound-items-table6 td:nth-child(2) { width: 15%; }
-.ffound-items-table6 th:nth-child(3), .ffound-items-table6 td:nth-child(3) { width: 25%; }
-.ffound-items-table6 th:nth-child(4), .ffound-items-table6 td:nth-child(4) { width: 15%; }
-.ffound-items-table6 th:nth-child(6), .ffound-items-table6 td:nth-child(5) { width: 20%; }
-.ffound-items-table6 th:nth-child(6), .ffound-items-table6 td:nth-child(6) { width: 15%; }
-.ffound-items-table6 th:nth-child(7), .ffound-items-table6 td:nth-child(7) { width: 20%; }
-.ffound-items-table6 th:nth-child(8), .ffound-items-table6 td:nth-child(8) { width: 20%; }
-.ffound-items-table6 th:nth-child(9), .ffound-items-table6 td:nth-child(8) { width: 20%; }
-.ffound-items-table6 th:nth-child(10), .ffound-items-table6 td:nth-child(9) { width: 30%; }
-.ffound-items-table6 th:nth-child(11), .ffound-items-table6 td:nth-child(10) { width: 30%; }
-  
+ 
   
 
   
@@ -299,7 +252,7 @@
 }
 
 .submit-btn6,
-.cancel-btn6,.delete-btn6, .close-btn-manager6  {
+.cancel-btn6,.delete-btn6, .close-btn-manager6 ,.update-btn6 {
     padding: 15px;
     font-size: 1rem;
     font-weight: bold;
@@ -313,6 +266,11 @@
 .submit-btn6 {
     background-color: #45a049;
     color: white;
+}
+
+.update-btn6 {
+  background-color: #45a049;
+  color: white;
 }
 
 .cancel-btn6 {
@@ -334,6 +292,12 @@
     background-color: #61ce67;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
+}
+
+.update-btn6:hover {
+  background-color: #61ce67;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 .cancel-btn6:hover {
@@ -363,39 +327,32 @@
     
   }
 
-.status-btn6{
-  color: white;
-  padding: 5px 12px;
-  font-size: 12px;
-  margin: 0 2px; /* Adds horizontal spacing between buttons */
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  width: 115px;
-  border-radius: 20px;
-  margin-left: 0px;
-  
-}
+  .status-btn6{
+    color: white;
+    padding: 5px 12px;
+    font-size: 12px;
+    margin: 0px 2px; /* Adds horizontal spacing between buttons */
+    border: none;
+    font-size: 15px;
+    border-radius: 20px;
+    margin-left: 0px;
+    display: inline-block; /* Ensure it behaves like a button */
+    max-height: none; /* Remove max-height */
+    overflow: visible; /* Ensure overflow is visible */
+    
+  }
 
-.status-btn6.unclaimed {
-  background-color: red; /* Red for unclaimed */
-}
 
-.status-btn6.claimed {
+.status-btn6.declined {
+  background-color: red; /* Red for unclaimed */ 
+ }
+
+.status-btn6.approved {
   background-color: #4CAF50; /* Green for claimed */
-}
+  }
 
-.status-btn6.Unclaimed {
-  background-color: red; /* Red for unclaimed */
-}
-
-.status-btn5.Claimed {
-  background-color: #4CAF50; /* Green for claimed */
-}
-
-.status-btn6:hover{
-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-transform: translateY(-1px);
+.status-btn6.pending { 
+ background-color: #FFC107 ; /* Green for claimed */ 
 }
 
 .arrow6 {
@@ -405,20 +362,13 @@ transform: translateY(-1px);
 
 
 
-.grid-item6 {
-  background-color: #f0f0f0; /* Background color for items */
-  padding: 20px; /* Padding inside items */
-  border: 1px solid #ccc; /* Optional: Border for items */
-  border-radius: 4px; /* Rounded corners */
-  text-align: center; /* Center text */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Shadow for items */
-  width: 105%; /* Ensure grid items take full width of their cell */
-}
+
+
 
 .grid-container6 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-  margin-top: 100px;
+  margin-top: 30px;
   margin-left: -37px;
   row-gap: 35px; /* Space between grid items */
   column-gap:85px;
@@ -429,6 +379,7 @@ transform: translateY(-1px);
 
 .grid-item6 {
   overflow-y: auto;  /* Enable vertical scrolling */
+  max-height: 650px;
   word-wrap: break-word;
   background-color: #f0f0f0; /* Background color for items */
   padding: 20px; /* Padding inside items */
@@ -446,6 +397,8 @@ transform: translateY(-1px);
   text-align: center; /* Align text to the left */
   font-weight: bold; /* Make the text bold */
   margin-bottom:20px ; /* Remove default margin */
+
+  overflow-y: auto; /* Enable vertical scrolling for paragraphs */
 }
 
 .grid-item6 p {
@@ -453,10 +406,13 @@ transform: translateY(-1px);
   text-align: left; /* Align text to the left */
   margin: 10px 0; /* Add some vertical spacing */
   font-weight: normal; /* Normal weight for paragraph text */
+  max-height: 100px; /* Set a maximum height for paragraphs */
+  overflow-y: auto; /* Enable vertical scrolling for paragraphs */
+  
 }
-.grid-item6 span {
-  font-weight: bold; /* Normal weight for paragraph text */
-}
+
+
+
 .view-mode-toggle6 {
   background: none; /* No background */
   border: none; /* No border */
@@ -484,7 +440,7 @@ transform: translateY(-1px);
   
   border-Radius: 5px; 
 }
-.default-image-url66 {
+.default-image-url16 {
   width: 100%;
   height: auto;
   margin-bottom: 10px;
@@ -509,12 +465,25 @@ transform: translateY(-1px);
 }
 
 .modal6 {
-  width: 800px;         /* Extend the modal width */
+  width: 700px;         /* Extend the modal width */
   margin: 50px auto;    /* Center modal on the screen */
   padding: 20px;
-  background: #fff;
+  background: rgba(0, 0, 0, 0);
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.modal66 {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the start */
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 850px; /* Adjusted for a single column layout */
+  max-height: 85vh; /* Limit height to enable scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  text-align: left;
 }
 
 .modal6 h2 {
@@ -523,6 +492,26 @@ transform: translateY(-1px);
   color: #222222;
   text-align: center;
   font-weight: bold;
+}
+
+.card6 {
+  background: #f9f9f9; /* Light background for the card */
+  border-radius: 25px; /* Rounded corners */
+  padding: 20px; /* Padding inside the card */
+  margin-bottom: 20px; /* Space between cards */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+
+
+
+.card6 h2 {
+  margin-bottom: 15px; /* Space below the heading */
+  font-size: 1.5rem; /* Font size for the heading */
+  color: #333; /* Darker color for the heading */
+  text-align: center; /* Center the heading */
 }
 
 .modal6 form {
@@ -547,9 +536,14 @@ transform: translateY(-1px);
 }
 
 .modal6 select{
-font-weight: 500;
+  font-weight: 500;
   color: #444444;
   margin-bottom: 5px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  width: 90%;
 }
 
 .modal6 textarea{
@@ -560,7 +554,6 @@ font-weight: 500;
 }
 
 .modal6 input,
-.modal6 select,
 .modal6 textarea {
   padding: 12px;
   font-size: 1rem;
@@ -575,6 +568,26 @@ font-weight: 500;
   border-color: #3c6abe;
   outline: none;
   box-shadow: 0 0 5px rgb(60, 106, 190);
+}
+
+.modal-details6 {
+  display: grid; /* Use grid layout */
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 20px; /* Space between columns */
+  margin-top: 20px; /* Space above the details */
+}
+
+.modal-detail6 {
+  padding: 10px; /* Add padding for better spacing */
+}
+
+.modal-detail6  h2{
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.modal-detail6:not(:last-child) {
+  border-right: 1px solid #ccc; /* Add a vertical line between the two columns */
 }
 
 .form-and-camera6 {
@@ -621,6 +634,20 @@ font-weight: 500;
   height: auto;
 }
 
+/* Image preview in the third column */
+.image-preview6{
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center align the image */
+}
+  
+.uploaded-image6 {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-top: 10px; /* Add some space above the image */
+}
 
 @media (max-width: 768px) {
   .manage-bulletin6 {
@@ -643,3 +670,141 @@ font-weight: 500;
     border-radius: 35px;
   }
 }
+
+/* ------------------------------------------ */
+
+.table-container6 {
+  width: 100%; /* Full width of the parent */
+  max-width: 1600px; /* Set a max width for the container */
+  margin: 30px auto 0; /* Center the container */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  border: 1px solid #d5d2d2; /* Optional: Add a border around the container */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
+}
+
+.ffound-items-table6 {
+  width: 100%; /* Full width of the table */
+  border-collapse: collapse; /* Collapse borders */
+  font-size: 14px; /* Font size */
+  table-layout: auto; /* Use auto layout to allow for dynamic widths */
+}
+
+.ffound-items-table6 th, .ffound-items-table6 td {
+  padding: 10px;
+  border: 1px solid #d5d2d2;
+  text-align: center;
+  overflow: hidden; /* Prevent overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  white-space: normal; /* Allow text to wrap */
+  vertical-align: top; /* Align text to the top */
+  
+  word-wrap: break-word; /* Allow long words to break */
+  max-width: 200px; /* Set a max width for cells */
+}
+
+.ffound-items-table6 th {
+  background-color: #ddd;
+}
+
+.ffound-items-table6 tr {
+  height: auto; /* Allow rows to stretch based on content */
+}
+
+.ffound-items-table6 th.action, .ffound-items-table6 td.action {
+  width: 50px; /* Adjust width as needed */
+  text-align: center; /* Center-align the buttons */
+}
+
+/* -------------------------------------------------- */
+.default-table-url4 {
+  width: 100%;
+  height: auto;
+  
+  
+
+}
+.default-table-url14 {
+  width: 40%;
+  height: auto;
+  margin-bottom: 10px;
+  border-Radius: 5px;
+   
+}
+
+.default-table-url14:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
+cursor: pointer;
+}
+
+.default-grid-url4 {
+  width: 100%;
+  height: auto;
+  
+  
+  border-Radius: 5px; 
+}
+.default-grid-url14 {
+  width: 100%;
+  height: 35%;
+  margin-bottom: 10px;
+  border-Radius: 25px;
+   
+}
+
+.default-grid-url14:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
+cursor: pointer;
+}
+
+/* ------------------------------------------- */
+
+.modal66 label {
+  font-weight: 500;
+  color: #444444;
+  margin-bottom: 5px;
+}
+
+.modal66 select{
+  font-weight: 500;
+  color: #444444;
+  margin-bottom: 5px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  width: 90%;
+}
+
+.modal66 textarea{
+font-weight: 500;
+  color: #444444;
+  margin-bottom: 5px;
+  height: 50px;
+}
+
+.modal66 input,
+.modal66 textarea {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  width: 90%;
+}
+
+.modal66 input:focus,
+.modal66 select:focus,
+.modal66 textarea:focus {
+  border-color: #3c6abe;
+  outline: none;
+  box-shadow: 0 0 5px rgb(60, 106, 190);
+}
+
+/* --------------------------------------------------- */
+
+
+
+
+

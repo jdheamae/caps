@@ -183,13 +183,14 @@
   color: white;
   padding: 5px 12px;
   font-size: 12px;
-  margin: 0 2px; /* Adds horizontal spacing between buttons */
+  margin: 0px 2px; /* Adds horizontal spacing between buttons */
   border: none;
-  cursor: pointer;
   font-size: 15px;
-  width: 115px;
   border-radius: 20px;
   margin-left: 0px;
+  display: inline-block; /* Ensure it behaves like a button */
+  max-height: none; /* Remove max-height */
+  overflow: visible; /* Ensure overflow is visible */
   
 }
 
@@ -201,18 +202,18 @@
   background-color: #4CAF50; /* Green for claimed */
 }
 
-.status-btn2.Unclaimed {
+.status-btn2.not-found {
   background-color: red; /* Red for unclaimed */
 }
 
-.status-btn2.Claimed {
+.status-btn2.found {
   background-color: #4CAF50; /* Green for claimed */
 }
 
-.status-btn2:hover{
-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-transform: translateY(-1px);
-}
+
+
+
+
 
 .arrow2 {
   width: 14px; /* Adjust icon size for better proportion with the input */
@@ -488,7 +489,7 @@ transform: translateY(-1px);
 
 
 .view-btn2 {
-  background-color: #4CAF50;
+  background-color: #4c75af;
   color: white;
   padding: 5px 12px;
   font-size: 15px;
@@ -503,7 +504,7 @@ transform: translateY(-1px);
 
 
 .view-btn2:hover{
-  background-color: #55cf59;
+  background-color: #5888ca;
 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 transform: translateY(-1px);
 }
@@ -577,28 +578,95 @@ transform: translateY(-1px);
   overflow-y: auto; /* Enable vertical scrolling for paragraphs */
 
 }
-.grid-item2 span {
-  font-weight: bold; /* Normal weight for paragraph text */
-}
+
 
 /* -------------------------------------------------------------------------------- */
 
- /* -------------------------------------------- */
+/* -------------------------------------------------- */
+.default-table-url3 {
+  width: 100%;
+  height: auto;
+  
+  
 
- .default-image-url3 {
+}
+.default-table-url13 {
+  width: 40%;
+  height: auto;
+  margin-bottom: 10px;
+  border-Radius: 5px;
+   
+}
+
+.default-table-url13:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+transform: translateY(-1px);
+cursor: pointer;
+}
+ .default-grid-url3 {
   width: 100%;
   height: auto;
   
   border-Radius: 5px; 
 }
-.default-image-url13 {
+.default-grid-url13 {
   width: 100%;
   height: 30%;
   margin-bottom: 10px;
   border-Radius: 5px; 
 }
 
-.default-image-url13:hover {
+.default-grid-url13:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 transform: translateY(-1px);
+}
+
+/* ------------------------------------------------- */
+.form-and-camera2 {
+  display: flex;
+  gap: 20px;            /* Space between form and camera */
+  align-items: flex-start; /* Align items at the top; adjust if needed */
+}
+
+.form-fields2 {
+  flex: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* Two columns for fields */
+  gap: 15px;
+}
+
+.form-group2 {
+  display: flex;
+  flex-direction: column;
+}
+
+/* If any input needs to span full width, you can use: */
+.form-group2.full-width {
+  grid-column: 1 / -1;
+}
+
+.camera-section2 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  /* Fix the height to roughly match the form fields height */
+  height: 100%;
+  padding-top: 10px;
+}
+
+/* Image preview in the third column */
+.image-preview2 {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center align the image */
+}
+  
+.uploaded-image2 {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-top: 10px; /* Add some space above the image */
 }

@@ -357,7 +357,7 @@ function Manage() {
               className="search-input3"
             />
             <button onClick={toggleViewMode} className="view-mode-toggle3">
-              {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
+              {viewMode === 'table' ? <FaTable /> : <IoGridOutline />}
             </button>
 
           </div>

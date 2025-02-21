@@ -74,15 +74,19 @@ function Additem() {
     }
   }, [showModal]);
 
-  // Function to filter requests based on search text
+
+  //NEW FIXED
+
   const filterRequests = () => {
     if (!filterText) {
       return filteredRequests; // If no filter text, return all filtered requests
     }
-
-    return filteredRequests.filter(request =>
-      request.ITEM.toLowerCase().includes(filterText.toLowerCase())
-    );
+  
+    return filteredRequests.filter(request => {
+      // Check if request.ITEM is defined before calling toLowerCase
+      const itemName = request.ITEM ? request.ITEM.toLowerCase() : '';
+      return itemName.includes(filterText.toLowerCase());
+    });
   };
 
 
@@ -363,7 +367,7 @@ function Additem() {
               className="search-input1"
             />
             <button onClick={toggleViewMode} className="view-mode-toggle1">
-              {viewMode === 'table' ? <IoGridOutline /> : <FaTable />}
+              {viewMode === 'table' ? <FaTable /> : <IoGridOutline />}
             </button>
 
             
